@@ -23,7 +23,7 @@ columns:
         label: updated_at
         type: datetime
     image_url:
-        label: image_url
+        label: image
         type: image
         width: 100
         mode: image

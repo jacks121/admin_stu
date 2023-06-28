@@ -21,10 +21,12 @@ fields:
     label: 评价文本
     type: textarea
     size: huge
-  images:
+  review_images:
       label: Images
-      type: fileupload
-      mode: image
+      type: mediafinder
+      mode: image-only
+      maxItems: 5
+      span: left
   created_at:
       label: Published
       type: datepicker

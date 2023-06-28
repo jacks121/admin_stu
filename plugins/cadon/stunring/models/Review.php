@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace Cadon\Stunring\Models;
 
@@ -12,6 +12,10 @@ class Review extends Model
     use \October\Rain\Database\Traits\Validation;
     use \October\Rain\Database\Traits\SoftDelete;
 
+    public $casts = [
+        'review_images' => 'array'
+    ];
+    
     /**
      * @var array dates to cast from the database.
      */
@@ -25,8 +29,7 @@ class Review extends Model
     /**
      * @var array rules for validation.
      */
-    public $rules = [
-    ];
+    public $rules = [];
 
     public $belongsTo = [
         'product' => 'Cadon\Stunring\Models\Product'
@@ -36,9 +39,14 @@ class Review extends Model
         'images' => 'System\Models\File'
     ];
 
+    public function setReviewImagesAttribute($value)
+    {
+        $this->attributes['review_images'] = json_encode($value);
+    }
+    
     public function getImageUrlAttribute()
     {
-        return $this->images->first() ? $this->images->first()->path : null;
+        return count($this->review_images ?? []) ? $this->review_images[0] : null;
     }
     
 }
