@@ -1,0 +1,5 @@
+fields:
+    text1:
+        label: 文本
+        span: auto
+        type: text

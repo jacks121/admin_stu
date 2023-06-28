@@ -1,0 +1,29 @@
+plugin:
+    name: 'cadon.stunring::lang.plugin.name'
+    description: 'cadon.stunring::lang.plugin.description'
+    author: Cadon
+    icon: oc-icon-map-marker
+    homepage: ''
+navigation:
+    main-menu-item:
+        label: 商品
+        url: /
+        icon: icon-folder-o
+        sideMenu:
+            side-menu-item:
+                label: 商品管理
+                url: /
+                icon: icon-square
+            side-menu-item2:
+                label: 商品评论
+                url: cadon/stunring/review
+                icon: icon-comment
+    main-menu-item2:
+        label: 图片
+        url: /
+        icon: icon-image
+        sideMenu:
+            side-menu-item:
+                label: 列表
+                url: cadon/stunring/image
+                icon: icon-list

@@ -1,0 +1,23 @@
+fields:
+  id:
+    label: ID
+    type: number
+    disabled: true
+  product_id:
+    label: 商品ID
+    type: number
+    required: true
+  user_id:
+    label: 用户ID
+    type: number
+    required: true
+  rating:
+    label: 评分
+    type: number
+    min: 1
+    max: 5
+    required: true
+  review_text:
+    label: 评价文本
+    type: textarea
+    size: huge

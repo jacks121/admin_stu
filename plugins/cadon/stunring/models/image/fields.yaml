@@ -1,0 +1,22 @@
+fields:
+  id:
+    label: ID
+    span: auto
+    type: number
+    readOnly: true
+  image_url:
+    label: Image URL
+    span: auto
+    type: text
+  link:
+    label: Link
+    span: auto
+    type: text
+  imageable_id:
+    label: Imageable ID
+    span: auto
+    type: number
+  imageable_type:
+    label: Imageable Type
+    span: auto
+    type: text

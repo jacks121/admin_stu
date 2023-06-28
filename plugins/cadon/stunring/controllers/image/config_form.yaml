@@ -1,0 +1,11 @@
+name: Image
+modelClass: Cadon\Stunring\Models\Image
+form: $/cadon/stunring/models/image/fields.yaml
+defaultRedirect: cadon/stunring/image
+create:
+    redirect: 'cadon/stunring/image/update/:id'
+    redirectClose: cadon/stunring/image
+update:
+    redirect: cadon/stunring/image
+    redirectClose: cadon/stunring/image
+preview: {  }

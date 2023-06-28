@@ -1,0 +1,11 @@
+name: Review
+modelClass: Cadon\Stunring\Models\Review
+form: $/cadon/stunring/models/review/fields.yaml
+defaultRedirect: cadon/stunring/review
+create:
+    redirect: 'cadon/stunring/review/update/:id'
+    redirectClose: cadon/stunring/review
+update:
+    redirect: cadon/stunring/review
+    redirectClose: cadon/stunring/review
+preview: {  }

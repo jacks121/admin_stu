@@ -1,0 +1,25 @@
+columns:
+    id:
+        label: id
+        type: number
+    image_url:
+        label: image_url
+        type: text
+    link:
+        label: link
+        type: text
+    imageable_id:
+        label: imageable_id
+        type: number
+    imageable_type:
+        label: imageable_type
+        type: text
+    created_at:
+        label: created_at
+        type: datetime
+    updated_at:
+        label: updated_at
+        type: datetime
+    deleted_at:
+        label: deleted_at
+        type: datetime
