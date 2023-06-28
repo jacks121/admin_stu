@@ -1,5 +1,9 @@
 fields:
-    text1:
-        label: 文本
-        span: auto
+    code:
+        label: Code
         type: text
+        required: true
+    exchange:
+        label: Exchange
+        type: number
+        required: true

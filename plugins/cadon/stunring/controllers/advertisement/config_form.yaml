@@ -1,0 +1,11 @@
+name: Advertisement
+modelClass: Cadon\Stunring\Models\Advertisement
+form: $/cadon/stunring/models/advertisement/fields.yaml
+defaultRedirect: cadon/stunring/advertisement
+create:
+    redirect: 'cadon/stunring/advertisement/update/:id'
+    redirectClose: cadon/stunring/advertisement
+update:
+    redirect: cadon/stunring/advertisement
+    redirectClose: cadon/stunring/advertisement
+preview: {  }

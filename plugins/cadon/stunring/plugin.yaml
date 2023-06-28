@@ -27,3 +27,16 @@ navigation:
                 label: 列表
                 url: cadon/stunring/image
                 icon: icon-list
+    main-menu-item3:
+        label: 设置
+        url: /
+        icon: icon-life-ring
+        sideMenu:
+            side-menu-item:
+                label: 货币设置
+                url: cadon/stunring/currency
+                icon: icon-money
+            side-menu-item2:
+                label: 广告位
+                url: cadon/stunring/advertisement
+                icon: icon-flag

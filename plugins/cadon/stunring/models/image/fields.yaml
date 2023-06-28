@@ -20,3 +20,15 @@ fields:
     label: Imageable Type
     span: auto
     type: text
+  created_at:
+    label: 发布时间
+    type: datepicker
+    mode: date
+    disabled: true
+    span: right
+  updated_at:
+    label: 更新时间
+    type: datepicker
+    mode: date
+    disabled: true
+    span: left

@@ -1,4 +1,6 @@
-<?php namespace Cadon\Stunring\Models;
+<?php 
+
+namespace Cadon\Stunring\Models;
 
 use Model;
 
@@ -26,4 +28,17 @@ class Review extends Model
     public $rules = [
     ];
 
+    public $belongsTo = [
+        'product' => 'Cadon\Stunring\Models\Product'
+    ];
+
+    public $attachMany = [
+        'images' => 'System\Models\File'
+    ];
+
+    public function getImageUrlAttribute()
+    {
+        return $this->images->first() ? $this->images->first()->path : null;
+    }
+    
 }

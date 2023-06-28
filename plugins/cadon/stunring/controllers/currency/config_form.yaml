@@ -1,0 +1,11 @@
+name: Currency
+modelClass: Cadon\Stunring\Models\Currency
+form: $/cadon/stunring/models/currency/fields.yaml
+defaultRedirect: cadon/stunring/currency
+create:
+    redirect: 'cadon/stunring/currency/update/:id'
+    redirectClose: cadon/stunring/currency
+update:
+    redirect: cadon/stunring/currency
+    redirectClose: cadon/stunring/currency
+preview: {  }

@@ -26,4 +26,8 @@ class Advertisement extends Model
     public $rules = [
     ];
 
+    public $morphMany = [
+        'images' => ['App\Models\Image', 'imageable']
+    ];
+
 }

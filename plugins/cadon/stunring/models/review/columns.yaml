@@ -2,9 +2,11 @@ columns:
     id:
         label: id
         type: number
-    product_id:
-        label: product_id
-        type: number
+    product:
+        label: 'product name'
+        type: text
+        select: product_name
+        relation: product
     user_id:
         label: user_id
         type: number
@@ -20,6 +22,9 @@ columns:
     updated_at:
         label: updated_at
         type: datetime
-    deleted_at:
-        label: deleted_at
-        type: datetime
+    image_url:
+        label: image_url
+        type: image
+        width: 100
+        mode: image
+

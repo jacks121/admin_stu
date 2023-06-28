@@ -2,9 +2,11 @@ columns:
     id:
         label: id
         type: number
+        sortable: true
     image_url:
         label: image_url
-        type: text
+        type: image
+        width: 100
     link:
         label: link
         type: text
@@ -17,9 +19,7 @@ columns:
     created_at:
         label: created_at
         type: datetime
+        sortable: true
     updated_at:
         label: updated_at
-        type: datetime
-    deleted_at:
-        label: deleted_at
         type: datetime
