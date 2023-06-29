@@ -1,0 +1,9 @@
+extension: # 这是你的关联模型的名称，要和你的model里面定义的一致
+  label: Product Extension # 这是你的关联模型的标签
+  view: # 这是你的关联模型的视图选项
+    form: $/cadon/stunring/models/productextension/fields.yaml
+    list: $/cadon/stunring/models/productextension/columns.yaml # 这是你的关联模型的列表列定义文件
+    toolbarButtons: update # 这是你的关联模型的工具栏按钮
+  manage: # 这是你的关联模型的管理选项
+    form: $/cadon/stunring/models/productextension/fields.yaml # 这是你的关联模型的表单字段定义文件
+    recordsPerPage: 10 # 这是你的关联模型每页显示的记录数

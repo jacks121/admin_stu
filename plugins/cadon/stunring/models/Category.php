@@ -7,6 +7,8 @@ use Model;
  */
 class Category extends Model
 {
+    use \October\Rain\Database\Traits\NestedTree;
+
     use \October\Rain\Database\Traits\Validation;
     use \October\Rain\Database\Traits\SoftDelete;
 
@@ -25,5 +27,4 @@ class Category extends Model
      */
     public $rules = [
     ];
-
 }

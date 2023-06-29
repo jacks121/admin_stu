@@ -24,7 +24,7 @@ fields:
   review_images:
       label: Images
       type: mediafinder
-      mode: image-only
+      mode: image
       maxItems: 5
       span: left
   created_at:

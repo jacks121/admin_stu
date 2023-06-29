@@ -1,0 +1,40 @@
+columns:
+  id:
+    label: ID
+    type: number
+    searchable: true
+
+  stone_cut:
+    label: Stone Cut
+    type: text
+    searchable: true
+
+  stone_color:
+    label: Stone Color
+    type: text
+    searchable: true
+
+  carat:
+    label: Carat
+    type: number
+    searchable: true
+
+  plating_color:
+    label: Plating Color
+    type: text
+    searchable: true
+
+  style:
+    label: Style
+    type: text
+    searchable: true
+
+  occasion:
+    label: Occasion
+    type: text
+    searchable: true
+
+  recipient:
+    label: Recipient
+    type: text
+    searchable: true

@@ -1,0 +1,7 @@
+columns:
+    id:
+        label: ID
+        sortable: false
+    category_name:
+        label: Category Name
+        sortable: false

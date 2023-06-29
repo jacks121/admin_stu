@@ -12,12 +12,16 @@ navigation:
         sideMenu:
             side-menu-item:
                 label: 商品管理
-                url: /
+                url: cadon/stunring/product
                 icon: icon-square
             side-menu-item2:
                 label: 商品评论
                 url: cadon/stunring/review
                 icon: icon-comment
+            side-menu-item3:
+                label: 分类
+                url: cadon/stunring/category
+                icon: icon-code-fork
     main-menu-item2:
         label: 图片
         url: /

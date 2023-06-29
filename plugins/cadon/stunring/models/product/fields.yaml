@@ -1,0 +1,60 @@
+fields:
+  id:
+    label: ID
+    span: auto
+    type: number
+    readOnly: true
+
+  sku:
+    label: SKU
+    span: auto
+    type: text
+
+  product_name:
+    label: 'Product Name'
+    span: auto
+    type: text
+
+  original_price:
+    label: 'Original Price'
+    span: auto
+    type: number
+
+  current_price:
+    label: 'Current Price'
+    span: auto
+    type: number
+
+  on_sale:
+    label: 'On Sale'
+    span: auto
+    type: checkbox
+
+  description:
+    label: Description
+    span: auto
+    type: textarea
+
+  video_url:
+    label: 'Video URL'
+    span: auto
+    type: text
+
+  sales:
+    label: Sales
+    span: auto
+    type: number
+
+  product_images:
+      label: Images
+      type: mediafinder
+      mode: image
+      maxItems: 5
+      span: auto
+
+  # 使用partial类型的字段来嵌入product extension的字段
+  extension:
+      label: Product Extension
+      span: full
+      type: partial
+      path: $/cadon/stunring/models/product/_extension.htm # 指定partial的路径

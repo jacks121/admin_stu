@@ -1,63 +1,210 @@
--- --------------------------------------------------------
--- 主机:                           127.0.0.1
--- 服务器版本:                        8.0.32 - MySQL Community Server - GPL
--- 服务器操作系统:                      Linux
--- HeidiSQL 版本:                  12.2.0.6576
--- --------------------------------------------------------
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET NAMES utf8 */;
-/*!50503 SET NAMES utf8mb4 */;
-/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
-/*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+-- Database export via SQLPro (https://www.sqlprostudio.com/allapps.html)
+-- Exported by joe at 30-06-2023 01:21.
+-- WARNING: This file may contain descructive statements such as DROPs.
+-- Please ensure that you are running the script at the proper location.
 
 
+-- BEGIN TABLE backend_access_log
+DROP TABLE IF EXISTS backend_access_log;
+CREATE TABLE `backend_access_log` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int unsigned NOT NULL,
+  `ip_address` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- 导出  表 swetelove.advertisements 结构
-CREATE TABLE IF NOT EXISTS `cadon_stunring_advertisements` (
+-- Inserting 1 row into backend_access_log
+-- Insert batch #1
+INSERT INTO backend_access_log (id, user_id, ip_address, created_at, updated_at) VALUES
+(1, 1, '127.0.0.1', '2023-06-29 13:08:15', '2023-06-29 13:08:15');
+
+-- END TABLE backend_access_log
+
+-- BEGIN TABLE backend_user_groups
+DROP TABLE IF EXISTS backend_user_groups;
+CREATE TABLE `backend_user_groups` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `description` text COLLATE utf8mb4_unicode_ci,
+  `is_new_user_default` tinyint(1) NOT NULL DEFAULT '0',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name_unique` (`name`),
+  KEY `code_index` (`code`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Inserting 1 row into backend_user_groups
+-- Insert batch #1
+INSERT INTO backend_user_groups (id, name, code, description, is_new_user_default, created_at, updated_at) VALUES
+(1, 'Owners', 'owners', 'Default group for website owners.', 0, '2023-06-29 12:52:10', '2023-06-29 12:52:10');
+
+-- END TABLE backend_user_groups
+
+-- BEGIN TABLE backend_user_preferences
+DROP TABLE IF EXISTS backend_user_preferences;
+CREATE TABLE `backend_user_preferences` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int unsigned NOT NULL,
+  `namespace` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `group` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `item` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `value` text COLLATE utf8mb4_unicode_ci,
+  `site_id` int unsigned DEFAULT NULL,
+  `site_root_id` int unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `user_item_index` (`user_id`,`namespace`,`group`,`item`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Inserting 2 rows into backend_user_preferences
+-- Insert batch #1
+INSERT INTO backend_user_preferences (id, user_id, namespace, `group`, item, `value`, site_id, site_root_id) VALUES
+(1, 1, 'backend', 'backend', 'preferences', '{"locale":"zh-cn","fallback_locale":"en","timezone":"UTC","editor_theme":"twilight","editor_word_wrap":"off","editor_font_size":"12","editor_tab_size":"4","editor_code_folding":"manual","editor_autocompletion":"manual","editor_use_emmet":"1","editor_show_gutter":"1","editor_highlight_active_line":"1","editor_auto_closing":"1","editor_use_hard_tabs":"0","editor_display_indent_guides":"0","editor_show_invisibles":"0","editor_show_print_margin":"0"}', NULL, NULL),
+(2, 1, 'cadon_stunring', 'review', 'lists', '{"visible":["id","image_url","product","user_id","rating","review_text","created_at","updated_at"],"order":["id","image_url","product","user_id","rating","review_text","created_at","updated_at"],"per_page":"20"}', NULL, NULL);
+
+-- END TABLE backend_user_preferences
+
+-- BEGIN TABLE backend_user_roles
+DROP TABLE IF EXISTS backend_user_roles;
+CREATE TABLE `backend_user_roles` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `color_background` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `description` text COLLATE utf8mb4_unicode_ci,
+  `permissions` mediumtext COLLATE utf8mb4_unicode_ci,
+  `is_system` tinyint(1) NOT NULL DEFAULT '0',
+  `sort_order` int DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `role_unique` (`name`),
+  KEY `role_code_index` (`code`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Inserting 2 rows into backend_user_roles
+-- Insert batch #1
+INSERT INTO backend_user_roles (id, name, code, color_background, description, permissions, is_system, sort_order, created_at, updated_at) VALUES
+(1, 'Developer', 'developer', '#3498db', 'Site administrator with access to developer tools.', '', 1, 1, '2023-06-29 12:52:10', '2023-06-29 12:52:10'),
+(2, 'Publisher', 'publisher', '#1abc9c', 'Site editor with access to publishing tools.', '', 1, 2, '2023-06-29 12:52:10', '2023-06-29 12:52:10');
+
+-- END TABLE backend_user_roles
+
+-- BEGIN TABLE backend_user_throttle
+DROP TABLE IF EXISTS backend_user_throttle;
+CREATE TABLE `backend_user_throttle` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int unsigned DEFAULT NULL,
+  `ip_address` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `attempts` int NOT NULL DEFAULT '0',
+  `last_attempt_at` timestamp NULL DEFAULT NULL,
+  `is_suspended` tinyint(1) NOT NULL DEFAULT '0',
+  `suspended_at` timestamp NULL DEFAULT NULL,
+  `is_banned` tinyint(1) NOT NULL DEFAULT '0',
+  `banned_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `backend_user_throttle_user_id_index` (`user_id`),
+  KEY `backend_user_throttle_ip_address_index` (`ip_address`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Inserting 1 row into backend_user_throttle
+-- Insert batch #1
+INSERT INTO backend_user_throttle (id, user_id, ip_address, attempts, last_attempt_at, is_suspended, suspended_at, is_banned, banned_at) VALUES
+(1, 1, '127.0.0.1', 0, NULL, 0, NULL, 0, NULL);
+
+-- END TABLE backend_user_throttle
+
+-- BEGIN TABLE backend_users
+DROP TABLE IF EXISTS backend_users;
+CREATE TABLE `backend_users` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `first_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `last_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `login` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `activation_code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `persist_code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `reset_password_code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `permissions` mediumtext COLLATE utf8mb4_unicode_ci,
+  `is_activated` tinyint(1) NOT NULL DEFAULT '0',
+  `is_superuser` tinyint(1) NOT NULL DEFAULT '0',
+  `activated_at` timestamp NULL DEFAULT NULL,
+  `last_login` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `role_id` int unsigned DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `login_unique` (`login`),
+  UNIQUE KEY `email_unique` (`email`),
+  KEY `act_code_index` (`activation_code`),
+  KEY `reset_code_index` (`reset_password_code`),
+  KEY `admin_role_index` (`role_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Inserting 1 row into backend_users
+-- Insert batch #1
+INSERT INTO backend_users (id, first_name, last_name, login, email, password, activation_code, persist_code, reset_password_code, permissions, is_activated, is_superuser, activated_at, last_login, deleted_at, role_id, created_at, updated_at) VALUES
+(1, 'joe', 'j', 'admin', 'jacks12@qq.com', '$2y$10$Ak7P7o3nVUOgRnBgyUjBb.zxVOBtu1P1AgTitdT7YhRzKKBa5AWuq', NULL, '$2y$10$iwS68wJ49BH8Raui4XA/M.v.2Vxr6ys6X5UrWwlYqu24.d301sGRC', NULL, '', 1, 1, NULL, '2023-06-29 13:08:15', NULL, 1, '2023-06-29 13:07:04', '2023-06-29 13:08:15');
+
+-- END TABLE backend_users
+
+-- BEGIN TABLE backend_users_groups
+DROP TABLE IF EXISTS backend_users_groups;
+CREATE TABLE `backend_users_groups` (
+  `user_id` int unsigned NOT NULL,
+  `user_group_id` int unsigned NOT NULL,
+  PRIMARY KEY (`user_id`,`user_group_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Inserting 1 row into backend_users_groups
+-- Insert batch #1
+INSERT INTO backend_users_groups (user_id, user_group_id) VALUES
+(1, 1);
+
+-- END TABLE backend_users_groups
+
+-- BEGIN TABLE cache
+DROP TABLE IF EXISTS cache;
+CREATE TABLE `cache` (
+  `key` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `value` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `expiration` int NOT NULL,
+  UNIQUE KEY `cache_key_unique` (`key`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Table cache contains no data. No inserts have been genrated.
+-- Inserting 0 rows into cache
+
+
+-- END TABLE cache
+
+-- BEGIN TABLE cadon_stunring_advertisements
+DROP TABLE IF EXISTS cadon_stunring_advertisements;
+CREATE TABLE `cadon_stunring_advertisements` (
   `id` int NOT NULL AUTO_INCREMENT,
   `code` varchar(255) NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL, 
-  `deleted_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- 正在导出表  swetelove.advertisements 的数据：~2 rows (大约)
-DELETE FROM `cadon_stunring_advertisements`;
-INSERT INTO `cadon_stunring_advertisements` (`id`, `code`, `created_at`, `updated_at`, `deleted_at`) VALUES
-	(1, 'banner', '2023-06-01 01:28:17', '2023-06-01 01:28:17', NULL),
-	(2, 'category_banner', '2023-06-01 01:28:17', '2023-06-01 01:28:17', NULL);
-
--- 导出  表 swetelove.attributes 结构
-CREATE TABLE IF NOT EXISTS `cadon_stunring_attributes` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `attribute_name` varchar(255) DEFAULT NULL COMMENT '属性名称',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='属性表';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- 正在导出表  swetelove.attributes 的数据：~10 rows (大约)
-DELETE FROM `cadon_stunring_attributes`;
-INSERT INTO `cadon_stunring_attributes` (`id`, `attribute_name`, `created_at`, `updated_at`, `deleted_at`) VALUES
-	(1, 'Size', '2023-06-04 13:03:43', '2023-06-04 13:03:43', NULL),
-	(2, 'Color', '2023-06-04 13:03:43', '2023-06-04 13:03:43', NULL),
-	(3, 'Shape', '2023-06-04 13:03:43', '2023-06-04 13:03:43', NULL),
-	(4, 'Material', '2023-06-04 13:03:43', '2023-06-04 13:03:43', NULL),
-	(5, 'Style', '2023-06-04 13:03:43', '2023-06-04 13:03:43', NULL),
-	(6, 'Occasion', '2023-06-04 13:03:43', '2023-06-04 13:03:43', NULL),
-	(7, 'Gender', '2023-06-04 13:03:43', '2023-06-04 13:03:43', NULL),
-	(8, 'Brand', '2023-06-04 13:03:43', '2023-06-04 13:03:43', NULL),
-	(9, 'Rating', '2023-06-04 13:03:43', '2023-06-04 13:03:43', NULL),
-	(10, 'Price Range', '2023-06-04 13:03:43', '2023-06-04 13:03:43', NULL);
+-- Inserting 2 rows into cadon_stunring_advertisements
+-- Insert batch #1
+INSERT INTO cadon_stunring_advertisements (id, code, created_at, updated_at, deleted_at) VALUES
+(1, 'banner', '2023-06-01 01:28:17', '2023-06-01 01:28:17', NULL),
+(2, 'category_banner', '2023-06-01 01:28:17', '2023-06-01 01:28:17', NULL);
 
--- 导出  表 swetelove.attribute_values 结构
-CREATE TABLE IF NOT EXISTS `cadon_stunring_attribute_values` (
+-- END TABLE cadon_stunring_advertisements
+
+-- BEGIN TABLE cadon_stunring_attribute_values
+DROP TABLE IF EXISTS cadon_stunring_attribute_values;
+CREATE TABLE `cadon_stunring_attribute_values` (
   `id` int NOT NULL AUTO_INCREMENT,
   `attribute_id` int NOT NULL,
   `value` varchar(255) DEFAULT NULL COMMENT '属性值',
@@ -67,59 +214,89 @@ CREATE TABLE IF NOT EXISTS `cadon_stunring_attribute_values` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='属性值表';
 
--- 正在导出表  swetelove.attribute_values 的数据：~47 rows (大约)
-DELETE FROM `cadon_stunring_attribute_values`;
-INSERT INTO `cadon_stunring_attribute_values` (`id`, `attribute_id`, `value`, `created_at`, `updated_at`, `deleted_at`) VALUES
-	(1, 1, '5', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
-	(2, 1, '6', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
-	(3, 1, '7', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
-	(4, 1, '8', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
-	(5, 1, '9', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
-	(6, 2, 'Red', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
-	(7, 2, 'Blue', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
-	(8, 2, 'Green', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
-	(9, 2, 'Yellow', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
-	(10, 2, 'Purple', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
-	(11, 3, 'Round', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
-	(12, 3, 'Square', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
-	(13, 3, 'Oval', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
-	(14, 3, 'Heart', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
-	(15, 3, 'Cushion', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
-	(16, 4, 'Platinum', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
-	(17, 4, 'Gold', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
-	(18, 4, 'Silver', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
-	(19, 4, 'Rose Gold', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
-	(20, 4, 'White Gold', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
-	(21, 5, 'Classic', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
-	(22, 5, 'Modern', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
-	(23, 5, 'Vintage', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
-	(24, 5, 'Minimalist', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
-	(25, 5, 'Bohemian', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
-	(26, 6, 'Wedding', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
-	(27, 6, 'Anniversary', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
-	(28, 6, 'Birthday', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
-	(29, 6, 'Valentine\'s Day', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
-	(30, 6, 'Christmas', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
-	(31, 7, 'Women\'s', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
-	(32, 7, 'Men\'s', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
-	(33, 7, 'Unisex', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
-	(34, 8, 'Tiffany & Co.', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
-	(35, 8, 'Cartier', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
-	(36, 8, 'Swarovski', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
-	(37, 8, 'Pandora', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
-	(38, 8, 'Zales', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
-	(39, 9, '1', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
-	(40, 9, '2', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
-	(41, 9, '3', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
-	(42, 9, '4', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
-	(43, 9, '5', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
-	(44, 10, '<$100', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
-	(45, 10, '$100-$200', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
-	(46, 10, '$200-$500', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
-	(47, 10, '$500-$1000', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL);
+-- Inserting 47 rows into cadon_stunring_attribute_values
+-- Insert batch #1
+INSERT INTO cadon_stunring_attribute_values (id, attribute_id, `value`, created_at, updated_at, deleted_at) VALUES
+(1, 1, '5', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
+(2, 1, '6', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
+(3, 1, '7', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
+(4, 1, '8', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
+(5, 1, '9', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
+(6, 2, 'Red', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
+(7, 2, 'Blue', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
+(8, 2, 'Green', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
+(9, 2, 'Yellow', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
+(10, 2, 'Purple', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
+(11, 3, 'Round', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
+(12, 3, 'Square', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
+(13, 3, 'Oval', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
+(14, 3, 'Heart', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
+(15, 3, 'Cushion', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
+(16, 4, 'Platinum', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
+(17, 4, 'Gold', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
+(18, 4, 'Silver', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
+(19, 4, 'Rose Gold', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
+(20, 4, 'White Gold', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
+(21, 5, 'Classic', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
+(22, 5, 'Modern', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
+(23, 5, 'Vintage', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
+(24, 5, 'Minimalist', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
+(25, 5, 'Bohemian', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
+(26, 6, 'Wedding', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
+(27, 6, 'Anniversary', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
+(28, 6, 'Birthday', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
+(29, 6, 'Valentine''s Day', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
+(30, 6, 'Christmas', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
+(31, 7, 'Women''s', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
+(32, 7, 'Men''s', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
+(33, 7, 'Unisex', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
+(34, 8, 'Tiffany & Co.', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
+(35, 8, 'Cartier', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
+(36, 8, 'Swarovski', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
+(37, 8, 'Pandora', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
+(38, 8, 'Zales', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
+(39, 9, '1', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
+(40, 9, '2', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
+(41, 9, '3', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
+(42, 9, '4', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
+(43, 9, '5', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
+(44, 10, '<$100', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
+(45, 10, '$100-$200', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
+(46, 10, '$200-$500', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL),
+(47, 10, '$500-$1000', '2023-06-04 13:05:35', '2023-06-04 13:05:35', NULL);
 
--- 导出  表 swetelove.categories 结构
-CREATE TABLE IF NOT EXISTS `cadon_stunring_categories` (
+-- END TABLE cadon_stunring_attribute_values
+
+-- BEGIN TABLE cadon_stunring_attributes
+DROP TABLE IF EXISTS cadon_stunring_attributes;
+CREATE TABLE `cadon_stunring_attributes` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `attribute_name` varchar(255) DEFAULT NULL COMMENT '属性名称',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='属性表';
+
+-- Inserting 10 rows into cadon_stunring_attributes
+-- Insert batch #1
+INSERT INTO cadon_stunring_attributes (id, attribute_name, created_at, updated_at, deleted_at) VALUES
+(1, 'Size', '2023-06-04 13:03:43', '2023-06-04 13:03:43', NULL),
+(2, 'Color', '2023-06-04 13:03:43', '2023-06-04 13:03:43', NULL),
+(3, 'Shape', '2023-06-04 13:03:43', '2023-06-04 13:03:43', NULL),
+(4, 'Material', '2023-06-04 13:03:43', '2023-06-04 13:03:43', NULL),
+(5, 'Style', '2023-06-04 13:03:43', '2023-06-04 13:03:43', NULL),
+(6, 'Occasion', '2023-06-04 13:03:43', '2023-06-04 13:03:43', NULL),
+(7, 'Gender', '2023-06-04 13:03:43', '2023-06-04 13:03:43', NULL),
+(8, 'Brand', '2023-06-04 13:03:43', '2023-06-04 13:03:43', NULL),
+(9, 'Rating', '2023-06-04 13:03:43', '2023-06-04 13:03:43', NULL),
+(10, 'Price Range', '2023-06-04 13:03:43', '2023-06-04 13:03:43', NULL);
+
+-- END TABLE cadon_stunring_attributes
+
+-- BEGIN TABLE cadon_stunring_categories
+DROP TABLE IF EXISTS cadon_stunring_categories;
+CREATE TABLE `cadon_stunring_categories` (
   `id` int NOT NULL AUTO_INCREMENT,
   `parent_id` int DEFAULT '0',
   `category_name` varchar(255) DEFAULT NULL COMMENT '分类名称',
@@ -127,46 +304,52 @@ CREATE TABLE IF NOT EXISTS `cadon_stunring_categories` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
+  `nest_left` int DEFAULT NULL,
+  `nest_right` int DEFAULT NULL,
+  `nest_depth` int DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='分类表';
 
--- 正在导出表  swetelove.categories 的数据：~31 rows (大约)
-DELETE FROM `cadon_stunring_categories`;
-INSERT INTO `cadon_stunring_categories` (`id`, `parent_id`, `category_name`, `url`, `created_at`, `updated_at`, `deleted_at`) VALUES
-	(1, 0, 'Wedding', '/wedding.html', NULL, NULL, NULL),
-	(2, 1, 'Engagement Rings', '/wedding/engagement-rings.html', NULL, NULL, NULL),
-	(3, 1, 'Wedding Band', '/wedding/wedding-band.html', NULL, NULL, NULL),
-	(4, 1, 'Wedding Set', '/wedding/wedding-set.html', NULL, NULL, NULL),
-	(5, 1, 'Wedding Rings', '/wedding/wedding-rings.html', NULL, NULL, NULL),
-	(6, 1, 'Jewelry Set', '/wedding/jewelry-set.html', NULL, NULL, NULL),
-	(7, 1, 'Gift Packaging', '/wedding/gift-packaging.html', NULL, NULL, NULL),
-	(8, 0, 'Earrings', '/earrings.html', NULL, NULL, NULL),
-	(9, 8, 'Studs', '/earrings/studs.html', NULL, NULL, NULL),
-	(10, 8, 'Drops', '/earrings/drops.html', NULL, NULL, NULL),
-	(11, 8, 'Hoops', '/earrings/hoops.html', NULL, NULL, NULL),
-	(12, 0, 'Necklaces', '/necklaces.html', NULL, NULL, NULL),
-	(13, 12, 'Pendants', '/necklaces/pendants.html', NULL, NULL, NULL),
-	(14, 12, 'Chokers & Tennis Necklace', '/necklaces/chokers-tennis-necklace.html', NULL, NULL, NULL),
-	(15, 12, 'Lariat & Y Necklace', '/necklaces/lariat-y-necklace.html', NULL, NULL, NULL),
-	(16, 12, 'Layered Necklace', '/necklaces/layered-necklace.html', NULL, NULL, NULL),
-	(17, 12, 'Pear Necklace', '/necklaces/statement-necklace.html', NULL, NULL, NULL),
-	(18, 0, 'Bracelets', '/bracelets.html', NULL, NULL, NULL),
-	(19, 0, 'Men\'s', '/men.html', NULL, NULL, NULL),
-	(20, 19, 'Men\'s Rings', '/men/men-s-rings.html', NULL, NULL, NULL),
-	(21, 19, 'Men\'s Necklaces', '/men/men-s-necklaces.html', NULL, NULL, NULL),
-	(22, 19, 'Cufflinks', '/men/cufflinks.html', NULL, NULL, NULL),
-	(23, 0, 'COLLECTION', '/collection.html', NULL, NULL, NULL),
-	(24, 23, 'Back to School', '/collection/back-to-school.html', NULL, NULL, NULL),
-	(25, 23, 'The Spirit Snake', '/collection/the-spirit-snake.html', NULL, NULL, NULL),
-	(26, 23, 'The Vintage Art Deco', '/collection/the-vintage-art-deco-ring.html', NULL, NULL, NULL),
-	(27, 23, 'The Snow Band Ring', '/collection/the-snow-band-ring.html', NULL, NULL, NULL),
-	(28, 23, 'The Starry Night', '/collection/the-starry-night.html', NULL, NULL, NULL),
-	(29, 23, 'Mother\'s Day', '/collection/mother-s-day.html', NULL, NULL, NULL),
-	(30, 23, 'Merry Christmas', '/collection/merry-christmas.html', NULL, NULL, NULL),
-	(31, 23, 'Father\'s Day', '/collection/father-s-day.html', NULL, NULL, NULL);
+-- Inserting 31 rows into cadon_stunring_categories
+-- Insert batch #1
+INSERT INTO cadon_stunring_categories (id, parent_id, category_name, url, created_at, updated_at, deleted_at, nest_left, nest_right, nest_depth) VALUES
+(1, NULL, 'Wedding', '/wedding.html', NULL, '2023-06-29 17:20:22', NULL, 1, 14, 0),
+(2, 1, 'Engagement Rings', '/wedding/engagement-rings.html', NULL, '2023-06-29 17:20:22', NULL, 2, 3, 1),
+(3, 1, 'Wedding Band', '/wedding/wedding-band.html', NULL, '2023-06-29 17:20:12', NULL, 4, 5, 1),
+(4, 1, 'Wedding Set', '/wedding/wedding-set.html', NULL, '2023-06-29 17:20:12', NULL, 6, 7, 1),
+(5, 1, 'Wedding Rings', '/wedding/wedding-rings.html', NULL, '2023-06-29 17:19:44', NULL, 8, 9, 1),
+(6, 1, 'Jewelry Set', '/wedding/jewelry-set.html', NULL, '2023-06-29 17:19:44', NULL, 10, 11, 1),
+(7, 1, 'Gift Packaging', '/wedding/gift-packaging.html', NULL, '2023-06-29 17:19:44', NULL, 12, 13, 1),
+(8, NULL, 'Earrings', '/earrings.html', NULL, '2023-06-29 17:19:44', NULL, 15, 22, 0),
+(9, 8, 'Studs', '/earrings/studs.html', NULL, '2023-06-29 17:19:44', NULL, 16, 17, 1),
+(10, 8, 'Drops', '/earrings/drops.html', NULL, '2023-06-29 17:19:44', NULL, 18, 19, 1),
+(11, 8, 'Hoops', '/earrings/hoops.html', NULL, '2023-06-29 17:19:44', NULL, 20, 21, 1),
+(12, NULL, 'Necklaces', '/necklaces.html', NULL, '2023-06-29 17:19:44', NULL, 23, 34, 0),
+(13, 12, 'Pendants', '/necklaces/pendants.html', NULL, '2023-06-29 17:19:44', NULL, 24, 25, 1),
+(14, 12, 'Chokers & Tennis Necklace', '/necklaces/chokers-tennis-necklace.html', NULL, '2023-06-29 17:19:44', NULL, 26, 27, 1),
+(15, 12, 'Lariat & Y Necklace', '/necklaces/lariat-y-necklace.html', NULL, '2023-06-29 17:19:44', NULL, 28, 29, 1),
+(16, 12, 'Layered Necklace', '/necklaces/layered-necklace.html', NULL, '2023-06-29 17:19:44', NULL, 30, 31, 1),
+(17, 12, 'Pear Necklace', '/necklaces/statement-necklace.html', NULL, '2023-06-29 17:19:44', NULL, 32, 33, 1),
+(18, NULL, 'Bracelets', '/bracelets.html', NULL, NULL, NULL, 35, 36, 0),
+(19, NULL, 'Men''s', '/men.html', NULL, '2023-06-29 17:19:44', NULL, 37, 44, 0),
+(20, 19, 'Men''s Rings', '/men/men-s-rings.html', NULL, '2023-06-29 17:19:44', NULL, 38, 39, 1),
+(21, 19, 'Men''s Necklaces', '/men/men-s-necklaces.html', NULL, '2023-06-29 17:19:44', NULL, 40, 41, 1),
+(22, 19, 'Cufflinks', '/men/cufflinks.html', NULL, '2023-06-29 17:19:44', NULL, 42, 43, 1),
+(23, NULL, 'COLLECTION', '/collection.html', NULL, '2023-06-29 17:19:45', NULL, 45, 62, 0),
+(24, 23, 'Back to School', '/collection/back-to-school.html', NULL, '2023-06-29 17:19:45', NULL, 46, 47, 1),
+(25, 23, 'The Spirit Snake', '/collection/the-spirit-snake.html', NULL, '2023-06-29 17:19:45', NULL, 48, 49, 1),
+(26, 23, 'The Vintage Art Deco', '/collection/the-vintage-art-deco-ring.html', NULL, '2023-06-29 17:19:45', NULL, 50, 51, 1),
+(27, 23, 'The Snow Band Ring', '/collection/the-snow-band-ring.html', NULL, '2023-06-29 17:19:45', NULL, 52, 53, 1),
+(28, 23, 'The Starry Night', '/collection/the-starry-night.html', NULL, '2023-06-29 17:19:45', NULL, 54, 55, 1),
+(29, 23, 'Mother''s Day', '/collection/mother-s-day.html', NULL, '2023-06-29 17:19:45', NULL, 56, 57, 1),
+(30, 23, 'Merry Christmas', '/collection/merry-christmas.html', NULL, '2023-06-29 17:19:45', NULL, 58, 59, 1),
+(31, 23, 'Father''s Day', '/collection/father-s-day.html', NULL, '2023-06-29 17:19:45', NULL, 60, 61, 1);
 
--- 导出  表 swetelove.collections 结构
-CREATE TABLE IF NOT EXISTS `cadon_stunring_collections` (
+-- END TABLE cadon_stunring_categories
+
+-- BEGIN TABLE cadon_stunring_collections
+DROP TABLE IF EXISTS cadon_stunring_collections;
+CREATE TABLE `cadon_stunring_collections` (
   `id` int NOT NULL AUTO_INCREMENT,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -178,38 +361,44 @@ CREATE TABLE IF NOT EXISTS `cadon_stunring_collections` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- 正在导出表  swetelove.collections 的数据：~2 rows (大约)
-DELETE FROM `cadon_stunring_collections`;
-INSERT INTO `cadon_stunring_collections` (`id`, `created_at`, `updated_at`, `deleted_at`, `name`, `code`, `type`, `rule`) VALUES
-	(1, '2023-06-04 13:19:20', '2023-06-05 13:53:11', NULL, 'Newest Releases', 'newin', 'new', '{"limit": 10}'),
-	(2, '2023-06-06 14:21:17', '2023-06-05 13:54:40', NULL, 'top sellers', 'top', 'sales', '{"limit": 10}');
+-- Inserting 2 rows into cadon_stunring_collections
+-- Insert batch #1
+INSERT INTO cadon_stunring_collections (id, created_at, updated_at, deleted_at, name, code, type, rule) VALUES
+(1, '2023-06-04 13:19:20', '2023-06-05 13:53:11', NULL, 'Newest Releases', 'newin', 'new', '{"limit": 10}'),
+(2, '2023-06-06 14:21:17', '2023-06-05 13:54:40', NULL, 'top sellers', 'top', 'sales', '{"limit": 10}');
 
--- 导出  表 swetelove.currencies 结构
-CREATE TABLE IF NOT EXISTS `cadon_stunring_currencies` (
+-- END TABLE cadon_stunring_collections
+
+-- BEGIN TABLE cadon_stunring_currencies
+DROP TABLE IF EXISTS cadon_stunring_currencies;
+CREATE TABLE `cadon_stunring_currencies` (
   `id` bigint NOT NULL AUTO_INCREMENT,
-  `created_at` datetime(6) NOT NULL,
-  `updated_at` datetime(6) NOT NULL,
-  `deleted_at` datetime(6) DEFAULT NULL,
+  `created_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
+  `updated_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
+  `deleted_at` timestamp(6) NULL DEFAULT NULL,
   `code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '',
   `exchange` decimal(10,2) DEFAULT '0.00',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- 正在导出表  swetelove.currencies 的数据：~9 rows (大约)
-DELETE FROM `cadon_stunring_currencies`;
-INSERT INTO `cadon_stunring_currencies` (`id`, `created_at`, `updated_at`, `deleted_at`, `code`, `exchange`) VALUES
-	(1, '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', NULL, 'AUD', 5.00),
-	(2, '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', NULL, 'GBP', 9.00),
-	(3, '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', NULL, 'CAD', 5.50),
-	(4, '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', NULL, 'EUR', 8.50),
-	(5, '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', NULL, 'JPY', 0.07),
-	(6, '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', NULL, 'MXN', 0.40),
-	(7, '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', NULL, 'NZD', 4.50),
-	(8, '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', NULL, 'PHP', 0.16),
-	(9, '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', NULL, 'SGD', 5.00);
+-- Inserting 9 rows into cadon_stunring_currencies
+-- Insert batch #1
+INSERT INTO cadon_stunring_currencies (id, created_at, updated_at, deleted_at, code, exchange) VALUES
+(1, '2023-06-29 13:06:15.000000', '2023-06-29 13:06:15.000000', NULL, 'AUD', 5),
+(2, '2023-06-29 13:06:15.000000', '2023-06-29 13:06:15.000000', NULL, 'GBP', 9),
+(3, '2023-06-29 13:06:15.000000', '2023-06-29 13:06:15.000000', NULL, 'CAD', 5.5),
+(4, '2023-06-29 13:06:15.000000', '2023-06-29 13:06:15.000000', NULL, 'EUR', 8.5),
+(5, '2023-06-29 13:06:15.000000', '2023-06-29 13:06:15.000000', NULL, 'JPY', 0.07),
+(6, '2023-06-29 13:06:15.000000', '2023-06-29 13:06:15.000000', NULL, 'MXN', 0.4),
+(7, '2023-06-29 13:06:15.000000', '2023-06-29 13:06:15.000000', NULL, 'NZD', 4.5),
+(8, '2023-06-29 13:06:15.000000', '2023-06-29 13:06:15.000000', NULL, 'PHP', 0.16),
+(9, '2023-06-29 13:06:15.000000', '2023-06-29 13:06:15.000000', NULL, 'SGD', 5);
 
--- 导出  表 swetelove.images 结构
-CREATE TABLE IF NOT EXISTS `cadon_stunring_images` (
+-- END TABLE cadon_stunring_currencies
+
+-- BEGIN TABLE cadon_stunring_images
+DROP TABLE IF EXISTS cadon_stunring_images;
+CREATE TABLE `cadon_stunring_images` (
   `id` int NOT NULL AUTO_INCREMENT,
   `image_url` varchar(255) DEFAULT NULL COMMENT '图片链接',
   `link` varchar(255) DEFAULT NULL COMMENT '图片链接',
@@ -221,59 +410,199 @@ CREATE TABLE IF NOT EXISTS `cadon_stunring_images` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='图片表';
 
--- 正在导出表  swetelove.images 的数据：~47 rows (大约)
-DELETE FROM `cadon_stunring_images`;
-INSERT INTO `cadon_stunring_images` (`id`, `image_url`, `link`, `imageable_id`, `imageable_type`, `created_at`, `updated_at`, `deleted_at`) VALUES
-	(7, 'https://cdn.stunring.com/media/wysiwyg/2023_wedding_sale/WEDDING_BAND.jpg', NULL, 3, 'App\\Models\\Category', '2023-05-18 14:08:06', '2023-05-18 14:08:06', NULL),
-	(8, 'https://cdn.stunring.com/media/wysiwyg/2023_wedding_sale/ENGAGEMENT_RINGS.jpg', NULL, 2, 'App\\Models\\Category', '2023-05-18 14:08:06', '2023-05-18 14:08:06', NULL),
-	(9, 'https://cdn.stunring.com/media/wysiwyg/2023_wedding_sale/WEDDING_SET.jpg', NULL, 4, 'App\\Models\\Category', '2023-05-18 14:08:06', '2023-05-18 14:08:06', NULL),
-	(10, 'https://cdn.stunring.com/media/wysiwyg/2023_wedding_sale/EARRINGS.jpg', NULL, 8, 'App\\Models\\Category', '2023-05-18 14:08:06', '2023-05-18 14:08:06', NULL),
-	(11, 'https://cdn.stunring.com/media/wysiwyg/2023_wedding_sale/NECKLACES.jpg', NULL, 12, 'App\\Models\\Category', '2023-05-18 14:09:39', '2023-05-18 14:09:39', NULL),
-	(12, 'https://cdn.stunring.com/media/wysiwyg/2023_wedding_sale/BRACELETS.jpg', NULL, 18, 'App\\Models\\Category', '2023-05-18 14:09:39', '2023-05-18 14:09:39', NULL),
-	(13, 'https://cdn.stunring.com/media/wysiwyg/2023_wedding_sale/MEN_S.jpg', NULL, 19, 'App\\Models\\Category', '2023-05-18 14:09:39', '2023-05-18 14:09:39', NULL),
-	(14, 'https://cdn.stunring.com/media/wysiwyg/2023_wedding_sale/WEDDING_RINGS.jpg', NULL, 5, 'App\\Models\\Category', '2023-05-18 14:09:39', '2023-05-18 14:09:39', NULL),
-	(15, 'https://cdn.stunring.com/media/catalog/product/cache/46f2d94ea07d2b11b96d96cb65477d04/2/8/2830530-1.jpg', NULL, 15, 'App\\Models\\Product', '2023-05-18 14:09:39', '2023-05-18 14:09:39', NULL),
-	(16, 'https://cdn.stunring.com/media/catalog/product/cache/46f2d94ea07d2b11b96d96cb65477d04/2/2/2230529--1.jpg', NULL, 16, 'App\\Models\\Product', '2023-05-18 14:09:39', '2023-05-18 14:09:39', NULL),
-	(17, 'https://cdn.stunring.com/media/catalog/product/cache/46f2d94ea07d2b11b96d96cb65477d04/2/7/2730528-4.jpg', NULL, 17, 'App\\Models\\Product', '2023-05-18 14:09:39', '2023-05-18 14:09:39', NULL),
-	(18, 'https://cdn.stunring.com/media/catalog/product/cache/46f2d94ea07d2b11b96d96cb65477d04/2/7/2730531-1.jpg', NULL, 18, 'App\\Models\\Product', '2023-05-18 14:09:39', '2023-05-18 14:09:39', NULL),
-	(19, 'https://cdn.stunring.com/media/catalog/product/cache/46f2d94ea07d2b11b96d96cb65477d04/2/7/2730527-1.jpg', NULL, 19, 'App\\Models\\Product', '2023-05-18 14:09:39', '2023-05-18 14:09:39', NULL),
-	(20, 'https://cdn.stunring.com/media/catalog/product/cache/46f2d94ea07d2b11b96d96cb65477d04/2/7/2730526-4.jpg', NULL, 20, 'App\\Models\\Product', '2023-05-18 14:09:39', '2023-05-18 14:09:39', NULL),
-	(21, 'https://cdn.stunring.com/media/catalog/product/cache/46f2d94ea07d2b11b96d96cb65477d04/2/6/2630518-2.jpg', NULL, 21, 'App\\Models\\Product', '2023-05-18 14:09:39', '2023-05-18 14:09:39', NULL),
-	(22, 'https://cdn.stunring.com/media/catalog/product/cache/46f2d94ea07d2b11b96d96cb65477d04/2/2/2230522-2.jpg', NULL, 22, 'App\\Models\\Product', '2023-05-18 14:09:39', '2023-05-18 14:09:39', NULL),
-	(23, 'https://cdn.stunring.com/media/catalog/product/cache/46f2d94ea07d2b11b96d96cb65477d04/2/1/2130523-1.jpg', NULL, 23, 'App\\Models\\Product', '2023-05-18 14:09:39', '2023-05-18 14:09:39', NULL),
-	(24, 'https://cdn.stunring.com/media/catalog/product/cache/46f2d94ea07d2b11b96d96cb65477d04/2/3/2304416_1_1.jpg', NULL, 24, 'App\\Models\\Product', '2023-05-18 14:09:39', '2023-05-18 14:09:39', NULL),
-	(25, 'https://cdn.stunring.com/media/wysiwyg/2023_wedding_sale/Wedding_banner-pc.jpg', 'https://www.stunring.com/early-black-friday-sale.html', 1, 'App\\Models\\Advertisement', '2023-06-01 01:28:17', '2023-06-01 01:28:17', NULL),
-	(26, 'https://cdn.stunring.com/media/wysiwyg/2023_wedding_sale/ENGAGEMENT_RINGS.jpg', 'https://www.stunring.com/wedding/engagement-rings.html', 2, 'App\\Models\\Advertisement', '2023-06-01 01:28:17', '2023-06-01 01:28:17', NULL),
-	(27, 'https://cdn.stunring.com/media/wysiwyg/2023_wedding_sale/WEDDING_BAND.jpg', 'https://www.stunring.com/wedding/wedding-band.html', 2, 'App\\Models\\Advertisement', '2023-06-01 01:28:17', '2023-06-01 01:28:17', NULL),
-	(28, 'https://cdn.stunring.com/media/wysiwyg/2023_wedding_sale/WEDDING_SET.jpg', 'https://www.stunring.com/wedding/wedding-set.html', 2, 'App\\Models\\Advertisement', '2023-06-01 01:28:17', '2023-06-01 01:28:17', NULL),
-	(29, 'https://cdn.stunring.com/media/wysiwyg/2023_wedding_sale/EARRINGS.jpg', 'https://www.stunring.com/earrings.html', 2, 'App\\Models\\Advertisement', '2023-06-01 01:28:17', '2023-06-01 01:28:17', NULL),
-	(30, 'https://cdn.stunring.com/media/wysiwyg/2023_wedding_sale/NECKLACES.jpg', 'https://www.stunring.com/necklaces.html', 2, 'App\\Models\\Advertisement', '2023-06-01 01:28:17', '2023-06-01 01:28:17', NULL),
-	(31, 'https://cdn.stunring.com/media/wysiwyg/2023_wedding_sale/BRACELETS.jpg', 'https://www.stunring.com/bracelets.html', 2, 'App\\Models\\Advertisement', '2023-06-01 01:28:17', '2023-06-01 01:28:17', NULL),
-	(32, 'https://cdn.stunring.com/media/wysiwyg/2023_wedding_sale/MEN_S.jpg', 'https://www.stunring.com/men.html', 2, 'App\\Models\\Advertisement', '2023-06-01 01:28:17', '2023-06-01 01:28:17', NULL),
-	(33, 'https://cdn.stunring.com/media/wysiwyg/2023_wedding_sale/WEDDING_RINGS.jpg', 'https://www.stunring.com/wedding/wedding-rings.html', 2, 'App\\Models\\Advertisement', '2023-06-01 01:28:17', '2023-06-01 01:28:17', NULL),
-	(34, 'https://cdn.stunring.com/media/catalog/product/cache/46f2d94ea07d2b11b96d96cb65477d04/e/k/ek128.4_.jpg', NULL, 4, 'App\\Models\\Product', '2023-05-18 14:09:39', '2023-05-18 14:09:39', NULL),
-	(35, 'https://cdn.stunring.com/media/catalog/product/cache/46f2d94ea07d2b11b96d96cb65477d04/b/r/brak009_6.jpg', NULL, 5, 'App\\Models\\Product', '2023-05-18 14:09:39', '2023-05-18 14:09:39', NULL),
-	(36, 'https://cdn.stunring.com/media/catalog/product/cache/46f2d94ea07d2b11b96d96cb65477d04/b/k/bk033_6104dbae4786b.jpg', NULL, 6, 'App\\Models\\Product', '2023-05-18 14:09:39', '2023-05-18 14:09:39', NULL),
-	(37, 'https://cdn.stunring.com/media/catalog/product/cache/46f2d94ea07d2b11b96d96cb65477d04/1/1/1121101_4.jpg', NULL, 7, 'App\\Models\\Product', '2023-05-18 14:09:39', '2023-05-18 14:09:39', NULL),
-	(38, 'https://cdn.stunring.com/media/catalog/product/cache/46f2d94ea07d2b11b96d96cb65477d04/b/k/bk033_6104dbae4786b.jpg', NULL, 8, 'App\\Models\\Product', '2023-05-18 14:09:39', '2023-05-18 14:09:39', NULL),
-	(39, 'https://cdn.stunring.com/media/catalog/product/cache/46f2d94ea07d2b11b96d96cb65477d04/e/k/ek116-1.jpg', NULL, 9, 'App\\Models\\Product', '2023-05-18 14:09:39', '2023-05-18 14:09:39', NULL),
-	(40, 'https://cdn.stunring.com/media/catalog/product/cache/46f2d94ea07d2b11b96d96cb65477d04/e/a/eark049-5.jpg', NULL, 10, 'App\\Models\\Product', '2023-05-18 14:09:39', '2023-05-18 14:09:39', NULL),
-	(41, 'https://cdn.stunring.com/media/catalog/product/cache/46f2d94ea07d2b11b96d96cb65477d04/2/9/2930415_4.jpg', NULL, 11, 'App\\Models\\Product', '2023-05-18 14:09:39', '2023-05-18 14:09:39', NULL),
-	(42, 'https://cdn.stunring.com/media/catalog/product/cache/46f2d94ea07d2b11b96d96cb65477d04/e/l/el294_6104d176baddc.jpg', NULL, 12, 'App\\Models\\Product', '2023-05-18 14:09:39', '2023-05-18 14:09:39', NULL),
-	(43, 'https://cdn.stunring.com/media/catalog/product/cache/46f2d94ea07d2b11b96d96cb65477d04/2/1/2130410_2.jpg', NULL, 13, 'App\\Models\\Product', '2023-05-18 14:09:39', '2023-05-18 14:09:39', NULL),
-	(44, 'https://cdn.stunring.com/media/review_images/d/i/dingtalk_20230602144445.jpg', NULL, 1, 'App\\Models\\Review', '2023-06-07 14:35:46', '2023-06-07 14:35:46', NULL),
-	(45, 'https://cdn.stunring.com/media/review_images/2/5/2530537-5.jpg', NULL, 2, 'App\\Models\\Review', '2023-06-07 14:35:46', '2023-06-07 14:35:46', NULL),
-	(46, 'https://cdn.stunring.com/media/review_images/_/_/__20230427154032.png', NULL, 3, 'App\\Models\\Review', '2023-06-07 14:35:46', '2023-06-07 14:35:46', NULL),
-	(47, 'https://cdn.stunring.com/media/review_images/2/5/2530537-6.jpg', NULL, 4, 'App\\Models\\Review', '2023-06-07 14:35:46', '2023-06-07 14:35:46', NULL),
-	(48, 'https://cdn.stunring.com/media/review_images/_/1/_1_.jpg', NULL, 5, 'App\\Models\\Review', '2023-06-07 14:35:46', '2023-06-07 14:35:46', NULL),
-	(49, 'https://cdn.stunring.com/media/review_images/l/q/lqlpjw3dovt4wsjna8dnahywbk6ltad-pcaeeidinodmaa_540_960.png', NULL, 6, 'App\\Models\\Review', '2023-06-07 14:35:46', '2023-06-07 14:35:46', NULL),
-	(50, 'https://cdn.stunring.com/media/review_images/2/8/284725477_10223201818608621_2801487919247514155_n.jpg', NULL, 7, 'App\\Models\\Review', '2023-06-07 14:35:46', '2023-06-07 14:35:46', NULL),
-	(51, 'https://cdn.stunring.com/media/review_images/2/5/2530537-8.jpg', NULL, 8, 'App\\Models\\Review', '2023-06-07 14:35:46', '2023-06-07 14:35:46', NULL),
-	(52, 'https://cdn.stunring.com/media/review_images/_/1/_1080_1920.png', NULL, 9, 'App\\Models\\Review', '2023-06-07 14:35:46', '2023-06-07 14:35:46', NULL),
-	(53, 'https://cdn.stunring.com/media/review_images/1/_/1.jpg', NULL, 10, 'App\\Models\\Review', '2023-06-07 14:35:46', '2023-06-07 14:35:46', NULL);
+-- Inserting 47 rows into cadon_stunring_images
+-- Insert batch #1
+INSERT INTO cadon_stunring_images (id, image_url, link, imageable_id, imageable_type, created_at, updated_at, deleted_at) VALUES
+(7, 'https://cdn.stunring.com/media/wysiwyg/2023_wedding_sale/WEDDING_BAND.jpg', NULL, 3, 'App\\Models\\Category', '2023-05-18 14:08:06', '2023-05-18 14:08:06', NULL),
+(8, 'https://cdn.stunring.com/media/wysiwyg/2023_wedding_sale/ENGAGEMENT_RINGS.jpg', NULL, 2, 'App\\Models\\Category', '2023-05-18 14:08:06', '2023-05-18 14:08:06', NULL),
+(9, 'https://cdn.stunring.com/media/wysiwyg/2023_wedding_sale/WEDDING_SET.jpg', NULL, 4, 'App\\Models\\Category', '2023-05-18 14:08:06', '2023-05-18 14:08:06', NULL),
+(10, 'https://cdn.stunring.com/media/wysiwyg/2023_wedding_sale/EARRINGS.jpg', NULL, 8, 'App\\Models\\Category', '2023-05-18 14:08:06', '2023-05-18 14:08:06', NULL),
+(11, 'https://cdn.stunring.com/media/wysiwyg/2023_wedding_sale/NECKLACES.jpg', NULL, 12, 'App\\Models\\Category', '2023-05-18 14:09:39', '2023-05-18 14:09:39', NULL),
+(12, 'https://cdn.stunring.com/media/wysiwyg/2023_wedding_sale/BRACELETS.jpg', NULL, 18, 'App\\Models\\Category', '2023-05-18 14:09:39', '2023-05-18 14:09:39', NULL),
+(13, 'https://cdn.stunring.com/media/wysiwyg/2023_wedding_sale/MEN_S.jpg', NULL, 19, 'App\\Models\\Category', '2023-05-18 14:09:39', '2023-05-18 14:09:39', NULL),
+(14, 'https://cdn.stunring.com/media/wysiwyg/2023_wedding_sale/WEDDING_RINGS.jpg', NULL, 5, 'App\\Models\\Category', '2023-05-18 14:09:39', '2023-05-18 14:09:39', NULL),
+(15, 'https://cdn.stunring.com/media/catalog/product/cache/46f2d94ea07d2b11b96d96cb65477d04/2/8/2830530-1.jpg', NULL, 15, 'App\\Models\\Product', '2023-05-18 14:09:39', '2023-05-18 14:09:39', NULL),
+(16, 'https://cdn.stunring.com/media/catalog/product/cache/46f2d94ea07d2b11b96d96cb65477d04/2/2/2230529--1.jpg', NULL, 16, 'App\\Models\\Product', '2023-05-18 14:09:39', '2023-05-18 14:09:39', NULL),
+(17, 'https://cdn.stunring.com/media/catalog/product/cache/46f2d94ea07d2b11b96d96cb65477d04/2/7/2730528-4.jpg', NULL, 17, 'App\\Models\\Product', '2023-05-18 14:09:39', '2023-05-18 14:09:39', NULL),
+(18, 'https://cdn.stunring.com/media/catalog/product/cache/46f2d94ea07d2b11b96d96cb65477d04/2/7/2730531-1.jpg', NULL, 18, 'App\\Models\\Product', '2023-05-18 14:09:39', '2023-05-18 14:09:39', NULL),
+(19, 'https://cdn.stunring.com/media/catalog/product/cache/46f2d94ea07d2b11b96d96cb65477d04/2/7/2730527-1.jpg', NULL, 19, 'App\\Models\\Product', '2023-05-18 14:09:39', '2023-05-18 14:09:39', NULL),
+(20, 'https://cdn.stunring.com/media/catalog/product/cache/46f2d94ea07d2b11b96d96cb65477d04/2/7/2730526-4.jpg', NULL, 20, 'App\\Models\\Product', '2023-05-18 14:09:39', '2023-05-18 14:09:39', NULL),
+(21, 'https://cdn.stunring.com/media/catalog/product/cache/46f2d94ea07d2b11b96d96cb65477d04/2/6/2630518-2.jpg', NULL, 21, 'App\\Models\\Product', '2023-05-18 14:09:39', '2023-05-18 14:09:39', NULL),
+(22, 'https://cdn.stunring.com/media/catalog/product/cache/46f2d94ea07d2b11b96d96cb65477d04/2/2/2230522-2.jpg', NULL, 22, 'App\\Models\\Product', '2023-05-18 14:09:39', '2023-05-18 14:09:39', NULL),
+(23, 'https://cdn.stunring.com/media/catalog/product/cache/46f2d94ea07d2b11b96d96cb65477d04/2/1/2130523-1.jpg', NULL, 23, 'App\\Models\\Product', '2023-05-18 14:09:39', '2023-05-18 14:09:39', NULL),
+(24, 'https://cdn.stunring.com/media/catalog/product/cache/46f2d94ea07d2b11b96d96cb65477d04/2/3/2304416_1_1.jpg', NULL, 24, 'App\\Models\\Product', '2023-05-18 14:09:39', '2023-05-18 14:09:39', NULL),
+(25, 'https://cdn.stunring.com/media/wysiwyg/2023_wedding_sale/Wedding_banner-pc.jpg', 'https://www.stunring.com/early-black-friday-sale.html', 1, 'App\\Models\\Advertisement', '2023-06-01 01:28:17', '2023-06-01 01:28:17', NULL),
+(26, 'https://cdn.stunring.com/media/wysiwyg/2023_wedding_sale/ENGAGEMENT_RINGS.jpg', 'https://www.stunring.com/wedding/engagement-rings.html', 2, 'App\\Models\\Advertisement', '2023-06-01 01:28:17', '2023-06-01 01:28:17', NULL),
+(27, 'https://cdn.stunring.com/media/wysiwyg/2023_wedding_sale/WEDDING_BAND.jpg', 'https://www.stunring.com/wedding/wedding-band.html', 2, 'App\\Models\\Advertisement', '2023-06-01 01:28:17', '2023-06-01 01:28:17', NULL),
+(28, 'https://cdn.stunring.com/media/wysiwyg/2023_wedding_sale/WEDDING_SET.jpg', 'https://www.stunring.com/wedding/wedding-set.html', 2, 'App\\Models\\Advertisement', '2023-06-01 01:28:17', '2023-06-01 01:28:17', NULL),
+(29, 'https://cdn.stunring.com/media/wysiwyg/2023_wedding_sale/EARRINGS.jpg', 'https://www.stunring.com/earrings.html', 2, 'App\\Models\\Advertisement', '2023-06-01 01:28:17', '2023-06-01 01:28:17', NULL),
+(30, 'https://cdn.stunring.com/media/wysiwyg/2023_wedding_sale/NECKLACES.jpg', 'https://www.stunring.com/necklaces.html', 2, 'App\\Models\\Advertisement', '2023-06-01 01:28:17', '2023-06-01 01:28:17', NULL),
+(31, 'https://cdn.stunring.com/media/wysiwyg/2023_wedding_sale/BRACELETS.jpg', 'https://www.stunring.com/bracelets.html', 2, 'App\\Models\\Advertisement', '2023-06-01 01:28:17', '2023-06-01 01:28:17', NULL),
+(32, 'https://cdn.stunring.com/media/wysiwyg/2023_wedding_sale/MEN_S.jpg', 'https://www.stunring.com/men.html', 2, 'App\\Models\\Advertisement', '2023-06-01 01:28:17', '2023-06-01 01:28:17', NULL),
+(33, 'https://cdn.stunring.com/media/wysiwyg/2023_wedding_sale/WEDDING_RINGS.jpg', 'https://www.stunring.com/wedding/wedding-rings.html', 2, 'App\\Models\\Advertisement', '2023-06-01 01:28:17', '2023-06-01 01:28:17', NULL),
+(34, 'https://cdn.stunring.com/media/catalog/product/cache/46f2d94ea07d2b11b96d96cb65477d04/e/k/ek128.4_.jpg', NULL, 4, 'App\\Models\\Product', '2023-05-18 14:09:39', '2023-05-18 14:09:39', NULL),
+(35, 'https://cdn.stunring.com/media/catalog/product/cache/46f2d94ea07d2b11b96d96cb65477d04/b/r/brak009_6.jpg', NULL, 5, 'App\\Models\\Product', '2023-05-18 14:09:39', '2023-05-18 14:09:39', NULL),
+(36, 'https://cdn.stunring.com/media/catalog/product/cache/46f2d94ea07d2b11b96d96cb65477d04/b/k/bk033_6104dbae4786b.jpg', NULL, 6, 'App\\Models\\Product', '2023-05-18 14:09:39', '2023-05-18 14:09:39', NULL),
+(37, 'https://cdn.stunring.com/media/catalog/product/cache/46f2d94ea07d2b11b96d96cb65477d04/1/1/1121101_4.jpg', NULL, 7, 'App\\Models\\Product', '2023-05-18 14:09:39', '2023-05-18 14:09:39', NULL),
+(38, 'https://cdn.stunring.com/media/catalog/product/cache/46f2d94ea07d2b11b96d96cb65477d04/b/k/bk033_6104dbae4786b.jpg', NULL, 8, 'App\\Models\\Product', '2023-05-18 14:09:39', '2023-05-18 14:09:39', NULL),
+(39, 'https://cdn.stunring.com/media/catalog/product/cache/46f2d94ea07d2b11b96d96cb65477d04/e/k/ek116-1.jpg', NULL, 9, 'App\\Models\\Product', '2023-05-18 14:09:39', '2023-05-18 14:09:39', NULL),
+(40, 'https://cdn.stunring.com/media/catalog/product/cache/46f2d94ea07d2b11b96d96cb65477d04/e/a/eark049-5.jpg', NULL, 10, 'App\\Models\\Product', '2023-05-18 14:09:39', '2023-05-18 14:09:39', NULL),
+(41, 'https://cdn.stunring.com/media/catalog/product/cache/46f2d94ea07d2b11b96d96cb65477d04/2/9/2930415_4.jpg', NULL, 11, 'App\\Models\\Product', '2023-05-18 14:09:39', '2023-05-18 14:09:39', NULL),
+(42, 'https://cdn.stunring.com/media/catalog/product/cache/46f2d94ea07d2b11b96d96cb65477d04/e/l/el294_6104d176baddc.jpg', NULL, 12, 'App\\Models\\Product', '2023-05-18 14:09:39', '2023-05-18 14:09:39', NULL),
+(43, 'https://cdn.stunring.com/media/catalog/product/cache/46f2d94ea07d2b11b96d96cb65477d04/2/1/2130410_2.jpg', NULL, 13, 'App\\Models\\Product', '2023-05-18 14:09:39', '2023-05-18 14:09:39', NULL),
+(44, 'https://cdn.stunring.com/media/review_images/d/i/dingtalk_20230602144445.jpg', NULL, 1, 'App\\Models\\Review', '2023-06-07 14:35:46', '2023-06-07 14:35:46', NULL),
+(45, 'https://cdn.stunring.com/media/review_images/2/5/2530537-5.jpg', NULL, 2, 'App\\Models\\Review', '2023-06-07 14:35:46', '2023-06-07 14:35:46', NULL),
+(46, 'https://cdn.stunring.com/media/review_images/_/_/__20230427154032.png', NULL, 3, 'App\\Models\\Review', '2023-06-07 14:35:46', '2023-06-07 14:35:46', NULL),
+(47, 'https://cdn.stunring.com/media/review_images/2/5/2530537-6.jpg', NULL, 4, 'App\\Models\\Review', '2023-06-07 14:35:46', '2023-06-07 14:35:46', NULL),
+(48, 'https://cdn.stunring.com/media/review_images/_/1/_1_.jpg', NULL, 5, 'App\\Models\\Review', '2023-06-07 14:35:46', '2023-06-07 14:35:46', NULL),
+(49, 'https://cdn.stunring.com/media/review_images/l/q/lqlpjw3dovt4wsjna8dnahywbk6ltad-pcaeeidinodmaa_540_960.png', NULL, 6, 'App\\Models\\Review', '2023-06-07 14:35:46', '2023-06-07 14:35:46', NULL),
+(50, 'https://cdn.stunring.com/media/review_images/2/8/284725477_10223201818608621_2801487919247514155_n.jpg', NULL, 7, 'App\\Models\\Review', '2023-06-07 14:35:46', '2023-06-07 14:35:46', NULL),
+(51, 'https://cdn.stunring.com/media/review_images/2/5/2530537-8.jpg', NULL, 8, 'App\\Models\\Review', '2023-06-07 14:35:46', '2023-06-07 14:35:46', NULL),
+(52, 'https://cdn.stunring.com/media/review_images/_/1/_1080_1920.png', NULL, 9, 'App\\Models\\Review', '2023-06-07 14:35:46', '2023-06-07 14:35:46', NULL),
+(53, 'https://cdn.stunring.com/media/review_images/1/_/1.jpg', NULL, 10, 'App\\Models\\Review', '2023-06-07 14:35:46', '2023-06-07 14:35:46', NULL);
 
--- 导出  表 swetelove.products 结构
-CREATE TABLE IF NOT EXISTS `cadon_stunring_products` (
+-- END TABLE cadon_stunring_images
+
+-- BEGIN TABLE cadon_stunring_product_attributes
+DROP TABLE IF EXISTS cadon_stunring_product_attributes;
+CREATE TABLE `cadon_stunring_product_attributes` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `product_id` int NOT NULL COMMENT '商品ID',
+  `attribute_id` int NOT NULL COMMENT '属性ID',
+  `value_id` int NOT NULL COMMENT '属性值ID',
+  `price_adjustment` decimal(10,2) DEFAULT NULL COMMENT '价格调整',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='商品属性表';
+
+-- Inserting 29 rows into cadon_stunring_product_attributes
+-- Insert batch #1
+INSERT INTO cadon_stunring_product_attributes (id, product_id, attribute_id, value_id, price_adjustment, created_at, updated_at, deleted_at) VALUES
+(1, 4, 1, 1, 0, '2023-06-04 13:11:49', '2023-06-04 13:11:49', NULL),
+(2, 4, 1, 2, 0, '2023-06-04 13:11:49', '2023-06-04 13:11:49', NULL),
+(3, 4, 1, 3, 0, '2023-06-04 13:11:49', '2023-06-04 13:11:49', NULL),
+(4, 4, 1, 4, 0, '2023-06-04 13:11:49', '2023-06-04 13:11:49', NULL),
+(5, 4, 1, 5, 0, '2023-06-04 13:11:49', '2023-06-04 13:11:49', NULL),
+(6, 4, 2, 6, -50, '2023-06-04 13:11:49', '2023-06-04 13:11:49', NULL),
+(7, 4, 2, 7, -50, '2023-06-04 13:11:49', '2023-06-04 13:11:49', NULL),
+(8, 4, 2, 8, -50, '2023-06-04 13:11:49', '2023-06-04 13:11:49', NULL),
+(9, 4, 2, 9, -50, '2023-06-04 13:11:49', '2023-06-04 13:11:49', NULL),
+(10, 4, 2, 10, -50, '2023-06-04 13:11:49', '2023-06-04 13:11:49', NULL),
+(11, 5, 3, 11, 0, '2023-06-04 13:11:49', '2023-06-04 13:11:49', NULL),
+(12, 5, 3, 12, 0, '2023-06-04 13:11:49', '2023-06-04 13:11:49', NULL),
+(13, 5, 3, 13, 0, '2023-06-04 13:11:49', '2023-06-04 13:11:49', NULL),
+(14, 5, 3, 14, -20, '2023-06-04 13:11:49', '2023-06-04 13:11:49', NULL),
+(15, 5, 3, 15, -20, '2023-06-04 13:11:49', '2023-06-04 13:11:49', NULL),
+(16, 5, 4, 16, 100, '2023-06-04 13:11:49', '2023-06-04 13:11:49', NULL),
+(17, 5, 4, 17, -50, '2023-06-04 13:11:49', '2023-06-04 13:11:49', NULL),
+(18, 5, 4, 18, -100, '2023-06-04 13:11:49', '2023-06-04 13:11:49', NULL),
+(19, 5, 4, 19, -50, '2023-06-04 13:11:49', '2023-06-04 13:11:49', NULL),
+(20, 5, 4, 20, -50, '2023-06-04 13:11:49', '2023-06-04 13:11:49', NULL),
+(21, 6, 5, 21, -10, '2023-06-04 13:11:49', '2023-06-04 13:11:49', NULL),
+(22, 6, 5, 22, -10, '2023-06-04 13:11:49', '2023-06-04 13:11:49', NULL),
+(23, 6, 5, 23, -10, '2023-06-04 13:11:49', '2023-06-04 13:11:49', NULL),
+(24, 6, 5, 24, -10, '2023-06-04 13:11:49', '2023-06-04 13:11:49', NULL),
+(25, 6, 5, 25, -10, '2023-06-04 13:11:49', '2023-06-04 13:11:49', NULL),
+(26, 6, 6, 26, -10, '2023-06-04 13:11:49', '2023-06-04 13:11:49', NULL),
+(27, 6, 6, 27, -10, '2023-06-04 13:11:49', '2023-06-04 13:11:49', NULL),
+(28, 6, 6, 28, -10, '2023-06-04 13:11:49', '2023-06-04 13:11:49', NULL),
+(29, 6, 6, 29, -10, '2023-06-04 13:11:49', '2023-06-04 13:11:49', NULL);
+
+-- END TABLE cadon_stunring_product_attributes
+
+-- BEGIN TABLE cadon_stunring_product_categories
+DROP TABLE IF EXISTS cadon_stunring_product_categories;
+CREATE TABLE `cadon_stunring_product_categories` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `product_id` int NOT NULL COMMENT '商品ID',
+  `category_id` int NOT NULL COMMENT '分类ID',
+  `parent_id` int DEFAULT NULL COMMENT '父级分类ID',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `nest_left` int DEFAULT NULL,
+  `nest_right` int DEFAULT NULL,
+  `nest_depth` int DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='商品分类表';
+
+-- Inserting 22 rows into cadon_stunring_product_categories
+-- Insert batch #1
+INSERT INTO cadon_stunring_product_categories (id, product_id, category_id, parent_id, created_at, updated_at, deleted_at, nest_left, nest_right, nest_depth) VALUES
+(8, 5, 2, NULL, '2023-05-18 14:11:11', '2023-05-18 14:11:11', NULL, NULL, NULL, NULL),
+(9, 4, 1, NULL, '2023-06-12 11:58:37', '2023-06-12 11:58:37', NULL, NULL, NULL, NULL),
+(10, 5, 1, NULL, '2023-06-12 11:58:37', '2023-06-12 11:58:37', NULL, NULL, NULL, NULL),
+(11, 6, 1, NULL, '2023-06-12 11:58:37', '2023-06-12 11:58:37', NULL, NULL, NULL, NULL),
+(12, 7, 1, NULL, '2023-06-12 11:58:37', '2023-06-12 11:58:37', NULL, NULL, NULL, NULL),
+(13, 8, 1, NULL, '2023-06-12 11:58:37', '2023-06-12 11:58:37', NULL, NULL, NULL, NULL),
+(14, 9, 1, NULL, '2023-06-12 11:58:37', '2023-06-12 11:58:37', NULL, NULL, NULL, NULL),
+(15, 10, 1, NULL, '2023-06-12 11:58:37', '2023-06-12 11:58:37', NULL, NULL, NULL, NULL),
+(16, 11, 1, NULL, '2023-06-12 11:58:37', '2023-06-12 11:58:37', NULL, NULL, NULL, NULL),
+(17, 12, 1, NULL, '2023-06-12 11:58:37', '2023-06-12 11:58:37', NULL, NULL, NULL, NULL),
+(18, 13, 1, NULL, '2023-06-12 11:58:37', '2023-06-12 11:58:37', NULL, NULL, NULL, NULL),
+(19, 14, 1, NULL, '2023-06-12 11:58:37', '2023-06-12 11:58:37', NULL, NULL, NULL, NULL),
+(20, 15, 1, NULL, '2023-06-12 11:58:37', '2023-06-12 11:58:37', NULL, NULL, NULL, NULL),
+(21, 16, 1, NULL, '2023-06-12 11:58:37', '2023-06-12 11:58:37', NULL, NULL, NULL, NULL),
+(22, 17, 1, NULL, '2023-06-12 11:58:37', '2023-06-12 11:58:37', NULL, NULL, NULL, NULL),
+(23, 18, 1, NULL, '2023-06-12 11:58:37', '2023-06-12 11:58:37', NULL, NULL, NULL, NULL),
+(24, 19, 1, NULL, '2023-06-12 11:58:37', '2023-06-12 11:58:37', NULL, NULL, NULL, NULL),
+(25, 20, 1, NULL, '2023-06-12 11:58:37', '2023-06-12 11:58:37', NULL, NULL, NULL, NULL),
+(26, 21, 1, NULL, '2023-06-12 11:58:37', '2023-06-12 11:58:37', NULL, NULL, NULL, NULL),
+(27, 22, 1, NULL, '2023-06-12 11:58:37', '2023-06-12 11:58:37', NULL, NULL, NULL, NULL),
+(28, 23, 1, NULL, '2023-06-12 11:58:37', '2023-06-12 11:58:37', NULL, NULL, NULL, NULL),
+(29, 24, 1, NULL, '2023-06-12 11:58:37', '2023-06-12 11:58:37', NULL, NULL, NULL, NULL);
+
+-- END TABLE cadon_stunring_product_categories
+
+-- BEGIN TABLE cadon_stunring_product_extensions
+DROP TABLE IF EXISTS cadon_stunring_product_extensions;
+CREATE TABLE `cadon_stunring_product_extensions` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `product_id` int DEFAULT NULL,
+  `sku` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `carat` float DEFAULT NULL,
+  `stone_cut` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `stone_color` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `plating_color` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `style` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `occasion` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `recipient` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Inserting 20 rows into cadon_stunring_product_extensions
+-- Insert batch #1
+INSERT INTO cadon_stunring_product_extensions (id, product_id, sku, carat, stone_cut, stone_color, plating_color, style, occasion, recipient, created_at, updated_at) VALUES
+(1, 4, 'SKU-4', 1, 'Round', 'White', 'Silver', 'Classic', 'Anniversary', 'Mother', '2023-06-25 01:56:16', '2023-06-25 01:56:16'),
+(3, 6, 'SKU-6', 2, 'Emerald', 'Green', 'Rose Gold', 'Vintage', 'Wedding', 'Sister', '2023-06-25 01:56:16', '2023-06-25 01:56:16'),
+(4, 7, 'SKU-7', 2.5, 'Asscher', 'Yellow', 'Platinum', 'Art Deco', 'Graduation', 'Brother', '2023-06-25 01:56:16', '2023-06-25 01:56:16'),
+(5, 8, 'SKU-8', 1, 'Oval', 'Red', 'Silver', 'Romantic', 'Promotion', 'Aunt', '2023-06-25 01:56:16', '2023-06-25 01:56:16'),
+(6, 9, 'SKU-9', 1.5, 'Pear', 'Orange', 'Gold', 'Casual', 'New Job', 'Uncle', '2023-06-25 01:56:16', '2023-06-25 01:56:16'),
+(7, 10, 'SKU-10', 2, 'Marquise', 'Pink', 'Rose Gold', 'Formal', 'New Home', 'Cousin', '2023-06-25 01:56:16', '2023-06-25 01:56:16'),
+(8, 11, 'SKU-11', 2.5, 'Heart', 'Purple', 'Platinum', 'Extravagant', 'Baby Birth', 'Grandparent', '2023-06-25 01:56:16', '2023-06-25 01:56:16'),
+(9, 12, 'SKU-12', 1, 'Cushion', 'Violet', 'Silver', 'Classic', 'Achievement', 'Co-worker', '2023-06-25 01:56:16', '2023-06-25 01:56:16'),
+(10, 13, 'SKU-13', 1.5, 'Radiant', 'Indigo', 'Gold', 'Vintage', 'Retirement', 'Boss', '2023-06-25 01:56:16', '2023-06-25 01:56:16'),
+(11, 14, 'SKU-14', 2, 'Princess', 'Blue', 'Rose Gold', 'Modern', 'Wedding', 'Bride', '2023-06-25 01:56:16', '2023-06-25 01:56:16'),
+(12, 15, 'SKU-15', 2.5, 'Round', 'Green', 'Platinum', 'Formal', 'Graduation', 'Groom', '2023-06-25 01:56:16', '2023-06-25 01:56:16'),
+(13, 16, 'SKU-16', 1, 'Asscher', 'Yellow', 'Silver', 'Classic', 'Anniversary', 'Sister', '2023-06-25 01:56:16', '2023-06-25 01:56:16'),
+(14, 17, 'SKU-17', 1.5, 'Emerald', 'White', 'Gold', 'Romantic', 'Promotion', 'Brother', '2023-06-25 01:56:16', '2023-06-25 01:56:16'),
+(15, 18, 'SKU-18', 2, 'Oval', 'Black', 'Rose Gold', 'Casual', 'New Job', 'Mother', '2023-06-25 01:56:16', '2023-06-25 01:56:16'),
+(16, 19, 'SKU-19', 2.5, 'Pear', 'Red', 'Platinum', 'Extravagant', 'New Home', 'Father', '2023-06-25 01:56:16', '2023-06-25 01:56:16'),
+(17, 20, 'SKU-20', 1, 'Marquise', 'Orange', 'Silver', 'Vintage', 'Baby Birth', 'Cousin', '2023-06-25 01:56:16', '2023-06-25 01:56:16'),
+(18, 21, 'SKU-21', 1.5, 'Heart', 'Pink', 'Gold', 'Modern', 'Achievement', 'Aunt', '2023-06-25 01:56:16', '2023-06-25 01:56:16'),
+(19, 22, 'SKU-22', 2, 'Cushion', 'Purple', 'Rose Gold', 'Formal', 'Retirement', 'Uncle', '2023-06-25 01:56:16', '2023-06-25 01:56:16'),
+(20, 23, 'SKU-23', 2.5, 'Radiant', 'Violet', 'Platinum', 'Romantic', 'Wedding', 'Grandparent', '2023-06-25 01:56:16', '2023-06-25 01:56:16'),
+(21, 24, 'SKU-24', 1, 'Princess', 'Indigo', 'Silver', 'Casual', 'Graduation', 'Co-worker', '2023-06-25 01:56:16', '2023-06-25 01:56:16');
+
+-- END TABLE cadon_stunring_product_extensions
+
+-- BEGIN TABLE cadon_stunring_products
+DROP TABLE IF EXISTS cadon_stunring_products;
+CREATE TABLE `cadon_stunring_products` (
   `id` int NOT NULL AUTO_INCREMENT,
   `product_name` varchar(255) DEFAULT NULL COMMENT '商品名称',
   `sku` varchar(255) DEFAULT NULL,
@@ -287,162 +616,40 @@ CREATE TABLE IF NOT EXISTS `cadon_stunring_products` (
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   `detail` json DEFAULT NULL COMMENT '商品详情',
+  `product_images` json NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='商品表';
 
--- 正在导出表  swetelove.products 的数据：~21 rows (大约)
-DELETE FROM `cadon_stunring_products`;
-INSERT INTO `cadon_stunring_products` (`id`, `product_name`, `sku`, `original_price`, `current_price`, `on_sale`, `description`, `video_url`, `sales`, `created_at`, `updated_at`, `deleted_at`, `detail`) VALUES
-	(4, 'Product 1', 'SKU-4', 100.00, 99.50, 1, 'This is product 1', 'http://product1.video', 99, '2023-05-11 14:05:26', '2023-05-18 14:05:26', NULL, '{"Size": "17", "Metal": "Pseudo Gold", "Width": "13.5mm", "Weight": "23g", "Rhodium": "Yes", "Stone Cut": "Round", "Thickness": "2.5mm", "Stone Size": "1.0*1.0mm", "Stone Type": "Lab Created gemstone", "Stone Color": "White", "Carat Weight": "0.02CT/pcs", "Plating Color": "Rosegold/Platinum"}'),
-	(5, 'Product 24343', 'SKU-5', 110.00, 2.00, 1, 'This is product 2', 'http://product2.video', 98, '2023-05-12 14:05:26', '2023-05-18 14:05:26', NULL, '{"Size": "17", "Metal": "Pseudo Gold", "Width": "13.5mm", "Weight": "23g", "Rhodium": "Yes", "Stone Cut": "Round", "Thickness": "2.5mm", "Stone Size": "1.0*1.0mm", "Stone Type": "Lab Created gemstone", "Stone Color": "White", "Carat Weight": "0.02CT/pcs", "Plating Color": "Rosegold/Platinum"}'),
-	(6, 'Product 3', 'SKU-6', 110.00, 2.00, 1, 'This is product 2', 'http://product2.video', 97, '2023-05-13 14:05:26', '2023-05-18 14:05:26', NULL, '{"Size": "17", "Metal": "Pseudo Gold", "Width": "13.5mm", "Weight": "23g", "Rhodium": "Yes", "Stone Cut": "Round", "Thickness": "2.5mm", "Stone Size": "1.0*1.0mm", "Stone Type": "Lab Created gemstone", "Stone Color": "White", "Carat Weight": "0.02CT/pcs", "Plating Color": "Rosegold/Platinum"}'),
-	(7, 'Product 4', 'SKU-7', 110.00, 3.00, 1, 'This is product 2', 'http://product2.video', 96, '2023-05-14 14:05:26', '2023-05-18 14:05:26', NULL, '{"Size": "17", "Metal": "Pseudo Gold", "Width": "13.5mm", "Weight": "23g", "Rhodium": "Yes", "Stone Cut": "Round", "Thickness": "2.5mm", "Stone Size": "1.0*1.0mm", "Stone Type": "Lab Created gemstone", "Stone Color": "White", "Carat Weight": "0.02CT/pcs", "Plating Color": "Rosegold/Platinum"}'),
-	(8, 'Product 5', 'SKU-8', 110.00, 4.00, 1, 'This is product 2', 'http://product2.video', 95, '2023-05-15 14:05:26', '2023-05-18 14:05:26', NULL, '{"Size": "17", "Metal": "Pseudo Gold", "Width": "13.5mm", "Weight": "23g", "Rhodium": "Yes", "Stone Cut": "Round", "Thickness": "2.5mm", "Stone Size": "1.0*1.0mm", "Stone Type": "Lab Created gemstone", "Stone Color": "White", "Carat Weight": "0.02CT/pcs", "Plating Color": "Rosegold/Platinum"}'),
-	(9, 'Product 6', 'SKU-9', 110.00, 5.00, 1, 'This is product 2', 'http://product2.video', 94, '2023-05-16 14:05:26', '2023-05-18 14:05:26', NULL, '{"Size": "17", "Metal": "Pseudo Gold", "Width": "13.5mm", "Weight": "23g", "Rhodium": "Yes", "Stone Cut": "HAHA", "Thickness": "2.5mm", "Stone Size": "1.0*1.0mm", "Stone Type": "Lab Created gemstone", "Stone Color": "White", "Carat Weight": "0.02CT/pcs", "Plating Color": "Rosegold/Platinum"}'),
-	(10, 'Product 7', 'SKU-10', 110.00, 6.00, 1, 'This is product 2', 'http://product2.video', 88, '2023-05-17 14:05:26', '2023-05-18 14:05:26', NULL, '{"Size": "17", "Metal": "Pseudo Gold", "Width": "13.5mm", "Weight": "23g", "Rhodium": "Yes", "Stone Cut": "Round", "Thickness": "2.5mm", "Stone Size": "1.0*1.0mm", "Stone Type": "Lab Created gemstone", "Stone Color": "White", "Carat Weight": "0.02CT/pcs", "Plating Color": "Rosegold/Platinum"}'),
-	(11, 'Product 8', 'SKU-11', 110.00, 7.00, 1, 'This is product 2', 'http://product2.video', 89, '2023-05-18 14:01:26', '2023-05-18 14:05:26', NULL, '{"Size": "17", "Metal": "Pseudo Gold", "Width": "13.5mm", "Weight": "23g", "Rhodium": "Yes", "Stone Cut": "Round", "Thickness": "2.5mm", "Stone Size": "1.0*1.0mm", "Stone Type": "Lab Created gemstone", "Stone Color": "White", "Carat Weight": "0.02CT/pcs", "Plating Color": "Rosegold/Platinum"}'),
-	(12, 'Product 9', 'SKU-12', 110.00, 8.00, 1, 'This is product 2', 'http://product2.video', 87, '2023-05-18 14:02:26', '2023-05-18 14:05:26', NULL, '{"Size": "17", "Metal": "Pseudo Gold", "Width": "13.5mm", "Weight": "23g", "Rhodium": "Yes", "Stone Cut": "HAHA", "Thickness": "2.5mm", "Stone Size": "1.0*1.0mm", "Stone Type": "Lab Created gemstone", "Stone Color": "White", "Carat Weight": "0.02CT/pcs", "Plating Color": "Rosegold/Platinum"}'),
-	(13, 'Product 10', 'SKU-13', 110.00, 11.00, 1, 'This is product 2', 'http://product2.video', 987, '2023-05-18 14:03:26', '2023-05-18 14:05:26', NULL, '{"Size": "17", "Metal": "Pseudo Gold", "Width": "13.5mm", "Weight": "23g", "Rhodium": "Yes", "Stone Cut": "Round", "Thickness": "2.5mm", "Stone Size": "1.0*1.0mm", "Stone Type": "Lab Created gemstone", "Stone Color": "White", "Carat Weight": "0.02CT/pcs", "Plating Color": "Rosegold/Platinum"}'),
-	(14, 'Product d', 'SKU-14', 110.00, 12.00, 1, 'This is product 2', 'http://product2.video', 12, '2023-05-18 14:04:26', '2023-05-18 14:05:26', NULL, '{"Size": "17", "Metal": "Pseudo Gold", "Width": "13.5mm", "Weight": "23g", "Rhodium": "Yes", "Stone Cut": "Round", "Thickness": "2.5mm", "Stone Size": "1.0*1.0mm", "Stone Type": "Lab Created gemstone", "Stone Color": "White", "Carat Weight": "0.02CT/pcs", "Plating Color": "Rosegold/Platinum"}'),
-	(15, 'Product 32', 'SKU-15', 110.00, 13.00, 1, 'This is product 2', 'http://product2.video', 13, '2023-05-18 14:05:26', '2023-05-18 14:05:26', NULL, '{"Size": "17", "Metal": "Pseudo Gold", "Width": "13.5mm", "Weight": "23g", "Rhodium": "Yes", "Stone Cut": "Round", "Thickness": "2.5mm", "Stone Size": "1.0*1.0mm", "Stone Type": "Lab Created gemstone", "Stone Color": "White", "Carat Weight": "0.02CT/pcs", "Plating Color": "Rosegold/Platinum"}'),
-	(16, 'Product fd4', 'SKU-16', 110.00, 14.00, 1, 'This is product 2', 'http://product2.video', 14, '2023-06-18 14:05:26', '2023-05-18 14:05:26', NULL, '{"Size": "17", "Metal": "Pseudo Gold", "Width": "13.5mm", "Weight": "23g", "Rhodium": "Yes", "Stone Cut": "HAHA", "Thickness": "2.5mm", "Stone Size": "1.0*1.0mm", "Stone Type": "Lab Created gemstone", "Stone Color": "White", "Carat Weight": "0.02CT/pcs", "Plating Color": "Rosegold/Platinum"}'),
-	(17, 'Product 35', 'SKU-17', 110.00, 15.00, 1, 'This is product 2', 'http://product2.video', 15, '2023-05-21 14:05:26', '2023-05-18 14:05:26', NULL, '{"Size": "17", "Metal": "Pseudo Gold", "Width": "13.5mm", "Weight": "23g", "Rhodium": "Yes", "Stone Cut": "Round", "Thickness": "2.5mm", "Stone Size": "1.0*1.0mm", "Stone Type": "Lab Created gemstone", "Stone Color": "White", "Carat Weight": "0.02CT/pcs", "Plating Color": "Rosegold/Platinum"}'),
-	(18, 'Product jk89', 'SKU-18', 110.00, 16.00, 1, 'This is product 2', 'http://product2.video', 21, '2023-05-22 14:05:26', '2023-05-18 14:05:26', NULL, '{"Size": "17", "Metal": "Pseudo Gold", "Width": "13.5mm", "Weight": "23g", "Rhodium": "Yes", "Stone Cut": "Round", "Thickness": "2.5mm", "Stone Size": "1.0*1.0mm", "Stone Type": "Lab Created gemstone", "Stone Color": "White", "Carat Weight": "0.02CT/pcs", "Plating Color": "Rosegold/Platinum"}'),
-	(19, 'Product d6', 'SKU-19', 110.00, 21.00, 1, 'This is product 2', 'http://product2.video', 22, '2023-05-23 14:05:26', '2023-05-18 14:05:26', NULL, '{"Size": "17", "Metal": "Pseudo Gold", "Width": "13.5mm", "Weight": "23g", "Rhodium": "Yes", "Stone Cut": "Round", "Thickness": "2.5mm", "Stone Size": "1.0*1.0mm", "Stone Type": "Lab Created gemstone", "Stone Color": "White", "Carat Weight": "0.02CT/pcs", "Plating Color": "Rosegold/Platinum"}'),
-	(20, 'Product l;9', 'SKU-20', 110.00, 22.00, 1, 'This is product 2', 'http://product2.video', 23, '2023-05-24 14:05:26', '2023-05-18 14:05:26', NULL, '{"Size": "17", "Metal": "Pseudo Gold", "Width": "13.5mm", "Weight": "23g", "Rhodium": "Yes", "Stone Cut": "Round", "Thickness": "2.5mm", "Stone Size": "1.0*1.0mm", "Stone Type": "Lab Created gemstone", "Stone Color": "White", "Carat Weight": "0.02CT/pcs", "Plating Color": "Rosegold/Platinum"}'),
-	(21, 'Product d5', 'SKU-21', 110.00, 23.00, 1, 'This is product 2', 'http://product2.video', 24, '2023-05-25 14:05:26', '2023-05-18 14:05:26', NULL, '{"Size": "17", "Metal": "Pseudo Gold", "Width": "13.5mm", "Weight": "23g", "Rhodium": "Yes", "Stone Cut": "Round", "Thickness": "2.5mm", "Stone Size": "1.0*1.0mm", "Stone Type": "Lab Created gemstone", "Stone Color": "White", "Carat Weight": "0.02CT/pcs", "Plating Color": "Rosegold/Platinum"}'),
-	(22, 'Product j90', 'SKU-22', 110.00, 24.00, 1, 'This is product 2', 'http://product2.video', 25, '2023-05-26 14:05:26', '2023-05-18 14:05:26', NULL, '{"Size": "17", "Metal": "Pseudo Gold", "Width": "13.5mm", "Weight": "23g", "Rhodium": "Yes", "Stone Cut": "Round", "Thickness": "2.5mm", "Stone Size": "1.0*1.0mm", "Stone Type": "Lab Created gemstone", "Stone Color": "White", "Carat Weight": "0.02CT/pcs", "Plating Color": "Rosegold/Platinum"}'),
-	(23, 'Product ds712', 'SKU-23', 110.00, 25.00, 1, 'This is product 2', 'http://product2.video', 31, '2023-05-26 23:05:26', '2023-05-18 14:05:26', NULL, '{"Size": "17", "Metal": "Pseudo Gold", "Width": "13.5mm", "Weight": "23g", "Rhodium": "Yes", "Stone Cut": "Round", "Thickness": "2.5mm", "Stone Size": "1.0*1.0mm", "Stone Type": "Lab Created gemstone", "Stone Color": "White", "Carat Weight": "0.02CT/pcs", "Plating Color": "Rosegold/Platinum"}'),
-	(24, 'Product p9', 'SKU-24', 110.00, 99.00, 1, 'This is product 2', 'http://product2.video', 32, '2023-05-28 14:05:26', '2023-05-18 14:05:26', NULL, '{"Size": "17", "Metal": "Pseudo Gold", "Width": "13.5mm", "Weight": "23g", "Rhodium": "Yes", "Stone Cut": "Round", "Thickness": "2.5mm", "Stone Size": "1.0*1.0mm", "Stone Type": "Lab Created gemstone", "Stone Color": "White", "Carat Weight": "0.02CT/pcs", "Plating Color": "Rosegold/Platinum"}');
+-- Inserting 21 rows into cadon_stunring_products
+-- Insert batch #1
+INSERT INTO cadon_stunring_products (id, product_name, sku, original_price, current_price, on_sale, description, video_url, sales, created_at, updated_at, deleted_at, detail, product_images) VALUES
+(4, 'Product 1', 'SKU-4', 100, 99.5, 1, 'This is product 1', 'http://product1.video', 99, '2023-05-11 14:05:26', '2023-05-18 14:05:26', NULL, '{"Size": "17", "Metal": "Pseudo Gold", "Width": "13.5mm", "Weight": "23g", "Rhodium": "Yes", "Stone Cut": "Round", "Thickness": "2.5mm", "Stone Size": "1.0*1.0mm", "Stone Type": "Lab Created gemstone", "Stone Color": "White", "Carat Weight": "0.02CT/pcs", "Plating Color": "Rosegold/Platinum"}', NULL),
+(5, 'Product 24343', 'SKU-5', 110, 2, 1, 'This is product 2', 'http://product2.video', 98, '2023-05-12 14:05:26', '2023-06-29 14:30:58', NULL, '{"Size": "17", "Metal": "Pseudo Gold", "Width": "13.5mm", "Weight": "23g", "Rhodium": "Yes", "Stone Cut": "Round", "Thickness": "2.5mm", "Stone Size": "1.0*1.0mm", "Stone Type": "Lab Created gemstone", "Stone Color": "White", "Carat Weight": "0.02CT/pcs", "Plating Color": "Rosegold/Platinum"}', '["/2230522-2.jpg"]'),
+(6, 'Product 3', 'SKU-6', 110, 2, 1, 'This is product 2', 'http://product2.video', 97, '2023-05-13 14:05:26', '2023-05-18 14:05:26', NULL, '{"Size": "17", "Metal": "Pseudo Gold", "Width": "13.5mm", "Weight": "23g", "Rhodium": "Yes", "Stone Cut": "Round", "Thickness": "2.5mm", "Stone Size": "1.0*1.0mm", "Stone Type": "Lab Created gemstone", "Stone Color": "White", "Carat Weight": "0.02CT/pcs", "Plating Color": "Rosegold/Platinum"}', NULL),
+(7, 'Product 4', 'SKU-7', 110, 3, 1, 'This is product 2', 'http://product2.video', 96, '2023-05-14 14:05:26', '2023-05-18 14:05:26', NULL, '{"Size": "17", "Metal": "Pseudo Gold", "Width": "13.5mm", "Weight": "23g", "Rhodium": "Yes", "Stone Cut": "Round", "Thickness": "2.5mm", "Stone Size": "1.0*1.0mm", "Stone Type": "Lab Created gemstone", "Stone Color": "White", "Carat Weight": "0.02CT/pcs", "Plating Color": "Rosegold/Platinum"}', NULL),
+(8, 'Product 5', 'SKU-8', 110, 4, 1, 'This is product 2', 'http://product2.video', 95, '2023-05-15 14:05:26', '2023-05-18 14:05:26', NULL, '{"Size": "17", "Metal": "Pseudo Gold", "Width": "13.5mm", "Weight": "23g", "Rhodium": "Yes", "Stone Cut": "Round", "Thickness": "2.5mm", "Stone Size": "1.0*1.0mm", "Stone Type": "Lab Created gemstone", "Stone Color": "White", "Carat Weight": "0.02CT/pcs", "Plating Color": "Rosegold/Platinum"}', NULL),
+(9, 'Product 6', 'SKU-9', 110, 5, 1, 'This is product 2', 'http://product2.video', 94, '2023-05-16 14:05:26', '2023-05-18 14:05:26', NULL, '{"Size": "17", "Metal": "Pseudo Gold", "Width": "13.5mm", "Weight": "23g", "Rhodium": "Yes", "Stone Cut": "HAHA", "Thickness": "2.5mm", "Stone Size": "1.0*1.0mm", "Stone Type": "Lab Created gemstone", "Stone Color": "White", "Carat Weight": "0.02CT/pcs", "Plating Color": "Rosegold/Platinum"}', NULL),
+(10, 'Product 7', 'SKU-10', 110, 6, 1, 'This is product 2', 'http://product2.video', 88, '2023-05-17 14:05:26', '2023-05-18 14:05:26', NULL, '{"Size": "17", "Metal": "Pseudo Gold", "Width": "13.5mm", "Weight": "23g", "Rhodium": "Yes", "Stone Cut": "Round", "Thickness": "2.5mm", "Stone Size": "1.0*1.0mm", "Stone Type": "Lab Created gemstone", "Stone Color": "White", "Carat Weight": "0.02CT/pcs", "Plating Color": "Rosegold/Platinum"}', NULL),
+(11, 'Product 8', 'SKU-11', 110, 7, 1, 'This is product 2', 'http://product2.video', 89, '2023-05-18 14:01:26', '2023-05-18 14:05:26', NULL, '{"Size": "17", "Metal": "Pseudo Gold", "Width": "13.5mm", "Weight": "23g", "Rhodium": "Yes", "Stone Cut": "Round", "Thickness": "2.5mm", "Stone Size": "1.0*1.0mm", "Stone Type": "Lab Created gemstone", "Stone Color": "White", "Carat Weight": "0.02CT/pcs", "Plating Color": "Rosegold/Platinum"}', NULL),
+(12, 'Product 9', 'SKU-12', 110, 8, 1, 'This is product 2', 'http://product2.video', 87, '2023-05-18 14:02:26', '2023-05-18 14:05:26', NULL, '{"Size": "17", "Metal": "Pseudo Gold", "Width": "13.5mm", "Weight": "23g", "Rhodium": "Yes", "Stone Cut": "HAHA", "Thickness": "2.5mm", "Stone Size": "1.0*1.0mm", "Stone Type": "Lab Created gemstone", "Stone Color": "White", "Carat Weight": "0.02CT/pcs", "Plating Color": "Rosegold/Platinum"}', NULL),
+(13, 'Product 10', 'SKU-13', 110, 11, 1, 'This is product 2', 'http://product2.video', 987, '2023-05-18 14:03:26', '2023-05-18 14:05:26', NULL, '{"Size": "17", "Metal": "Pseudo Gold", "Width": "13.5mm", "Weight": "23g", "Rhodium": "Yes", "Stone Cut": "Round", "Thickness": "2.5mm", "Stone Size": "1.0*1.0mm", "Stone Type": "Lab Created gemstone", "Stone Color": "White", "Carat Weight": "0.02CT/pcs", "Plating Color": "Rosegold/Platinum"}', NULL),
+(14, 'Product d', 'SKU-14', 110, 12, 1, 'This is product 2', 'http://product2.video', 12, '2023-05-18 14:04:26', '2023-05-18 14:05:26', NULL, '{"Size": "17", "Metal": "Pseudo Gold", "Width": "13.5mm", "Weight": "23g", "Rhodium": "Yes", "Stone Cut": "Round", "Thickness": "2.5mm", "Stone Size": "1.0*1.0mm", "Stone Type": "Lab Created gemstone", "Stone Color": "White", "Carat Weight": "0.02CT/pcs", "Plating Color": "Rosegold/Platinum"}', NULL),
+(15, 'Product 32', 'SKU-15', 110, 13, 1, 'This is product 2', 'http://product2.video', 13, '2023-05-18 14:05:26', '2023-05-18 14:05:26', NULL, '{"Size": "17", "Metal": "Pseudo Gold", "Width": "13.5mm", "Weight": "23g", "Rhodium": "Yes", "Stone Cut": "Round", "Thickness": "2.5mm", "Stone Size": "1.0*1.0mm", "Stone Type": "Lab Created gemstone", "Stone Color": "White", "Carat Weight": "0.02CT/pcs", "Plating Color": "Rosegold/Platinum"}', NULL),
+(16, 'Product fd4', 'SKU-16', 110, 14, 1, 'This is product 2', 'http://product2.video', 14, '2023-06-18 14:05:26', '2023-05-18 14:05:26', NULL, '{"Size": "17", "Metal": "Pseudo Gold", "Width": "13.5mm", "Weight": "23g", "Rhodium": "Yes", "Stone Cut": "HAHA", "Thickness": "2.5mm", "Stone Size": "1.0*1.0mm", "Stone Type": "Lab Created gemstone", "Stone Color": "White", "Carat Weight": "0.02CT/pcs", "Plating Color": "Rosegold/Platinum"}', NULL),
+(17, 'Product 35', 'SKU-17', 110, 15, 1, 'This is product 2', 'http://product2.video', 15, '2023-05-21 14:05:26', '2023-05-18 14:05:26', NULL, '{"Size": "17", "Metal": "Pseudo Gold", "Width": "13.5mm", "Weight": "23g", "Rhodium": "Yes", "Stone Cut": "Round", "Thickness": "2.5mm", "Stone Size": "1.0*1.0mm", "Stone Type": "Lab Created gemstone", "Stone Color": "White", "Carat Weight": "0.02CT/pcs", "Plating Color": "Rosegold/Platinum"}', NULL),
+(18, 'Product jk89', 'SKU-18', 110, 16, 1, 'This is product 2', 'http://product2.video', 21, '2023-05-22 14:05:26', '2023-05-18 14:05:26', NULL, '{"Size": "17", "Metal": "Pseudo Gold", "Width": "13.5mm", "Weight": "23g", "Rhodium": "Yes", "Stone Cut": "Round", "Thickness": "2.5mm", "Stone Size": "1.0*1.0mm", "Stone Type": "Lab Created gemstone", "Stone Color": "White", "Carat Weight": "0.02CT/pcs", "Plating Color": "Rosegold/Platinum"}', NULL),
+(19, 'Product d6', 'SKU-19', 110, 21, 1, 'This is product 2', 'http://product2.video', 22, '2023-05-23 14:05:26', '2023-05-18 14:05:26', NULL, '{"Size": "17", "Metal": "Pseudo Gold", "Width": "13.5mm", "Weight": "23g", "Rhodium": "Yes", "Stone Cut": "Round", "Thickness": "2.5mm", "Stone Size": "1.0*1.0mm", "Stone Type": "Lab Created gemstone", "Stone Color": "White", "Carat Weight": "0.02CT/pcs", "Plating Color": "Rosegold/Platinum"}', NULL),
+(20, 'Product l;9', 'SKU-20', 110, 22, 1, 'This is product 2', 'http://product2.video', 23, '2023-05-24 14:05:26', '2023-05-18 14:05:26', NULL, '{"Size": "17", "Metal": "Pseudo Gold", "Width": "13.5mm", "Weight": "23g", "Rhodium": "Yes", "Stone Cut": "Round", "Thickness": "2.5mm", "Stone Size": "1.0*1.0mm", "Stone Type": "Lab Created gemstone", "Stone Color": "White", "Carat Weight": "0.02CT/pcs", "Plating Color": "Rosegold/Platinum"}', NULL),
+(21, 'Product d5', 'SKU-21', 110, 23, 1, 'This is product 2', 'http://product2.video', 24, '2023-05-25 14:05:26', '2023-05-18 14:05:26', NULL, '{"Size": "17", "Metal": "Pseudo Gold", "Width": "13.5mm", "Weight": "23g", "Rhodium": "Yes", "Stone Cut": "Round", "Thickness": "2.5mm", "Stone Size": "1.0*1.0mm", "Stone Type": "Lab Created gemstone", "Stone Color": "White", "Carat Weight": "0.02CT/pcs", "Plating Color": "Rosegold/Platinum"}', NULL),
+(22, 'Product j90', 'SKU-22', 110, 24, 1, 'This is product 2', 'http://product2.video', 25, '2023-05-26 14:05:26', '2023-05-18 14:05:26', NULL, '{"Size": "17", "Metal": "Pseudo Gold", "Width": "13.5mm", "Weight": "23g", "Rhodium": "Yes", "Stone Cut": "Round", "Thickness": "2.5mm", "Stone Size": "1.0*1.0mm", "Stone Type": "Lab Created gemstone", "Stone Color": "White", "Carat Weight": "0.02CT/pcs", "Plating Color": "Rosegold/Platinum"}', NULL),
+(23, 'Product ds712', 'SKU-23', 110, 25, 1, 'This is product 2', 'http://product2.video', 31, '2023-05-26 23:05:26', '2023-05-18 14:05:26', NULL, '{"Size": "17", "Metal": "Pseudo Gold", "Width": "13.5mm", "Weight": "23g", "Rhodium": "Yes", "Stone Cut": "Round", "Thickness": "2.5mm", "Stone Size": "1.0*1.0mm", "Stone Type": "Lab Created gemstone", "Stone Color": "White", "Carat Weight": "0.02CT/pcs", "Plating Color": "Rosegold/Platinum"}', NULL),
+(24, 'Product p9', 'SKU-24', 110, 99, 1, 'This is product 2', 'http://product2.video', 32, '2023-05-28 14:05:26', '2023-05-18 14:05:26', NULL, '{"Size": "17", "Metal": "Pseudo Gold", "Width": "13.5mm", "Weight": "23g", "Rhodium": "Yes", "Stone Cut": "Round", "Thickness": "2.5mm", "Stone Size": "1.0*1.0mm", "Stone Type": "Lab Created gemstone", "Stone Color": "White", "Carat Weight": "0.02CT/pcs", "Plating Color": "Rosegold/Platinum"}', NULL);
 
--- 导出  表 swetelove.product_attributes 结构
-CREATE TABLE IF NOT EXISTS `cadon_stunring_product_attributes` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `product_id` int NOT NULL COMMENT '商品ID',
-  `attribute_id` int NOT NULL COMMENT '属性ID',
-  `value_id` int NOT NULL COMMENT '属性值ID',
-  `price_adjustment` decimal(10,2) DEFAULT NULL COMMENT '价格调整',
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='商品属性表';
+-- END TABLE cadon_stunring_products
 
--- 正在导出表  swetelove.product_attributes 的数据：~29 rows (大约)
-DELETE FROM `cadon_stunring_product_attributes`;
-INSERT INTO `cadon_stunring_product_attributes` (`id`, `product_id`, `attribute_id`, `value_id`, `price_adjustment`, `created_at`, `updated_at`, `deleted_at`) VALUES
-	(1, 4, 1, 1, 0.00, '2023-06-04 13:11:49', '2023-06-04 13:11:49', NULL),
-	(2, 4, 1, 2, 0.00, '2023-06-04 13:11:49', '2023-06-04 13:11:49', NULL),
-	(3, 4, 1, 3, 0.00, '2023-06-04 13:11:49', '2023-06-04 13:11:49', NULL),
-	(4, 4, 1, 4, 0.00, '2023-06-04 13:11:49', '2023-06-04 13:11:49', NULL),
-	(5, 4, 1, 5, 0.00, '2023-06-04 13:11:49', '2023-06-04 13:11:49', NULL),
-	(6, 4, 2, 6, -50.00, '2023-06-04 13:11:49', '2023-06-04 13:11:49', NULL),
-	(7, 4, 2, 7, -50.00, '2023-06-04 13:11:49', '2023-06-04 13:11:49', NULL),
-	(8, 4, 2, 8, -50.00, '2023-06-04 13:11:49', '2023-06-04 13:11:49', NULL),
-	(9, 4, 2, 9, -50.00, '2023-06-04 13:11:49', '2023-06-04 13:11:49', NULL),
-	(10, 4, 2, 10, -50.00, '2023-06-04 13:11:49', '2023-06-04 13:11:49', NULL),
-	(11, 5, 3, 11, 0.00, '2023-06-04 13:11:49', '2023-06-04 13:11:49', NULL),
-	(12, 5, 3, 12, 0.00, '2023-06-04 13:11:49', '2023-06-04 13:11:49', NULL),
-	(13, 5, 3, 13, 0.00, '2023-06-04 13:11:49', '2023-06-04 13:11:49', NULL),
-	(14, 5, 3, 14, -20.00, '2023-06-04 13:11:49', '2023-06-04 13:11:49', NULL),
-	(15, 5, 3, 15, -20.00, '2023-06-04 13:11:49', '2023-06-04 13:11:49', NULL),
-	(16, 5, 4, 16, 100.00, '2023-06-04 13:11:49', '2023-06-04 13:11:49', NULL),
-	(17, 5, 4, 17, -50.00, '2023-06-04 13:11:49', '2023-06-04 13:11:49', NULL),
-	(18, 5, 4, 18, -100.00, '2023-06-04 13:11:49', '2023-06-04 13:11:49', NULL),
-	(19, 5, 4, 19, -50.00, '2023-06-04 13:11:49', '2023-06-04 13:11:49', NULL),
-	(20, 5, 4, 20, -50.00, '2023-06-04 13:11:49', '2023-06-04 13:11:49', NULL),
-	(21, 6, 5, 21, -10.00, '2023-06-04 13:11:49', '2023-06-04 13:11:49', NULL),
-	(22, 6, 5, 22, -10.00, '2023-06-04 13:11:49', '2023-06-04 13:11:49', NULL),
-	(23, 6, 5, 23, -10.00, '2023-06-04 13:11:49', '2023-06-04 13:11:49', NULL),
-	(24, 6, 5, 24, -10.00, '2023-06-04 13:11:49', '2023-06-04 13:11:49', NULL),
-	(25, 6, 5, 25, -10.00, '2023-06-04 13:11:49', '2023-06-04 13:11:49', NULL),
-	(26, 6, 6, 26, -10.00, '2023-06-04 13:11:49', '2023-06-04 13:11:49', NULL),
-	(27, 6, 6, 27, -10.00, '2023-06-04 13:11:49', '2023-06-04 13:11:49', NULL),
-	(28, 6, 6, 28, -10.00, '2023-06-04 13:11:49', '2023-06-04 13:11:49', NULL),
-	(29, 6, 6, 29, -10.00, '2023-06-04 13:11:49', '2023-06-04 13:11:49', NULL);
-
--- 导出  表 swetelove.product_categories 结构
-CREATE TABLE IF NOT EXISTS `cadon_stunring_product_categories` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `product_id` int NOT NULL COMMENT '商品ID',
-  `category_id` int NOT NULL COMMENT '分类ID',
-  `parent_id` int DEFAULT NULL COMMENT '父级分类ID',
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='商品分类表';
-
--- 正在导出表  swetelove.product_categories 的数据：~23 rows (大约)
-DELETE FROM `cadon_stunring_product_categories`;
-INSERT INTO `cadon_stunring_product_categories` (`id`, `product_id`, `category_id`, `parent_id`, `created_at`, `updated_at`, `deleted_at`) VALUES
-	(8, 5, 2, NULL, '2023-05-18 14:11:11', '2023-05-18 14:11:11', NULL),
-	(9, 4, 1, NULL, '2023-06-12 11:58:37', '2023-06-12 11:58:37', NULL),
-	(10, 5, 1, NULL, '2023-06-12 11:58:37', '2023-06-12 11:58:37', NULL),
-	(11, 6, 1, NULL, '2023-06-12 11:58:37', '2023-06-12 11:58:37', NULL),
-	(12, 7, 1, NULL, '2023-06-12 11:58:37', '2023-06-12 11:58:37', NULL),
-	(13, 8, 1, NULL, '2023-06-12 11:58:37', '2023-06-12 11:58:37', NULL),
-	(14, 9, 1, NULL, '2023-06-12 11:58:37', '2023-06-12 11:58:37', NULL),
-	(15, 10, 1, NULL, '2023-06-12 11:58:37', '2023-06-12 11:58:37', NULL),
-	(16, 11, 1, NULL, '2023-06-12 11:58:37', '2023-06-12 11:58:37', NULL),
-	(17, 12, 1, NULL, '2023-06-12 11:58:37', '2023-06-12 11:58:37', NULL),
-	(18, 13, 1, NULL, '2023-06-12 11:58:37', '2023-06-12 11:58:37', NULL),
-	(19, 14, 1, NULL, '2023-06-12 11:58:37', '2023-06-12 11:58:37', NULL),
-	(20, 15, 1, NULL, '2023-06-12 11:58:37', '2023-06-12 11:58:37', NULL),
-	(21, 16, 1, NULL, '2023-06-12 11:58:37', '2023-06-12 11:58:37', NULL),
-	(22, 17, 1, NULL, '2023-06-12 11:58:37', '2023-06-12 11:58:37', NULL),
-	(23, 18, 1, NULL, '2023-06-12 11:58:37', '2023-06-12 11:58:37', NULL),
-	(24, 19, 1, NULL, '2023-06-12 11:58:37', '2023-06-12 11:58:37', NULL),
-	(25, 20, 1, NULL, '2023-06-12 11:58:37', '2023-06-12 11:58:37', NULL),
-	(26, 21, 1, NULL, '2023-06-12 11:58:37', '2023-06-12 11:58:37', NULL),
-	(27, 22, 1, NULL, '2023-06-12 11:58:37', '2023-06-12 11:58:37', NULL),
-	(28, 23, 1, NULL, '2023-06-12 11:58:37', '2023-06-12 11:58:37', NULL),
-	(29, 24, 1, NULL, '2023-06-12 11:58:37', '2023-06-12 11:58:37', NULL);
-
--- 导出  表 swetelove.product_extensions 结构
-CREATE TABLE IF NOT EXISTS `cadon_stunring_product_extensions` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `product_id` int DEFAULT NULL,
-  `sku` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `carat` float DEFAULT NULL,
-  `stone_cut` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `stone_color` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `plating_color` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `style` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `occasion` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `recipient` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- 正在导出表  swetelove.product_extensions 的数据：~21 rows (大约)
-DELETE FROM `cadon_stunring_product_extensions`;
-INSERT INTO `cadon_stunring_product_extensions` (`id`, `product_id`, `sku`, `carat`, `stone_cut`, `stone_color`, `plating_color`, `style`, `occasion`, `recipient`, `created_at`, `updated_at`) VALUES
-	(1, 4, 'SKU-4', 1, 'Round', 'White', 'Silver', 'Classic', 'Anniversary', 'Mother', '2023-06-25 01:56:16', '2023-06-25 01:56:16'),
-	(2, 5, 'SKU-5', 1.5, 'Princess', 'Blue', 'Gold', 'Modern', 'Birthday', 'Father', '2023-06-25 01:56:16', '2023-06-25 01:56:16'),
-	(3, 6, 'SKU-6', 2, 'Emerald', 'Green', 'Rose Gold', 'Vintage', 'Wedding', 'Sister', '2023-06-25 01:56:16', '2023-06-25 01:56:16'),
-	(4, 7, 'SKU-7', 2.5, 'Asscher', 'Yellow', 'Platinum', 'Art Deco', 'Graduation', 'Brother', '2023-06-25 01:56:16', '2023-06-25 01:56:16'),
-	(5, 8, 'SKU-8', 1, 'Oval', 'Red', 'Silver', 'Romantic', 'Promotion', 'Aunt', '2023-06-25 01:56:16', '2023-06-25 01:56:16'),
-	(6, 9, 'SKU-9', 1.5, 'Pear', 'Orange', 'Gold', 'Casual', 'New Job', 'Uncle', '2023-06-25 01:56:16', '2023-06-25 01:56:16'),
-	(7, 10, 'SKU-10', 2, 'Marquise', 'Pink', 'Rose Gold', 'Formal', 'New Home', 'Cousin', '2023-06-25 01:56:16', '2023-06-25 01:56:16'),
-	(8, 11, 'SKU-11', 2.5, 'Heart', 'Purple', 'Platinum', 'Extravagant', 'Baby Birth', 'Grandparent', '2023-06-25 01:56:16', '2023-06-25 01:56:16'),
-	(9, 12, 'SKU-12', 1, 'Cushion', 'Violet', 'Silver', 'Classic', 'Achievement', 'Co-worker', '2023-06-25 01:56:16', '2023-06-25 01:56:16'),
-	(10, 13, 'SKU-13', 1.5, 'Radiant', 'Indigo', 'Gold', 'Vintage', 'Retirement', 'Boss', '2023-06-25 01:56:16', '2023-06-25 01:56:16'),
-	(11, 14, 'SKU-14', 2, 'Princess', 'Blue', 'Rose Gold', 'Modern', 'Wedding', 'Bride', '2023-06-25 01:56:16', '2023-06-25 01:56:16'),
-	(12, 15, 'SKU-15', 2.5, 'Round', 'Green', 'Platinum', 'Formal', 'Graduation', 'Groom', '2023-06-25 01:56:16', '2023-06-25 01:56:16'),
-	(13, 16, 'SKU-16', 1, 'Asscher', 'Yellow', 'Silver', 'Classic', 'Anniversary', 'Sister', '2023-06-25 01:56:16', '2023-06-25 01:56:16'),
-	(14, 17, 'SKU-17', 1.5, 'Emerald', 'White', 'Gold', 'Romantic', 'Promotion', 'Brother', '2023-06-25 01:56:16', '2023-06-25 01:56:16'),
-	(15, 18, 'SKU-18', 2, 'Oval', 'Black', 'Rose Gold', 'Casual', 'New Job', 'Mother', '2023-06-25 01:56:16', '2023-06-25 01:56:16'),
-	(16, 19, 'SKU-19', 2.5, 'Pear', 'Red', 'Platinum', 'Extravagant', 'New Home', 'Father', '2023-06-25 01:56:16', '2023-06-25 01:56:16'),
-	(17, 20, 'SKU-20', 1, 'Marquise', 'Orange', 'Silver', 'Vintage', 'Baby Birth', 'Cousin', '2023-06-25 01:56:16', '2023-06-25 01:56:16'),
-	(18, 21, 'SKU-21', 1.5, 'Heart', 'Pink', 'Gold', 'Modern', 'Achievement', 'Aunt', '2023-06-25 01:56:16', '2023-06-25 01:56:16'),
-	(19, 22, 'SKU-22', 2, 'Cushion', 'Purple', 'Rose Gold', 'Formal', 'Retirement', 'Uncle', '2023-06-25 01:56:16', '2023-06-25 01:56:16'),
-	(20, 23, 'SKU-23', 2.5, 'Radiant', 'Violet', 'Platinum', 'Romantic', 'Wedding', 'Grandparent', '2023-06-25 01:56:16', '2023-06-25 01:56:16'),
-	(21, 24, 'SKU-24', 1, 'Princess', 'Indigo', 'Silver', 'Casual', 'Graduation', 'Co-worker', '2023-06-25 01:56:16', '2023-06-25 01:56:16');
-
--- 导出  表 swetelove.reviews 结构
-CREATE TABLE IF NOT EXISTS `cadon_stunring_reviews` (
+-- BEGIN TABLE cadon_stunring_reviews
+DROP TABLE IF EXISTS cadon_stunring_reviews;
+CREATE TABLE `cadon_stunring_reviews` (
   `id` int NOT NULL AUTO_INCREMENT,
   `product_id` int DEFAULT NULL COMMENT '商品ID',
   `user_id` int DEFAULT NULL COMMENT '用户ID',
@@ -451,27 +658,31 @@ CREATE TABLE IF NOT EXISTS `cadon_stunring_reviews` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
+  `review_images` json DEFAULT NULL COMMENT '评价图片',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='评价表';
 
--- 正在导出表  swetelove.reviews 的数据：~12 rows (大约)
-DELETE FROM `cadon_stunring_reviews`;
-INSERT INTO `cadon_stunring_reviews` (`id`, `product_id`, `user_id`, `rating`, `review_text`, `created_at`, `updated_at`, `deleted_at`) VALUES
-	(1, 4, 1, 5, 'Great product!', '2023-05-18 14:10:44', '2023-05-18 14:10:44', NULL),
-	(2, 5, 2, 4, 'Good product!', '2023-05-18 14:10:44', '2023-05-18 14:10:44', NULL),
-	(3, 1, 1, 5, 'I love this ring! It is so beautiful and sparkly.', '2023-06-04 13:14:09', '2023-06-04 13:14:09', NULL),
-	(4, 1, 2, 4, 'This ring is very nice but a bit too expensive for me.', '2023-06-04 13:14:09', '2023-06-04 13:14:09', NULL),
-	(5, 1, 3, 3, 'The ring is okay but the color is not what I expected.', '2023-06-04 13:14:09', '2023-06-04 13:14:09', NULL),
-	(6, 1, 4, 2, 'I don’t like this ring at all. It looks cheap and fake.', '2023-06-04 13:14:09', '2023-06-04 13:14:09', NULL),
-	(7, 1, 5, 1, 'This ring is terrible! It broke after one week of wearing it.', '2023-06-04 13:14:09', '2023-06-04 13:14:09', NULL),
-	(8, 2, 6, 5, 'This necklace is amazing! It is so elegant and classy.', '2023-06-04 13:14:09', '2023-06-04 13:14:09', NULL),
-	(9, 2, 7, 4, 'This necklace is pretty but a bit too long for me.', '2023-06-04 13:14:09', '2023-06-04 13:14:09', NULL),
-	(10, 2, 8, 3, 'The necklace is fine but the pearls are not very shiny.', '2023-06-04 13:14:09', '2023-06-04 13:14:09', NULL),
-	(17, 2, 9, 2, 'I hate this necklace! It is so heavy and uncomfortable.', '2023-06-04 13:14:09', '2023-06-04 13:14:09', NULL),
-	(18, 2, 10, 1, 'This necklace is awful! It gave me a rash on my neck.', '2023-06-04 13:14:09', '2023-06-04 13:14:09', NULL);
+-- Inserting 12 rows into cadon_stunring_reviews
+-- Insert batch #1
+INSERT INTO cadon_stunring_reviews (id, product_id, user_id, rating, review_text, created_at, updated_at, deleted_at, review_images) VALUES
+(1, 4, 1, 5, 'Great product!', '2023-05-18 14:10:44', '2023-06-29 13:38:45', NULL, '["/1.jpg"]'),
+(2, 5, 2, 4, 'Good product!', '2023-05-18 14:10:44', '2023-06-29 13:39:28', NULL, '["/284725477_10223201818608621_2801487919247514155_n.jpg"]'),
+(3, 1, 1, 5, 'I love this ring! It is so beautiful and sparkly.', '2023-06-04 13:14:09', '2023-06-04 13:14:09', NULL, NULL),
+(4, 1, 2, 4, 'This ring is very nice but a bit too expensive for me.', '2023-06-04 13:14:09', '2023-06-04 13:14:09', NULL, NULL),
+(5, 1, 3, 3, 'The ring is okay but the color is not what I expected.', '2023-06-04 13:14:09', '2023-06-04 13:14:09', NULL, NULL),
+(6, 1, 4, 2, 'I don’t like this ring at all. It looks cheap and fake.', '2023-06-04 13:14:09', '2023-06-04 13:14:09', NULL, NULL),
+(7, 1, 5, 1, 'This ring is terrible! It broke after one week of wearing it.', '2023-06-04 13:14:09', '2023-06-04 13:14:09', NULL, NULL),
+(8, 2, 6, 5, 'This necklace is amazing! It is so elegant and classy.', '2023-06-04 13:14:09', '2023-06-04 13:14:09', NULL, NULL),
+(9, 2, 7, 4, 'This necklace is pretty but a bit too long for me.', '2023-06-04 13:14:09', '2023-06-04 13:14:09', NULL, NULL),
+(10, 2, 8, 3, 'The necklace is fine but the pearls are not very shiny.', '2023-06-04 13:14:09', '2023-06-04 13:14:09', NULL, NULL),
+(17, 2, 9, 2, 'I hate this necklace! It is so heavy and uncomfortable.', '2023-06-04 13:14:09', '2023-06-04 13:14:09', NULL, NULL),
+(18, 2, 10, 1, 'This necklace is awful! It gave me a rash on my neck.', '2023-06-04 13:14:09', '2023-06-04 13:14:09', NULL, NULL);
 
--- 导出  表 swetelove.settings 结构
-CREATE TABLE IF NOT EXISTS `cadon_stunring_settings` (
+-- END TABLE cadon_stunring_reviews
+
+-- BEGIN TABLE cadon_stunring_settings
+DROP TABLE IF EXISTS cadon_stunring_settings;
+CREATE TABLE `cadon_stunring_settings` (
   `id` int NOT NULL AUTO_INCREMENT COMMENT '记录ID',
   `code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '设置代码',
   `value` json DEFAULT NULL COMMENT '设置值',
@@ -480,13 +691,677 @@ CREATE TABLE IF NOT EXISTS `cadon_stunring_settings` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- 正在导出表  swetelove.settings 的数据：~0 rows (大约)
-DELETE FROM `cadon_stunring_settings`;
-INSERT INTO `cadon_stunring_settings` (`id`, `code`, `value`, `created_at`, `updated_at`) VALUES
-	(1, 'filter', '{"price": [{"label": "0.00-50.00", "value": "0-50"}, {"label": "50.00-100.00", "value": "50-100"}, {"label": "100.00-150.00", "value": "100-150"}, {"label": "150.00-200.00", "value": "150-200"}, {"label": "200.00-250.00", "value": "200-250"}, {"label": "250.00-300.00", "value": "250-300"}, {"label": "300.00-350.00", "value": "300-350"}, {"label": "350.00-400.00", "value": "350-400"}, {"label": "400.00-450.00", "value": "400-450"}, {"label": "600.00 and above", "value": "600-9999"}], "style": [{"label": "Classic", "value": "classic"}, {"label": "Vintage", "value": "vintage"}, {"label": "Cocktail Rings", "value": "cocktail_rings"}, {"label": "Anniversary", "value": "anniversary"}, {"label": "Art Deco", "value": "art_deco"}, {"label": "Heart", "value": "heart"}, {"label": "Knot, Bowknot, Rope", "value": "knot_bowknot_rope"}, {"label": "Solitaire", "value": "solitaire"}, {"label": "Eternity", "value": "eternity"}, {"label": "Half Eternity", "value": "half_eternity"}, {"label": "Halo", "value": "halo"}, {"label": "Three Stone", "value": "three_stone"}, {"label": "Multi Row", "value": "multi_row"}, {"label": "Single Row", "value": "single_row"}, {"label": "Split Shank", "value": "split_shank"}, {"label": "Promise Rings", "value": "promise_rings"}, {"label": "Trio Wedding Sets", "value": "trio_wedding_sets"}, {"label": "Skull", "value": "skull"}, {"label": "Animal", "value": "animal"}, {"label": "Nature", "value": "nature"}], "occasion": [{"label": "Valentine\'s Day", "value": "valentines_day"}, {"label": "Mother\'s Day", "value": "mothers_day"}, {"label": "Father\'s Day", "value": "fathers_day"}, {"label": "Birthday", "value": "birthday"}, {"label": "Thanksgiving Day", "value": "thanksgiving_day"}, {"label": "Merry Christmas", "value": "merry_christmas"}, {"label": "Halloween", "value": "halloween"}, {"label": "Graduation", "value": "graduation"}], "recipient": [{"label": "For Her", "value": "for_her"}, {"label": "For Him", "value": "for_him"}, {"label": "For Mom", "value": "for_mom"}, {"label": "For Dad", "value": "for_dad"}, {"label": "For Kids", "value": "for_kids"}, {"label": "For Friends", "value": "for_friends"}, {"label": "For Couples", "value": "for_couples"}], "stone_cut": [{"label": "Round", "value": "round"}, {"label": "Oval", "value": "oval"}, {"label": "Cushion", "value": "cushion"}, {"label": "Emerald", "value": "emerald"}, {"label": "Pear", "value": "pear"}, {"label": "Heart", "value": "heart"}, {"label": "Radiant", "value": "radiant"}, {"label": "Asscher", "value": "asscher"}, {"label": "Baguette", "value": "baguette"}, {"label": "Triangle", "value": "triangle"}, {"label": "Marquise", "value": "marquise"}, {"label": "Princess", "value": "princess"}], "carat_range": [{"label": "0-1.00", "value": "0-1"}, {"label": "1.00-1.50", "value": "1-1.5"}, {"label": "1.50-2.00", "value": "1.5-2"}, {"label": "2.00-3.00", "value": "2-3"}, {"label": "3.00-4.00", "value": "3-4"}, {"label": "4.00 and above", "value": "4-1000"}], "stone_color": [{"label": "White", "value": "white"}, {"label": "Ruby Red", "value": "ruby_red"}, {"label": "Aquamarine Blue", "value": "aquamarine_blue"}, {"label": "Sapphire Blue", "value": "sapphire_blue"}, {"label": "Blue Topaz", "value": "blue_topaz"}, {"label": "Emerald Green", "value": "emerald_green"}, {"label": "Peridot Green", "value": "peridot_green"}, {"label": "Fancy Pink", "value": "fancy_pink"}, {"label": "Yellow", "value": "yellow"}, {"label": "Multicolor", "value": "multicolor"}, {"label": "Champagne Morganite", "value": "champagne_morganite"}, {"label": "Black", "value": "black"}, {"label": "Orange", "value": "orange"}, {"label": "Amethyst Purple", "value": "amethyst_purple"}, {"label": "Chocolate", "value": "chocolate"}, {"label": "Watermelon", "value": "watermelon"}, {"label": "Pearl", "value": "pearl"}], "plating_color": [{"label": "Platinum", "value": "platinum"}, {"label": "Yellow Gold", "value": "yellow_gold"}, {"label": "Rose Gold", "value": "rose_gold"}, {"label": "Black", "value": "black"}, {"label": "Two Tone", "value": "two_tone"}]}', '2023-06-15 06:47:39', '2023-06-15 16:21:10');
+-- Inserting 1 row into cadon_stunring_settings
+-- Insert batch #1
+INSERT INTO cadon_stunring_settings (id, code, `value`, created_at, updated_at) VALUES
+(1, 'filter', '{"price": [{"label": "0.00-50.00", "value": "0-50"}, {"label": "50.00-100.00", "value": "50-100"}, {"label": "100.00-150.00", "value": "100-150"}, {"label": "150.00-200.00", "value": "150-200"}, {"label": "200.00-250.00", "value": "200-250"}, {"label": "250.00-300.00", "value": "250-300"}, {"label": "300.00-350.00", "value": "300-350"}, {"label": "350.00-400.00", "value": "350-400"}, {"label": "400.00-450.00", "value": "400-450"}, {"label": "600.00 and above", "value": "600-9999"}], "style": [{"label": "Classic", "value": "classic"}, {"label": "Vintage", "value": "vintage"}, {"label": "Cocktail Rings", "value": "cocktail_rings"}, {"label": "Anniversary", "value": "anniversary"}, {"label": "Art Deco", "value": "art_deco"}, {"label": "Heart", "value": "heart"}, {"label": "Knot, Bowknot, Rope", "value": "knot_bowknot_rope"}, {"label": "Solitaire", "value": "solitaire"}, {"label": "Eternity", "value": "eternity"}, {"label": "Half Eternity", "value": "half_eternity"}, {"label": "Halo", "value": "halo"}, {"label": "Three Stone", "value": "three_stone"}, {"label": "Multi Row", "value": "multi_row"}, {"label": "Single Row", "value": "single_row"}, {"label": "Split Shank", "value": "split_shank"}, {"label": "Promise Rings", "value": "promise_rings"}, {"label": "Trio Wedding Sets", "value": "trio_wedding_sets"}, {"label": "Skull", "value": "skull"}, {"label": "Animal", "value": "animal"}, {"label": "Nature", "value": "nature"}], "occasion": [{"label": "Valentine''s Day", "value": "valentines_day"}, {"label": "Mother''s Day", "value": "mothers_day"}, {"label": "Father''s Day", "value": "fathers_day"}, {"label": "Birthday", "value": "birthday"}, {"label": "Thanksgiving Day", "value": "thanksgiving_day"}, {"label": "Merry Christmas", "value": "merry_christmas"}, {"label": "Halloween", "value": "halloween"}, {"label": "Graduation", "value": "graduation"}], "recipient": [{"label": "For Her", "value": "for_her"}, {"label": "For Him", "value": "for_him"}, {"label": "For Mom", "value": "for_mom"}, {"label": "For Dad", "value": "for_dad"}, {"label": "For Kids", "value": "for_kids"}, {"label": "For Friends", "value": "for_friends"}, {"label": "For Couples", "value": "for_couples"}], "stone_cut": [{"label": "Round", "value": "round"}, {"label": "Oval", "value": "oval"}, {"label": "Cushion", "value": "cushion"}, {"label": "Emerald", "value": "emerald"}, {"label": "Pear", "value": "pear"}, {"label": "Heart", "value": "heart"}, {"label": "Radiant", "value": "radiant"}, {"label": "Asscher", "value": "asscher"}, {"label": "Baguette", "value": "baguette"}, {"label": "Triangle", "value": "triangle"}, {"label": "Marquise", "value": "marquise"}, {"label": "Princess", "value": "princess"}], "carat_range": [{"label": "0-1.00", "value": "0-1"}, {"label": "1.00-1.50", "value": "1-1.5"}, {"label": "1.50-2.00", "value": "1.5-2"}, {"label": "2.00-3.00", "value": "2-3"}, {"label": "3.00-4.00", "value": "3-4"}, {"label": "4.00 and above", "value": "4-1000"}], "stone_color": [{"label": "White", "value": "white"}, {"label": "Ruby Red", "value": "ruby_red"}, {"label": "Aquamarine Blue", "value": "aquamarine_blue"}, {"label": "Sapphire Blue", "value": "sapphire_blue"}, {"label": "Blue Topaz", "value": "blue_topaz"}, {"label": "Emerald Green", "value": "emerald_green"}, {"label": "Peridot Green", "value": "peridot_green"}, {"label": "Fancy Pink", "value": "fancy_pink"}, {"label": "Yellow", "value": "yellow"}, {"label": "Multicolor", "value": "multicolor"}, {"label": "Champagne Morganite", "value": "champagne_morganite"}, {"label": "Black", "value": "black"}, {"label": "Orange", "value": "orange"}, {"label": "Amethyst Purple", "value": "amethyst_purple"}, {"label": "Chocolate", "value": "chocolate"}, {"label": "Watermelon", "value": "watermelon"}, {"label": "Pearl", "value": "pearl"}], "plating_color": [{"label": "Platinum", "value": "platinum"}, {"label": "Yellow Gold", "value": "yellow_gold"}, {"label": "Rose Gold", "value": "rose_gold"}, {"label": "Black", "value": "black"}, {"label": "Two Tone", "value": "two_tone"}]}', '2023-06-15 06:47:39', '2023-06-15 16:21:10');
 
-/*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
-/*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
-/*!40014 SET FOREIGN_KEY_CHECKS=IFNULL(@OLD_FOREIGN_KEY_CHECKS, 1) */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40111 SET SQL_NOTES=IFNULL(@OLD_SQL_NOTES, 1) */;
+-- END TABLE cadon_stunring_settings
+
+-- BEGIN TABLE cms_theme_data
+DROP TABLE IF EXISTS cms_theme_data;
+CREATE TABLE `cms_theme_data` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `theme` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `data` mediumtext COLLATE utf8mb4_unicode_ci,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `cms_theme_data_theme_index` (`theme`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Table cms_theme_data contains no data. No inserts have been genrated.
+-- Inserting 0 rows into cms_theme_data
+
+
+-- END TABLE cms_theme_data
+
+-- BEGIN TABLE cms_theme_logs
+DROP TABLE IF EXISTS cms_theme_logs;
+CREATE TABLE `cms_theme_logs` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `type` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `theme` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `template` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `old_template` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `content` longtext COLLATE utf8mb4_unicode_ci,
+  `old_content` longtext COLLATE utf8mb4_unicode_ci,
+  `user_id` int DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `cms_theme_logs_type_index` (`type`),
+  KEY `cms_theme_logs_theme_index` (`theme`),
+  KEY `cms_theme_logs_user_id_index` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Table cms_theme_logs contains no data. No inserts have been genrated.
+-- Inserting 0 rows into cms_theme_logs
+
+
+-- END TABLE cms_theme_logs
+
+-- BEGIN TABLE cms_theme_templates
+DROP TABLE IF EXISTS cms_theme_templates;
+CREATE TABLE `cms_theme_templates` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `source` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `path` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `content` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `file_size` int unsigned NOT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `deleted_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `cms_theme_templates_source_index` (`source`),
+  KEY `cms_theme_templates_path_index` (`path`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Table cms_theme_templates contains no data. No inserts have been genrated.
+-- Inserting 0 rows into cms_theme_templates
+
+
+-- END TABLE cms_theme_templates
+
+-- BEGIN TABLE deferred_bindings
+DROP TABLE IF EXISTS deferred_bindings;
+CREATE TABLE `deferred_bindings` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `master_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `master_field` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `slave_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `slave_id` int NOT NULL,
+  `pivot_data` mediumtext COLLATE utf8mb4_unicode_ci,
+  `session_key` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `is_bind` tinyint(1) NOT NULL DEFAULT '1',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Table deferred_bindings contains no data. No inserts have been genrated.
+-- Inserting 0 rows into deferred_bindings
+
+
+-- END TABLE deferred_bindings
+
+-- BEGIN TABLE failed_jobs
+DROP TABLE IF EXISTS failed_jobs;
+CREATE TABLE `failed_jobs` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `connection` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `queue` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `payload` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `exception` longtext COLLATE utf8mb4_unicode_ci,
+  `failed_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Table failed_jobs contains no data. No inserts have been genrated.
+-- Inserting 0 rows into failed_jobs
+
+
+-- END TABLE failed_jobs
+
+-- BEGIN TABLE jobs
+DROP TABLE IF EXISTS jobs;
+CREATE TABLE `jobs` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `queue` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `payload` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `attempts` tinyint unsigned NOT NULL,
+  `reserved_at` int unsigned DEFAULT NULL,
+  `available_at` int unsigned NOT NULL,
+  `created_at` int unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `jobs_queue_reserved_at_index` (`queue`,`reserved_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Table jobs contains no data. No inserts have been genrated.
+-- Inserting 0 rows into jobs
+
+
+-- END TABLE jobs
+
+-- BEGIN TABLE migrations
+DROP TABLE IF EXISTS migrations;
+CREATE TABLE `migrations` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `batch` int NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Inserting 36 rows into migrations
+-- Insert batch #1
+INSERT INTO migrations (id, migration, batch) VALUES
+(1, '2013_10_01_000001_Db_Deferred_Bindings', 1),
+(2, '2013_10_01_000002_Db_System_Files', 1),
+(3, '2013_10_01_000003_Db_System_Plugin_Versions', 1),
+(4, '2013_10_01_000004_Db_System_Plugin_History', 1),
+(5, '2013_10_01_000005_Db_System_Settings', 1),
+(6, '2013_10_01_000006_Db_System_Parameters', 1),
+(7, '2013_10_01_000008_Db_System_Mail_Templates', 1),
+(8, '2013_10_01_000009_Db_System_Mail_Layouts', 1),
+(9, '2014_10_01_000010_Db_Jobs', 1),
+(10, '2014_10_01_000011_Db_System_Event_Logs', 1),
+(11, '2014_10_01_000012_Db_System_Request_Logs', 1),
+(12, '2014_10_01_000013_Db_System_Sessions', 1),
+(13, '2015_10_01_000016_Db_Cache', 1),
+(14, '2015_10_01_000017_Db_System_Revisions', 1),
+(15, '2015_10_01_000018_Db_FailedJobs', 1),
+(16, '2017_10_01_000023_Db_System_Mail_Partials', 1),
+(17, '2021_10_01_000025_Db_Add_Pivot_Data_To_Deferred_Bindings', 1),
+(18, '2022_10_01_000026_Db_System_Site_Definitions', 1),
+(19, '2023_10_01_000027_Db_Add_Site_To_Settings', 1),
+(20, '2013_10_01_000001_Db_Backend_Users', 2),
+(21, '2013_10_01_000002_Db_Backend_User_Groups', 2),
+(22, '2013_10_01_000003_Db_Backend_Users_Groups', 2),
+(23, '2013_10_01_000004_Db_Backend_User_Throttle', 2),
+(24, '2014_01_04_000005_Db_Backend_User_Preferences', 2),
+(25, '2014_10_01_000006_Db_Backend_Access_Log', 2),
+(26, '2017_10_01_000010_Db_Backend_User_Roles', 2),
+(27, '2018_12_16_000011_Db_Backend_Add_Deleted_At', 2),
+(28, '2022_10_01_000012_Db_Backend_User_Roles_Sortable', 2),
+(29, '2023_10_01_000013_Db_Add_Site_To_Preferences', 2),
+(30, '2014_10_01_000001_Db_Cms_Theme_Data', 3),
+(31, '2017_10_01_000003_Db_Cms_Theme_Logs', 3),
+(32, '2018_11_01_000001_Db_Cms_Theme_Templates', 3),
+(33, '2021_05_01_000001_Db_Tailor_Globals', 4),
+(34, '2021_05_01_000002_Db_Tailor_Content', 4),
+(35, '2021_06_01_000003_Db_Tailor_PreviewToken', 4),
+(36, '2023_10_01_000004_Db_Tailor_Content_Joins', 4);
+
+-- END TABLE migrations
+
+-- BEGIN TABLE sessions
+DROP TABLE IF EXISTS sessions;
+CREATE TABLE `sessions` (
+  `id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `payload` text COLLATE utf8mb4_unicode_ci,
+  `last_activity` int DEFAULT NULL,
+  `user_id` int unsigned DEFAULT NULL,
+  `ip_address` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `user_agent` text COLLATE utf8mb4_unicode_ci,
+  UNIQUE KEY `sessions_id_unique` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Table sessions contains no data. No inserts have been genrated.
+-- Inserting 0 rows into sessions
+
+
+-- END TABLE sessions
+
+-- BEGIN TABLE system_event_logs
+DROP TABLE IF EXISTS system_event_logs;
+CREATE TABLE `system_event_logs` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `level` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `message` text COLLATE utf8mb4_unicode_ci,
+  `details` mediumtext COLLATE utf8mb4_unicode_ci,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `system_event_logs_level_index` (`level`)
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Inserting 16 rows into system_event_logs
+-- Insert batch #1
+INSERT INTO system_event_logs (id, `level`, message, details, created_at, updated_at) VALUES
+(1, 'error', 'UnexpectedValueException: DirectoryIterator::__construct(/Users/joe/Documents/www/admin/themes): Failed to open directory: No such file or directory in /Users/joe/Documents/www/admin/modules/cms/classes/Theme.php:394\nStack trace:\n#0 /Users/joe/Documents/www/admin/modules/cms/classes/Theme.php(394): DirectoryIterator->__construct(''/Users/joe/Docu...'')\n#1 /Users/joe/Documents/www/admin/modules/cms/classes/Theme.php(418): Cms\\Classes\\Theme::all()\n#2 /Users/joe/Documents/www/admin/modules/cms/controllers/themes.php(74): Cms\\Classes\\Theme::allAvailable()\n#3 /Users/joe/Documents/www/admin/modules/system/traits/DependencyMaker.php(29): Cms\\Controllers\\Themes->index()\n#4 /Users/joe/Documents/www/admin/modules/backend/classes/Controller.php(383): Backend\\Classes\\Controller->makeCallMethod(Object(Cms\\Controllers\\Themes), ''index'', Array)\n#5 /Users/joe/Documents/www/admin/modules/backend/classes/Controller.php(265): Backend\\Classes\\Controller->execPageAction(''index'', Array)\n#6 /Users/joe/Documents/www/admin/modules/backend/classes/BackendController.php(98): Backend\\Classes\\Controller->run(''index'', Array)\n#7 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/Controller.php(54): Backend\\Classes\\BackendController->run(''cms/themes'')\n#8 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/ControllerDispatcher.php(43): Illuminate\\Routing\\Controller->callAction(''run'', Array)\n#9 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/Route.php(259): Illuminate\\Routing\\ControllerDispatcher->dispatch(Object(Illuminate\\Routing\\Route), Object(Backend\\Classes\\BackendController), ''run'')\n#10 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/Route.php(205): Illuminate\\Routing\\Route->runController()\n#11 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/Router.php(798): Illuminate\\Routing\\Route->run()\n#12 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(141): Illuminate\\Routing\\Router->Illuminate\\Routing\\{closure}(Object(Illuminate\\Http\\Request))\n#13 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/Middleware/SubstituteBindings.php(50): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))\n#14 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Routing\\Middleware\\SubstituteBindings->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#15 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/View/Middleware/ShareErrorsFromSession.php(49): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))\n#16 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\View\\Middleware\\ShareErrorsFromSession->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#17 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Session/Middleware/StartSession.php(121): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))\n#18 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Session/Middleware/StartSession.php(64): Illuminate\\Session\\Middleware\\StartSession->handleStatefulRequest(Object(Illuminate\\Http\\Request), Object(Illuminate\\Session\\Store), Object(Closure))\n#19 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Session\\Middleware\\StartSession->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#20 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Cookie/Middleware/AddQueuedCookiesToResponse.php(37): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))\n#21 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Cookie\\Middleware\\AddQueuedCookiesToResponse->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#22 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Cookie/Middleware/EncryptCookies.php(67): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))\n#23 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Cookie\\Middleware\\EncryptCookies->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#24 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(116): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))\n#25 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/Router.php(797): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))\n#26 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/Router.php(776): Illuminate\\Routing\\Router->runRouteWithinStack(Object(Illuminate\\Routing\\Route), Object(Illuminate\\Http\\Request))\n#27 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/Router.php(740): Illuminate\\Routing\\Router->runRoute(Object(Illuminate\\Http\\Request), Object(Illuminate\\Routing\\Route))\n#28 /Users/joe/Documents/www/admin/vendor/october/rain/src/Router/CoreRouter.php(32): Illuminate\\Routing\\Router->dispatchToRoute(Object(Illuminate\\Http\\Request))\n#29 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(190): October\\Rain\\Router\\CoreRouter->dispatch(Object(Illuminate\\Http\\Request))\n#30 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(141): Illuminate\\Foundation\\Http\\Kernel->Illuminate\\Foundation\\Http\\{closure}(Object(Illuminate\\Http\\Request))\n#31 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/PreventRequestsDuringMaintenance.php(86): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))\n#32 /Users/joe/Documents/www/admin/vendor/october/rain/src/Foundation/Http/Middleware/CheckForMaintenanceMode.php(23): Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#33 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): October\\Rain\\Foundation\\Http\\Middleware\\CheckForMaintenanceMode->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#34 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(116): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))\n#35 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(165): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))\n#36 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(134): Illuminate\\Foundation\\Http\\Kernel->sendRequestThroughRouter(Object(Illuminate\\Http\\Request))\n#37 /Users/joe/Documents/www/admin/index.php(42): Illuminate\\Foundation\\Http\\Kernel->handle(Object(Illuminate\\Http\\Request))\n#38 /Users/joe/Documents/www/admin/vendor/october/rain/src/Foundation/resources/server.php(18): require_once(''/Users/joe/Docu...'')\n#39 {main}', '[]', '2023-06-29 15:36:08', '2023-06-29 15:36:08'),
+(2, 'error', 'UnexpectedValueException: DirectoryIterator::__construct(/Users/joe/Documents/www/admin/themes): Failed to open directory: No such file or directory in /Users/joe/Documents/www/admin/modules/cms/classes/Theme.php:394\nStack trace:\n#0 /Users/joe/Documents/www/admin/modules/cms/classes/Theme.php(394): DirectoryIterator->__construct(''/Users/joe/Docu...'')\n#1 /Users/joe/Documents/www/admin/modules/cms/classes/Theme.php(418): Cms\\Classes\\Theme::all()\n#2 /Users/joe/Documents/www/admin/modules/cms/controllers/themes.php(74): Cms\\Classes\\Theme::allAvailable()\n#3 /Users/joe/Documents/www/admin/modules/system/traits/DependencyMaker.php(29): Cms\\Controllers\\Themes->index()\n#4 /Users/joe/Documents/www/admin/modules/backend/classes/Controller.php(383): Backend\\Classes\\Controller->makeCallMethod(Object(Cms\\Controllers\\Themes), ''index'', Array)\n#5 /Users/joe/Documents/www/admin/modules/backend/classes/Controller.php(265): Backend\\Classes\\Controller->execPageAction(''index'', Array)\n#6 /Users/joe/Documents/www/admin/modules/backend/classes/BackendController.php(98): Backend\\Classes\\Controller->run(''index'', Array)\n#7 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/Controller.php(54): Backend\\Classes\\BackendController->run(''cms/themes'')\n#8 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/ControllerDispatcher.php(43): Illuminate\\Routing\\Controller->callAction(''run'', Array)\n#9 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/Route.php(259): Illuminate\\Routing\\ControllerDispatcher->dispatch(Object(Illuminate\\Routing\\Route), Object(Backend\\Classes\\BackendController), ''run'')\n#10 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/Route.php(205): Illuminate\\Routing\\Route->runController()\n#11 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/Router.php(798): Illuminate\\Routing\\Route->run()\n#12 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(141): Illuminate\\Routing\\Router->Illuminate\\Routing\\{closure}(Object(Illuminate\\Http\\Request))\n#13 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/Middleware/SubstituteBindings.php(50): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))\n#14 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Routing\\Middleware\\SubstituteBindings->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#15 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/View/Middleware/ShareErrorsFromSession.php(49): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))\n#16 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\View\\Middleware\\ShareErrorsFromSession->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#17 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Session/Middleware/StartSession.php(121): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))\n#18 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Session/Middleware/StartSession.php(64): Illuminate\\Session\\Middleware\\StartSession->handleStatefulRequest(Object(Illuminate\\Http\\Request), Object(Illuminate\\Session\\Store), Object(Closure))\n#19 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Session\\Middleware\\StartSession->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#20 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Cookie/Middleware/AddQueuedCookiesToResponse.php(37): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))\n#21 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Cookie\\Middleware\\AddQueuedCookiesToResponse->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#22 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Cookie/Middleware/EncryptCookies.php(67): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))\n#23 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Cookie\\Middleware\\EncryptCookies->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#24 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(116): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))\n#25 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/Router.php(797): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))\n#26 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/Router.php(776): Illuminate\\Routing\\Router->runRouteWithinStack(Object(Illuminate\\Routing\\Route), Object(Illuminate\\Http\\Request))\n#27 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/Router.php(740): Illuminate\\Routing\\Router->runRoute(Object(Illuminate\\Http\\Request), Object(Illuminate\\Routing\\Route))\n#28 /Users/joe/Documents/www/admin/vendor/october/rain/src/Router/CoreRouter.php(32): Illuminate\\Routing\\Router->dispatchToRoute(Object(Illuminate\\Http\\Request))\n#29 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(190): October\\Rain\\Router\\CoreRouter->dispatch(Object(Illuminate\\Http\\Request))\n#30 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(141): Illuminate\\Foundation\\Http\\Kernel->Illuminate\\Foundation\\Http\\{closure}(Object(Illuminate\\Http\\Request))\n#31 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/PreventRequestsDuringMaintenance.php(86): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))\n#32 /Users/joe/Documents/www/admin/vendor/october/rain/src/Foundation/Http/Middleware/CheckForMaintenanceMode.php(23): Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#33 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): October\\Rain\\Foundation\\Http\\Middleware\\CheckForMaintenanceMode->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#34 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(116): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))\n#35 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(165): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))\n#36 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(134): Illuminate\\Foundation\\Http\\Kernel->sendRequestThroughRouter(Object(Illuminate\\Http\\Request))\n#37 /Users/joe/Documents/www/admin/index.php(42): Illuminate\\Foundation\\Http\\Kernel->handle(Object(Illuminate\\Http\\Request))\n#38 /Users/joe/Documents/www/admin/vendor/october/rain/src/Foundation/resources/server.php(18): require_once(''/Users/joe/Docu...'')\n#39 {main}', '[]', '2023-06-29 15:36:09', '2023-06-29 15:36:09'),
+(3, 'error', 'Exception: A node cannot be moved to a descendant of itself. in /Users/joe/Documents/www/admin/vendor/october/rain/src/Database/Traits/NestedTree.php:990\nStack trace:\n#0 /Users/joe/Documents/www/admin/vendor/october/rain/src/Database/Traits/NestedTree.php(854): Cadon\\Stunring\\Models\\Category->validateMove(Object(Cadon\\Stunring\\Models\\Category), Object(Cadon\\Stunring\\Models\\Category), ''left'')\n#1 /Users/joe/Documents/www/admin/vendor/october/rain/src/Database/Traits/NestedTree.php(330): Cadon\\Stunring\\Models\\Category->moveTo(Object(Cadon\\Stunring\\Models\\Category), ''left'')\n#2 /Users/joe/Documents/www/admin/modules/backend/widgets/ListStructure.php(378): Cadon\\Stunring\\Models\\Category->moveBefore(''23'')\n#3 /Users/joe/Documents/www/admin/modules/backend/widgets/ListStructure.php(335): Backend\\Widgets\\ListStructure->reorderForNestedTree(Object(Cadon\\Stunring\\Models\\Category))\n#4 /Users/joe/Documents/www/admin/modules/system/traits/DependencyMaker.php(29): Backend\\Widgets\\ListStructure->onReorder()\n#5 /Users/joe/Documents/www/admin/modules/backend/classes/Controller.php(637): Backend\\Classes\\Controller->makeCallMethod(Object(Backend\\Widgets\\ListStructure), ''onReorder'', Array)\n#6 /Users/joe/Documents/www/admin/modules/backend/classes/Controller.php(589): Backend\\Classes\\Controller->runAjaxHandlerForWidget(Object(Backend\\Widgets\\ListStructure), ''onReorder'')\n#7 /Users/joe/Documents/www/admin/modules/backend/classes/Controller.php(448): Backend\\Classes\\Controller->runAjaxHandler(''list::onReorder'')\n#8 /Users/joe/Documents/www/admin/modules/backend/classes/Controller.php(256): Backend\\Classes\\Controller->execAjaxHandlers()\n#9 /Users/joe/Documents/www/admin/modules/backend/classes/BackendController.php(118): Backend\\Classes\\Controller->run(''index'', Array)\n#10 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/Controller.php(54): Backend\\Classes\\BackendController->run(''cadon/stunring/...'')\n#11 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/ControllerDispatcher.php(43): Illuminate\\Routing\\Controller->callAction(''run'', Array)\n#12 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/Route.php(259): Illuminate\\Routing\\ControllerDispatcher->dispatch(Object(Illuminate\\Routing\\Route), Object(Backend\\Classes\\BackendController), ''run'')\n#13 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/Route.php(205): Illuminate\\Routing\\Route->runController()\n#14 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/Router.php(798): Illuminate\\Routing\\Route->run()\n#15 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(141): Illuminate\\Routing\\Router->Illuminate\\Routing\\{closure}(Object(Illuminate\\Http\\Request))\n#16 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/Middleware/SubstituteBindings.php(50): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))\n#17 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Routing\\Middleware\\SubstituteBindings->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#18 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/View/Middleware/ShareErrorsFromSession.php(49): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))\n#19 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\View\\Middleware\\ShareErrorsFromSession->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#20 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Session/Middleware/StartSession.php(121): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))\n#21 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Session/Middleware/StartSession.php(64): Illuminate\\Session\\Middleware\\StartSession->handleStatefulRequest(Object(Illuminate\\Http\\Request), Object(Illuminate\\Session\\Store), Object(Closure))\n#22 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Session\\Middleware\\StartSession->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#23 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Cookie/Middleware/AddQueuedCookiesToResponse.php(37): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))\n#24 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Cookie\\Middleware\\AddQueuedCookiesToResponse->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#25 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Cookie/Middleware/EncryptCookies.php(67): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))\n#26 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Cookie\\Middleware\\EncryptCookies->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#27 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(116): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))\n#28 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/Router.php(797): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))\n#29 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/Router.php(776): Illuminate\\Routing\\Router->runRouteWithinStack(Object(Illuminate\\Routing\\Route), Object(Illuminate\\Http\\Request))\n#30 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/Router.php(740): Illuminate\\Routing\\Router->runRoute(Object(Illuminate\\Http\\Request), Object(Illuminate\\Routing\\Route))\n#31 /Users/joe/Documents/www/admin/vendor/october/rain/src/Router/CoreRouter.php(32): Illuminate\\Routing\\Router->dispatchToRoute(Object(Illuminate\\Http\\Request))\n#32 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(190): October\\Rain\\Router\\CoreRouter->dispatch(Object(Illuminate\\Http\\Request))\n#33 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(141): Illuminate\\Foundation\\Http\\Kernel->Illuminate\\Foundation\\Http\\{closure}(Object(Illuminate\\Http\\Request))\n#34 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/PreventRequestsDuringMaintenance.php(86): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))\n#35 /Users/joe/Documents/www/admin/vendor/october/rain/src/Foundation/Http/Middleware/CheckForMaintenanceMode.php(23): Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#36 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): October\\Rain\\Foundation\\Http\\Middleware\\CheckForMaintenanceMode->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#37 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(116): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))\n#38 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(165): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))\n#39 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(134): Illuminate\\Foundation\\Http\\Kernel->sendRequestThroughRouter(Object(Illuminate\\Http\\Request))\n#40 /Users/joe/Documents/www/admin/index.php(42): Illuminate\\Foundation\\Http\\Kernel->handle(Object(Illuminate\\Http\\Request))\n#41 /Users/joe/Documents/www/admin/vendor/october/rain/src/Foundation/resources/server.php(18): require_once(''/Users/joe/Docu...'')\n#42 {main}', '[]', '2023-06-29 15:49:07', '2023-06-29 15:49:07'),
+(4, 'error', 'Exception: A node cannot be moved to a descendant of itself. in /Users/joe/Documents/www/admin/vendor/october/rain/src/Database/Traits/NestedTree.php:990\nStack trace:\n#0 /Users/joe/Documents/www/admin/vendor/october/rain/src/Database/Traits/NestedTree.php(854): Cadon\\Stunring\\Models\\Category->validateMove(Object(Cadon\\Stunring\\Models\\Category), Object(Cadon\\Stunring\\Models\\Category), ''right'')\n#1 /Users/joe/Documents/www/admin/vendor/october/rain/src/Database/Traits/NestedTree.php(339): Cadon\\Stunring\\Models\\Category->moveTo(Object(Cadon\\Stunring\\Models\\Category), ''right'')\n#2 /Users/joe/Documents/www/admin/modules/backend/widgets/ListStructure.php(375): Cadon\\Stunring\\Models\\Category->moveAfter(''18'')\n#3 /Users/joe/Documents/www/admin/modules/backend/widgets/ListStructure.php(335): Backend\\Widgets\\ListStructure->reorderForNestedTree(Object(Cadon\\Stunring\\Models\\Category))\n#4 /Users/joe/Documents/www/admin/modules/system/traits/DependencyMaker.php(29): Backend\\Widgets\\ListStructure->onReorder()\n#5 /Users/joe/Documents/www/admin/modules/backend/classes/Controller.php(637): Backend\\Classes\\Controller->makeCallMethod(Object(Backend\\Widgets\\ListStructure), ''onReorder'', Array)\n#6 /Users/joe/Documents/www/admin/modules/backend/classes/Controller.php(589): Backend\\Classes\\Controller->runAjaxHandlerForWidget(Object(Backend\\Widgets\\ListStructure), ''onReorder'')\n#7 /Users/joe/Documents/www/admin/modules/backend/classes/Controller.php(448): Backend\\Classes\\Controller->runAjaxHandler(''list::onReorder'')\n#8 /Users/joe/Documents/www/admin/modules/backend/classes/Controller.php(256): Backend\\Classes\\Controller->execAjaxHandlers()\n#9 /Users/joe/Documents/www/admin/modules/backend/classes/BackendController.php(118): Backend\\Classes\\Controller->run(''index'', Array)\n#10 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/Controller.php(54): Backend\\Classes\\BackendController->run(''cadon/stunring/...'')\n#11 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/ControllerDispatcher.php(43): Illuminate\\Routing\\Controller->callAction(''run'', Array)\n#12 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/Route.php(259): Illuminate\\Routing\\ControllerDispatcher->dispatch(Object(Illuminate\\Routing\\Route), Object(Backend\\Classes\\BackendController), ''run'')\n#13 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/Route.php(205): Illuminate\\Routing\\Route->runController()\n#14 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/Router.php(798): Illuminate\\Routing\\Route->run()\n#15 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(141): Illuminate\\Routing\\Router->Illuminate\\Routing\\{closure}(Object(Illuminate\\Http\\Request))\n#16 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/Middleware/SubstituteBindings.php(50): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))\n#17 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Routing\\Middleware\\SubstituteBindings->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#18 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/View/Middleware/ShareErrorsFromSession.php(49): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))\n#19 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\View\\Middleware\\ShareErrorsFromSession->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#20 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Session/Middleware/StartSession.php(121): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))\n#21 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Session/Middleware/StartSession.php(64): Illuminate\\Session\\Middleware\\StartSession->handleStatefulRequest(Object(Illuminate\\Http\\Request), Object(Illuminate\\Session\\Store), Object(Closure))\n#22 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Session\\Middleware\\StartSession->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#23 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Cookie/Middleware/AddQueuedCookiesToResponse.php(37): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))\n#24 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Cookie\\Middleware\\AddQueuedCookiesToResponse->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#25 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Cookie/Middleware/EncryptCookies.php(67): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))\n#26 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Cookie\\Middleware\\EncryptCookies->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#27 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(116): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))\n#28 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/Router.php(797): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))\n#29 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/Router.php(776): Illuminate\\Routing\\Router->runRouteWithinStack(Object(Illuminate\\Routing\\Route), Object(Illuminate\\Http\\Request))\n#30 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/Router.php(740): Illuminate\\Routing\\Router->runRoute(Object(Illuminate\\Http\\Request), Object(Illuminate\\Routing\\Route))\n#31 /Users/joe/Documents/www/admin/vendor/october/rain/src/Router/CoreRouter.php(32): Illuminate\\Routing\\Router->dispatchToRoute(Object(Illuminate\\Http\\Request))\n#32 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(190): October\\Rain\\Router\\CoreRouter->dispatch(Object(Illuminate\\Http\\Request))\n#33 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(141): Illuminate\\Foundation\\Http\\Kernel->Illuminate\\Foundation\\Http\\{closure}(Object(Illuminate\\Http\\Request))\n#34 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/PreventRequestsDuringMaintenance.php(86): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))\n#35 /Users/joe/Documents/www/admin/vendor/october/rain/src/Foundation/Http/Middleware/CheckForMaintenanceMode.php(23): Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#36 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): October\\Rain\\Foundation\\Http\\Middleware\\CheckForMaintenanceMode->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#37 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(116): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))\n#38 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(165): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))\n#39 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(134): Illuminate\\Foundation\\Http\\Kernel->sendRequestThroughRouter(Object(Illuminate\\Http\\Request))\n#40 /Users/joe/Documents/www/admin/index.php(42): Illuminate\\Foundation\\Http\\Kernel->handle(Object(Illuminate\\Http\\Request))\n#41 /Users/joe/Documents/www/admin/vendor/october/rain/src/Foundation/resources/server.php(18): require_once(''/Users/joe/Docu...'')\n#42 {main}', '[]', '2023-06-29 15:52:55', '2023-06-29 15:52:55'),
+(5, 'error', 'Exception: A node cannot be moved to a descendant of itself. in /Users/joe/Documents/www/admin/vendor/october/rain/src/Database/Traits/NestedTree.php:990\nStack trace:\n#0 /Users/joe/Documents/www/admin/vendor/october/rain/src/Database/Traits/NestedTree.php(854): Cadon\\Stunring\\Models\\Category->validateMove(Object(Cadon\\Stunring\\Models\\Category), Object(Cadon\\Stunring\\Models\\Category), ''left'')\n#1 /Users/joe/Documents/www/admin/vendor/october/rain/src/Database/Traits/NestedTree.php(330): Cadon\\Stunring\\Models\\Category->moveTo(Object(Cadon\\Stunring\\Models\\Category), ''left'')\n#2 /Users/joe/Documents/www/admin/modules/backend/widgets/ListStructure.php(378): Cadon\\Stunring\\Models\\Category->moveBefore(''7'')\n#3 /Users/joe/Documents/www/admin/modules/backend/widgets/ListStructure.php(335): Backend\\Widgets\\ListStructure->reorderForNestedTree(Object(Cadon\\Stunring\\Models\\Category))\n#4 /Users/joe/Documents/www/admin/modules/system/traits/DependencyMaker.php(29): Backend\\Widgets\\ListStructure->onReorder()\n#5 /Users/joe/Documents/www/admin/modules/backend/classes/Controller.php(637): Backend\\Classes\\Controller->makeCallMethod(Object(Backend\\Widgets\\ListStructure), ''onReorder'', Array)\n#6 /Users/joe/Documents/www/admin/modules/backend/classes/Controller.php(589): Backend\\Classes\\Controller->runAjaxHandlerForWidget(Object(Backend\\Widgets\\ListStructure), ''onReorder'')\n#7 /Users/joe/Documents/www/admin/modules/backend/classes/Controller.php(448): Backend\\Classes\\Controller->runAjaxHandler(''list::onReorder'')\n#8 /Users/joe/Documents/www/admin/modules/backend/classes/Controller.php(256): Backend\\Classes\\Controller->execAjaxHandlers()\n#9 /Users/joe/Documents/www/admin/modules/backend/classes/BackendController.php(118): Backend\\Classes\\Controller->run(''index'', Array)\n#10 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/Controller.php(54): Backend\\Classes\\BackendController->run(''cadon/stunring/...'')\n#11 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/ControllerDispatcher.php(43): Illuminate\\Routing\\Controller->callAction(''run'', Array)\n#12 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/Route.php(259): Illuminate\\Routing\\ControllerDispatcher->dispatch(Object(Illuminate\\Routing\\Route), Object(Backend\\Classes\\BackendController), ''run'')\n#13 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/Route.php(205): Illuminate\\Routing\\Route->runController()\n#14 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/Router.php(798): Illuminate\\Routing\\Route->run()\n#15 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(141): Illuminate\\Routing\\Router->Illuminate\\Routing\\{closure}(Object(Illuminate\\Http\\Request))\n#16 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/Middleware/SubstituteBindings.php(50): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))\n#17 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Routing\\Middleware\\SubstituteBindings->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#18 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/View/Middleware/ShareErrorsFromSession.php(49): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))\n#19 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\View\\Middleware\\ShareErrorsFromSession->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#20 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Session/Middleware/StartSession.php(121): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))\n#21 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Session/Middleware/StartSession.php(64): Illuminate\\Session\\Middleware\\StartSession->handleStatefulRequest(Object(Illuminate\\Http\\Request), Object(Illuminate\\Session\\Store), Object(Closure))\n#22 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Session\\Middleware\\StartSession->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#23 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Cookie/Middleware/AddQueuedCookiesToResponse.php(37): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))\n#24 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Cookie\\Middleware\\AddQueuedCookiesToResponse->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#25 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Cookie/Middleware/EncryptCookies.php(67): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))\n#26 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Cookie\\Middleware\\EncryptCookies->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#27 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(116): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))\n#28 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/Router.php(797): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))\n#29 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/Router.php(776): Illuminate\\Routing\\Router->runRouteWithinStack(Object(Illuminate\\Routing\\Route), Object(Illuminate\\Http\\Request))\n#30 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/Router.php(740): Illuminate\\Routing\\Router->runRoute(Object(Illuminate\\Http\\Request), Object(Illuminate\\Routing\\Route))\n#31 /Users/joe/Documents/www/admin/vendor/october/rain/src/Router/CoreRouter.php(32): Illuminate\\Routing\\Router->dispatchToRoute(Object(Illuminate\\Http\\Request))\n#32 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(190): October\\Rain\\Router\\CoreRouter->dispatch(Object(Illuminate\\Http\\Request))\n#33 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(141): Illuminate\\Foundation\\Http\\Kernel->Illuminate\\Foundation\\Http\\{closure}(Object(Illuminate\\Http\\Request))\n#34 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/PreventRequestsDuringMaintenance.php(86): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))\n#35 /Users/joe/Documents/www/admin/vendor/october/rain/src/Foundation/Http/Middleware/CheckForMaintenanceMode.php(23): Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#36 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): October\\Rain\\Foundation\\Http\\Middleware\\CheckForMaintenanceMode->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#37 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(116): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))\n#38 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(165): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))\n#39 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(134): Illuminate\\Foundation\\Http\\Kernel->sendRequestThroughRouter(Object(Illuminate\\Http\\Request))\n#40 /Users/joe/Documents/www/admin/index.php(42): Illuminate\\Foundation\\Http\\Kernel->handle(Object(Illuminate\\Http\\Request))\n#41 /Users/joe/Documents/www/admin/vendor/october/rain/src/Foundation/resources/server.php(18): require_once(''/Users/joe/Docu...'')\n#42 {main}', '[]', '2023-06-29 15:53:06', '2023-06-29 15:53:06'),
+(6, 'error', 'Exception: A node cannot be moved to a descendant of itself. in /Users/joe/Documents/www/admin/vendor/october/rain/src/Database/Traits/NestedTree.php:990\nStack trace:\n#0 /Users/joe/Documents/www/admin/vendor/october/rain/src/Database/Traits/NestedTree.php(854): Cadon\\Stunring\\Models\\Category->validateMove(Object(Cadon\\Stunring\\Models\\Category), Object(Cadon\\Stunring\\Models\\Category), ''right'')\n#1 /Users/joe/Documents/www/admin/vendor/october/rain/src/Database/Traits/NestedTree.php(339): Cadon\\Stunring\\Models\\Category->moveTo(Object(Cadon\\Stunring\\Models\\Category), ''right'')\n#2 /Users/joe/Documents/www/admin/modules/backend/widgets/ListStructure.php(375): Cadon\\Stunring\\Models\\Category->moveAfter(''7'')\n#3 /Users/joe/Documents/www/admin/modules/backend/widgets/ListStructure.php(335): Backend\\Widgets\\ListStructure->reorderForNestedTree(Object(Cadon\\Stunring\\Models\\Category))\n#4 /Users/joe/Documents/www/admin/modules/system/traits/DependencyMaker.php(29): Backend\\Widgets\\ListStructure->onReorder()\n#5 /Users/joe/Documents/www/admin/modules/backend/classes/Controller.php(637): Backend\\Classes\\Controller->makeCallMethod(Object(Backend\\Widgets\\ListStructure), ''onReorder'', Array)\n#6 /Users/joe/Documents/www/admin/modules/backend/classes/Controller.php(589): Backend\\Classes\\Controller->runAjaxHandlerForWidget(Object(Backend\\Widgets\\ListStructure), ''onReorder'')\n#7 /Users/joe/Documents/www/admin/modules/backend/classes/Controller.php(448): Backend\\Classes\\Controller->runAjaxHandler(''list::onReorder'')\n#8 /Users/joe/Documents/www/admin/modules/backend/classes/Controller.php(256): Backend\\Classes\\Controller->execAjaxHandlers()\n#9 /Users/joe/Documents/www/admin/modules/backend/classes/BackendController.php(118): Backend\\Classes\\Controller->run(''index'', Array)\n#10 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/Controller.php(54): Backend\\Classes\\BackendController->run(''cadon/stunring/...'')\n#11 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/ControllerDispatcher.php(43): Illuminate\\Routing\\Controller->callAction(''run'', Array)\n#12 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/Route.php(259): Illuminate\\Routing\\ControllerDispatcher->dispatch(Object(Illuminate\\Routing\\Route), Object(Backend\\Classes\\BackendController), ''run'')\n#13 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/Route.php(205): Illuminate\\Routing\\Route->runController()\n#14 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/Router.php(798): Illuminate\\Routing\\Route->run()\n#15 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(141): Illuminate\\Routing\\Router->Illuminate\\Routing\\{closure}(Object(Illuminate\\Http\\Request))\n#16 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/Middleware/SubstituteBindings.php(50): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))\n#17 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Routing\\Middleware\\SubstituteBindings->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#18 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/View/Middleware/ShareErrorsFromSession.php(49): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))\n#19 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\View\\Middleware\\ShareErrorsFromSession->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#20 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Session/Middleware/StartSession.php(121): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))\n#21 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Session/Middleware/StartSession.php(64): Illuminate\\Session\\Middleware\\StartSession->handleStatefulRequest(Object(Illuminate\\Http\\Request), Object(Illuminate\\Session\\Store), Object(Closure))\n#22 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Session\\Middleware\\StartSession->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#23 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Cookie/Middleware/AddQueuedCookiesToResponse.php(37): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))\n#24 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Cookie\\Middleware\\AddQueuedCookiesToResponse->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#25 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Cookie/Middleware/EncryptCookies.php(67): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))\n#26 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Cookie\\Middleware\\EncryptCookies->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#27 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(116): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))\n#28 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/Router.php(797): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))\n#29 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/Router.php(776): Illuminate\\Routing\\Router->runRouteWithinStack(Object(Illuminate\\Routing\\Route), Object(Illuminate\\Http\\Request))\n#30 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/Router.php(740): Illuminate\\Routing\\Router->runRoute(Object(Illuminate\\Http\\Request), Object(Illuminate\\Routing\\Route))\n#31 /Users/joe/Documents/www/admin/vendor/october/rain/src/Router/CoreRouter.php(32): Illuminate\\Routing\\Router->dispatchToRoute(Object(Illuminate\\Http\\Request))\n#32 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(190): October\\Rain\\Router\\CoreRouter->dispatch(Object(Illuminate\\Http\\Request))\n#33 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(141): Illuminate\\Foundation\\Http\\Kernel->Illuminate\\Foundation\\Http\\{closure}(Object(Illuminate\\Http\\Request))\n#34 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/PreventRequestsDuringMaintenance.php(86): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))\n#35 /Users/joe/Documents/www/admin/vendor/october/rain/src/Foundation/Http/Middleware/CheckForMaintenanceMode.php(23): Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#36 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): October\\Rain\\Foundation\\Http\\Middleware\\CheckForMaintenanceMode->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#37 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(116): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))\n#38 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(165): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))\n#39 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(134): Illuminate\\Foundation\\Http\\Kernel->sendRequestThroughRouter(Object(Illuminate\\Http\\Request))\n#40 /Users/joe/Documents/www/admin/index.php(42): Illuminate\\Foundation\\Http\\Kernel->handle(Object(Illuminate\\Http\\Request))\n#41 /Users/joe/Documents/www/admin/vendor/october/rain/src/Foundation/resources/server.php(18): require_once(''/Users/joe/Docu...'')\n#42 {main}', '[]', '2023-06-29 15:53:29', '2023-06-29 15:53:29'),
+(7, 'error', 'Symfony\\Component\\Console\\Exception\\CommandNotFoundException: Command "tailor:make" is not defined.\n\nDid you mean one of these?\n    tailor:migrate\n    tailor:refresh in /Users/joe/Documents/www/admin/vendor/symfony/console/Application.php:725\nStack trace:\n#0 /Users/joe/Documents/www/admin/vendor/symfony/console/Application.php(262): Symfony\\Component\\Console\\Application->find(''tailor:make'')\n#1 /Users/joe/Documents/www/admin/vendor/symfony/console/Application.php(174): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#2 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Console/Application.php(102): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#3 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(155): Illuminate\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#4 /Users/joe/Documents/www/admin/artisan(33): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#5 {main}', '[]', '2023-06-29 16:03:59', '2023-06-29 16:03:59'),
+(8, 'error', 'PDOException: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ''AND 0 THEN `nest_left` + 2 - 0\n            WHEN `nest_left` BETWEEN 1 AND 2 THEN'' at line 2 in /Users/joe/Documents/www/admin/vendor/doctrine/dbal/lib/Doctrine/DBAL/Driver/PDOConnection.php:82\nStack trace:\n#0 /Users/joe/Documents/www/admin/vendor/doctrine/dbal/lib/Doctrine/DBAL/Driver/PDOConnection.php(82): PDO->prepare(''update `cadon_s...'', Array)\n#1 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Database/Connection.php(566): Doctrine\\DBAL\\Driver\\PDOConnection->prepare(''update `cadon_s...'')\n#2 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Database/Connection.php(753): Illuminate\\Database\\Connection->Illuminate\\Database\\{closure}(''update `cadon_s...'', Array)\n#3 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Database/Connection.php(720): Illuminate\\Database\\Connection->runQueryCallback(''update `cadon_s...'', Array, Object(Closure))\n#4 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Database/Connection.php(558): Illuminate\\Database\\Connection->run(''update `cadon_s...'', Array, Object(Closure))\n#5 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Database/Connection.php(510): Illuminate\\Database\\Connection->affectingStatement(''update `cadon_s...'', Array)\n#6 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(3356): Illuminate\\Database\\Connection->update(''update `cadon_s...'', Array)\n#7 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Builder.php(1011): Illuminate\\Database\\Query\\Builder->update(Array)\n#8 /Users/joe/Documents/www/admin/vendor/october/rain/src/Database/Traits/NestedTree.php(929): Illuminate\\Database\\Eloquent\\Builder->update(Array)\n#9 /Users/joe/Documents/www/admin/vendor/october/rain/src/Database/Traits/NestedTree.php(860): Cadon\\Stunring\\Models\\Category->performMove(Object(Cadon\\Stunring\\Models\\Category), Object(Cadon\\Stunring\\Models\\Category), ''child'')\n#10 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Database/Concerns/ManagesTransactions.php(30): Cadon\\Stunring\\Models\\Category->October\\Rain\\Database\\Traits\\{closure}(Object(October\\Rain\\Database\\Connections\\MySqlConnection))\n#11 /Users/joe/Documents/www/admin/vendor/october/rain/src/Database/Traits/NestedTree.php(859): Illuminate\\Database\\Connection->transaction(Object(Closure))\n#12 /Users/joe/Documents/www/admin/vendor/october/rain/src/Database/Traits/NestedTree.php(303): Cadon\\Stunring\\Models\\Category->moveTo(Object(Cadon\\Stunring\\Models\\Category), ''child'')\n#13 /Users/joe/Documents/www/admin/vendor/october/rain/src/Database/Traits/NestedTree.php(182): Cadon\\Stunring\\Models\\Category->makeChildOf(Object(Cadon\\Stunring\\Models\\Category))\n#14 /Users/joe/Documents/www/admin/vendor/october/rain/src/Database/Traits/NestedTree.php(116): Cadon\\Stunring\\Models\\Category->moveToNewParent()\n#15 /Users/joe/Documents/www/admin/vendor/october/rain/src/Support/Traits/Emitter.php(98): Cadon\\Stunring\\Models\\Category->October\\Rain\\Database\\Traits\\{closure}()\n#16 /Users/joe/Documents/www/admin/vendor/october/rain/src/Database/Concerns/HasEvents.php(43): October\\Rain\\Database\\Model->fireEvent(''model.afterSave'')\n#17 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Events/Dispatcher.php(421): October\\Rain\\Database\\Model->October\\Rain\\Database\\Concerns\\{closure}(Object(Cadon\\Stunring\\Models\\Category))\n#18 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Events/Dispatcher.php(249): Illuminate\\Events\\Dispatcher->Illuminate\\Events\\{closure}(''eloquent.saved:...'', Array)\n#19 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Concerns/HasEvents.php(188): Illuminate\\Events\\Dispatcher->dispatch(''eloquent.saved:...'', Array)\n#20 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Model.php(1177): Illuminate\\Database\\Eloquent\\Model->fireModelEvent(''saved'', false)\n#21 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Model.php(1150): Illuminate\\Database\\Eloquent\\Model->finishSave(Array)\n#22 /Users/joe/Documents/www/admin/vendor/october/rain/src/Database/Model.php(405): Illuminate\\Database\\Eloquent\\Model->save(Array)\n#23 /Users/joe/Documents/www/admin/vendor/october/rain/src/Database/Model.php(444): October\\Rain\\Database\\Model->saveInternal(Array)\n#24 /Users/joe/Documents/www/admin/modules/backend/traits/FormModelSaver.php(38): October\\Rain\\Database\\Model->save(Array)\n#25 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Database/Concerns/ManagesTransactions.php(30): Backend\\Behaviors\\FormController->Backend\\Traits\\{closure}(Object(October\\Rain\\Database\\Connections\\MySqlConnection))\n#26 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Database/DatabaseManager.php(469): Illuminate\\Database\\Connection->transaction(Object(Closure))\n#27 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php(338): Illuminate\\Database\\DatabaseManager->__call(''transaction'', Array)\n#28 /Users/joe/Documents/www/admin/modules/backend/traits/FormModelSaver.php(35): Illuminate\\Support\\Facades\\Facade::__callStatic(''transaction'', Array)\n#29 /Users/joe/Documents/www/admin/modules/backend/behaviors/FormController.php(244): Backend\\Behaviors\\FormController->performSaveOnModel(Object(Cadon\\Stunring\\Models\\Category), Array, Array)\n#30 [internal function]: Backend\\Behaviors\\FormController->create_onSave(NULL)\n#31 /Users/joe/Documents/www/admin/vendor/october/rain/src/Extension/ExtendableTrait.php(506): call_user_func_array(Array, Array)\n#32 /Users/joe/Documents/www/admin/vendor/october/rain/src/Extension/Extendable.php(46): October\\Rain\\Extension\\Extendable->extendableCall(''create_onSave'', Array)\n#33 /Users/joe/Documents/www/admin/modules/system/traits/DependencyMaker.php(29): October\\Rain\\Extension\\Extendable->__call(''create_onSave'', Array)\n#34 /Users/joe/Documents/www/admin/modules/backend/classes/Controller.php(598): Backend\\Classes\\Controller->makeCallMethod(Object(Cadon\\Stunring\\Controllers\\Category), ''create_onSave'', Array)\n#35 /Users/joe/Documents/www/admin/modules/backend/classes/Controller.php(448): Backend\\Classes\\Controller->runAjaxHandler(''onSave'')\n#36 /Users/joe/Documents/www/admin/modules/backend/classes/Controller.php(256): Backend\\Classes\\Controller->execAjaxHandlers()\n#37 /Users/joe/Documents/www/admin/modules/backend/classes/BackendController.php(118): Backend\\Classes\\Controller->run(''create'', Array)\n#38 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/Controller.php(54): Backend\\Classes\\BackendController->run(''cadon/stunring/...'')\n#39 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/ControllerDispatcher.php(43): Illuminate\\Routing\\Controller->callAction(''run'', Array)\n#40 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/Route.php(259): Illuminate\\Routing\\ControllerDispatcher->dispatch(Object(Illuminate\\Routing\\Route), Object(Backend\\Classes\\BackendController), ''run'')\n#41 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/Route.php(205): Illuminate\\Routing\\Route->runController()\n#42 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/Router.php(798): Illuminate\\Routing\\Route->run()\n#43 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(141): Illuminate\\Routing\\Router->Illuminate\\Routing\\{closure}(Object(Illuminate\\Http\\Request))\n#44 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/Middleware/SubstituteBindings.php(50): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))\n#45 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Routing\\Middleware\\SubstituteBindings->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#46 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/View/Middleware/ShareErrorsFromSession.php(49): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))\n#47 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\View\\Middleware\\ShareErrorsFromSession->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#48 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Session/Middleware/StartSession.php(121): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))\n#49 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Session/Middleware/StartSession.php(64): Illuminate\\Session\\Middleware\\StartSession->handleStatefulRequest(Object(Illuminate\\Http\\Request), Object(Illuminate\\Session\\Store), Object(Closure))\n#50 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Session\\Middleware\\StartSession->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#51 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Cookie/Middleware/AddQueuedCookiesToResponse.php(37): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))\n#52 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Cookie\\Middleware\\AddQueuedCookiesToResponse->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#53 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Cookie/Middleware/EncryptCookies.php(67): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))\n#54 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Cookie\\Middleware\\EncryptCookies->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#55 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(116): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))\n#56 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/Router.php(797): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))\n#57 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/Router.php(776): Illuminate\\Routing\\Router->runRouteWithinStack(Object(Illuminate\\Routing\\Route), Object(Illuminate\\Http\\Request))\n#58 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/Router.php(740): Illuminate\\Routing\\Router->runRoute(Object(Illuminate\\Http\\Request), Object(Illuminate\\Routing\\Route))\n#59 /Users/joe/Documents/www/admin/vendor/october/rain/src/Router/CoreRouter.php(32): Illuminate\\Routing\\Router->dispatchToRoute(Object(Illuminate\\Http\\Request))\n#60 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(190): October\\Rain\\Router\\CoreRouter->dispatch(Object(Illuminate\\Http\\Request))\n#61 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(141): Illuminate\\Foundation\\Http\\Kernel->Illuminate\\Foundation\\Http\\{closure}(Object(Illuminate\\Http\\Request))\n#62 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/PreventRequestsDuringMaintenance.php(86): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))\n#63 /Users/joe/Documents/www/admin/vendor/october/rain/src/Foundation/Http/Middleware/CheckForMaintenanceMode.php(23): Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#64 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): October\\Rain\\Foundation\\Http\\Middleware\\CheckForMaintenanceMode->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#65 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(116): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))\n#66 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(165): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))\n#67 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(134): Illuminate\\Foundation\\Http\\Kernel->sendRequestThroughRouter(Object(Illuminate\\Http\\Request))\n#68 /Users/joe/Documents/www/admin/index.php(42): Illuminate\\Foundation\\Http\\Kernel->handle(Object(Illuminate\\Http\\Request))\n#69 /Users/joe/Documents/www/admin/vendor/october/rain/src/Foundation/resources/server.php(18): require_once(''/Users/joe/Docu...'')\n#70 {main}\n\nNext Doctrine\\DBAL\\Driver\\PDO\\Exception: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ''AND 0 THEN `nest_left` + 2 - 0\n            WHEN `nest_left` BETWEEN 1 AND 2 THEN'' at line 2 in /Users/joe/Documents/www/admin/vendor/doctrine/dbal/lib/Doctrine/DBAL/Driver/PDO/Exception.php:18\nStack trace:\n#0 /Users/joe/Documents/www/admin/vendor/doctrine/dbal/lib/Doctrine/DBAL/Driver/PDOConnection.php(87): Doctrine\\DBAL\\Driver\\PDO\\Exception::new(Object(PDOException))\n#1 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Database/Connection.php(566): Doctrine\\DBAL\\Driver\\PDOConnection->prepare(''update `cadon_s...'')\n#2 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Database/Connection.php(753): Illuminate\\Database\\Connection->Illuminate\\Database\\{closure}(''update `cadon_s...'', Array)\n#3 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Database/Connection.php(720): Illuminate\\Database\\Connection->runQueryCallback(''update `cadon_s...'', Array, Object(Closure))\n#4 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Database/Connection.php(558): Illuminate\\Database\\Connection->run(''update `cadon_s...'', Array, Object(Closure))\n#5 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Database/Connection.php(510): Illuminate\\Database\\Connection->affectingStatement(''update `cadon_s...'', Array)\n#6 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(3356): Illuminate\\Database\\Connection->update(''update `cadon_s...'', Array)\n#7 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Builder.php(1011): Illuminate\\Database\\Query\\Builder->update(Array)\n#8 /Users/joe/Documents/www/admin/vendor/october/rain/src/Database/Traits/NestedTree.php(929): Illuminate\\Database\\Eloquent\\Builder->update(Array)\n#9 /Users/joe/Documents/www/admin/vendor/october/rain/src/Database/Traits/NestedTree.php(860): Cadon\\Stunring\\Models\\Category->performMove(Object(Cadon\\Stunring\\Models\\Category), Object(Cadon\\Stunring\\Models\\Category), ''child'')\n#10 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Database/Concerns/ManagesTransactions.php(30): Cadon\\Stunring\\Models\\Category->October\\Rain\\Database\\Traits\\{closure}(Object(October\\Rain\\Database\\Connections\\MySqlConnection))\n#11 /Users/joe/Documents/www/admin/vendor/october/rain/src/Database/Traits/NestedTree.php(859): Illuminate\\Database\\Connection->transaction(Object(Closure))\n#12 /Users/joe/Documents/www/admin/vendor/october/rain/src/Database/Traits/NestedTree.php(303): Cadon\\Stunring\\Models\\Category->moveTo(Object(Cadon\\Stunring\\Models\\Category), ''child'')\n#13 /Users/joe/Documents/www/admin/vendor/october/rain/src/Database/Traits/NestedTree.php(182): Cadon\\Stunring\\Models\\Category->makeChildOf(Object(Cadon\\Stunring\\Models\\Category))\n#14 /Users/joe/Documents/www/admin/vendor/october/rain/src/Database/Traits/NestedTree.php(116): Cadon\\Stunring\\Models\\Category->moveToNewParent()\n#15 /Users/joe/Documents/www/admin/vendor/october/rain/src/Support/Traits/Emitter.php(98): Cadon\\Stunring\\Models\\Category->October\\Rain\\Database\\Traits\\{closure}()\n#16 /Users/joe/Documents/www/admin/vendor/october/rain/src/Database/Concerns/HasEvents.php(43): October\\Rain\\Database\\Model->fireEvent(''model.afterSave'')\n#17 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Events/Dispatcher.php(421): October\\Rain\\Database\\Model->October\\Rain\\Database\\Concerns\\{closure}(Object(Cadon\\Stunring\\Models\\Category))\n#18 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Events/Dispatcher.php(249): Illuminate\\Events\\Dispatcher->Illuminate\\Events\\{closure}(''eloquent.saved:...'', Array)\n#19 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Concerns/HasEvents.php(188): Illuminate\\Events\\Dispatcher->dispatch(''eloquent.saved:...'', Array)\n#20 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Model.php(1177): Illuminate\\Database\\Eloquent\\Model->fireModelEvent(''saved'', false)\n#21 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Model.php(1150): Illuminate\\Database\\Eloquent\\Model->finishSave(Array)\n#22 /Users/joe/Documents/www/admin/vendor/october/rain/src/Database/Model.php(405): Illuminate\\Database\\Eloquent\\Model->save(Array)\n#23 /Users/joe/Documents/www/admin/vendor/october/rain/src/Database/Model.php(444): October\\Rain\\Database\\Model->saveInternal(Array)\n#24 /Users/joe/Documents/www/admin/modules/backend/traits/FormModelSaver.php(38): October\\Rain\\Database\\Model->save(Array)\n#25 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Database/Concerns/ManagesTransactions.php(30): Backend\\Behaviors\\FormController->Backend\\Traits\\{closure}(Object(October\\Rain\\Database\\Connections\\MySqlConnection))\n#26 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Database/DatabaseManager.php(469): Illuminate\\Database\\Connection->transaction(Object(Closure))\n#27 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php(338): Illuminate\\Database\\DatabaseManager->__call(''transaction'', Array)\n#28 /Users/joe/Documents/www/admin/modules/backend/traits/FormModelSaver.php(35): Illuminate\\Support\\Facades\\Facade::__callStatic(''transaction'', Array)\n#29 /Users/joe/Documents/www/admin/modules/backend/behaviors/FormController.php(244): Backend\\Behaviors\\FormController->performSaveOnModel(Object(Cadon\\Stunring\\Models\\Category), Array, Array)\n#30 [internal function]: Backend\\Behaviors\\FormController->create_onSave(NULL)\n#31 /Users/joe/Documents/www/admin/vendor/october/rain/src/Extension/ExtendableTrait.php(506): call_user_func_array(Array, Array)\n#32 /Users/joe/Documents/www/admin/vendor/october/rain/src/Extension/Extendable.php(46): October\\Rain\\Extension\\Extendable->extendableCall(''create_onSave'', Array)\n#33 /Users/joe/Documents/www/admin/modules/system/traits/DependencyMaker.php(29): October\\Rain\\Extension\\Extendable->__call(''create_onSave'', Array)\n#34 /Users/joe/Documents/www/admin/modules/backend/classes/Controller.php(598): Backend\\Classes\\Controller->makeCallMethod(Object(Cadon\\Stunring\\Controllers\\Category), ''create_onSave'', Array)\n#35 /Users/joe/Documents/www/admin/modules/backend/classes/Controller.php(448): Backend\\Classes\\Controller->runAjaxHandler(''onSave'')\n#36 /Users/joe/Documents/www/admin/modules/backend/classes/Controller.php(256): Backend\\Classes\\Controller->execAjaxHandlers()\n#37 /Users/joe/Documents/www/admin/modules/backend/classes/BackendController.php(118): Backend\\Classes\\Controller->run(''create'', Array)\n#38 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/Controller.php(54): Backend\\Classes\\BackendController->run(''cadon/stunring/...'')\n#39 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/ControllerDispatcher.php(43): Illuminate\\Routing\\Controller->callAction(''run'', Array)\n#40 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/Route.php(259): Illuminate\\Routing\\ControllerDispatcher->dispatch(Object(Illuminate\\Routing\\Route), Object(Backend\\Classes\\BackendController), ''run'')\n#41 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/Route.php(205): Illuminate\\Routing\\Route->runController()\n#42 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/Router.php(798): Illuminate\\Routing\\Route->run()\n#43 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(141): Illuminate\\Routing\\Router->Illuminate\\Routing\\{closure}(Object(Illuminate\\Http\\Request))\n#44 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/Middleware/SubstituteBindings.php(50): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))\n#45 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Routing\\Middleware\\SubstituteBindings->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#46 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/View/Middleware/ShareErrorsFromSession.php(49): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))\n#47 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\View\\Middleware\\ShareErrorsFromSession->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#48 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Session/Middleware/StartSession.php(121): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))\n#49 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Session/Middleware/StartSession.php(64): Illuminate\\Session\\Middleware\\StartSession->handleStatefulRequest(Object(Illuminate\\Http\\Request), Object(Illuminate\\Session\\Store), Object(Closure))\n#50 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Session\\Middleware\\StartSession->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#51 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Cookie/Middleware/AddQueuedCookiesToResponse.php(37): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))\n#52 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Cookie\\Middleware\\AddQueuedCookiesToResponse->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#53 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Cookie/Middleware/EncryptCookies.php(67): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))\n#54 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Cookie\\Middleware\\EncryptCookies->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#55 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(116): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))\n#56 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/Router.php(797): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))\n#57 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/Router.php(776): Illuminate\\Routing\\Router->runRouteWithinStack(Object(Illuminate\\Routing\\Route), Object(Illuminate\\Http\\Request))\n#58 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/Router.php(740): Illuminate\\Routing\\Router->runRoute(Object(Illuminate\\Http\\Request), Object(Illuminate\\Routing\\Route))\n#59 /Users/joe/Documents/www/admin/vendor/october/rain/src/Router/CoreRouter.php(32): Illuminate\\Routing\\Router->dispatchToRoute(Object(Illuminate\\Http\\Request))\n#60 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(190): October\\Rain\\Router\\CoreRouter->dispatch(Object(Illuminate\\Http\\Request))\n#61 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(141): Illuminate\\Foundation\\Http\\Kernel->Illuminate\\Foundation\\Http\\{closure}(Object(Illuminate\\Http\\Request))\n#62 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/PreventRequestsDuringMaintenance.php(86): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))\n#63 /Users/joe/Documents/www/admin/vendor/october/rain/src/Foundation/Http/Middleware/CheckForMaintenanceMode.php(23): Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#64 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): October\\Rain\\Foundation\\Http\\Middleware\\CheckForMaintenanceMode->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#65 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(116): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))\n#66 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(165): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))\n#67 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(134): Illuminate\\Foundation\\Http\\Kernel->sendRequestThroughRouter(Object(Illuminate\\Http\\Request))\n#68 /Users/joe/Documents/www/admin/index.php(42): Illuminate\\Foundation\\Http\\Kernel->handle(Object(Illuminate\\Http\\Request))\n#69 /Users/joe/Documents/www/admin/vendor/october/rain/src/Foundation/resources/server.php(18): require_once(''/Users/joe/Docu...'')\n#70 {main}\n\nNext Illuminate\\Database\\QueryException: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ''AND 0 THEN `nest_left` + 2 - 0\n            WHEN `nest_left` BETWEEN 1 AND 2 THEN'' at line 2 (SQL: update `cadon_stunring_categories` set `nest_left` = CASE\n            WHEN `nest_left` BETWEEN  AND 0 THEN `nest_left` + 2 - 0\n            WHEN `nest_left` BETWEEN 1 AND 2 THEN `nest_left` +  - 1\n            ELSE `nest_left` END, `nest_right` = CASE\n            WHEN `nest_right` BETWEEN  AND 0 THEN `nest_right` + 2 - 0\n            WHEN `nest_right` BETWEEN 1 AND 2 THEN `nest_right` +  - 1\n            ELSE `nest_right` END, `parent_id` = CASE\n            WHEN `id` = ''32'' THEN ''13''\n            ELSE `parent_id` END, `cadon_stunring_categories`.`updated_at` = 2023-06-29 16:07:55 where (`nest_left` between ? and 2 or `nest_right` between ? and 2) and `cadon_stunring_categories`.`deleted_at` is null order by `nest_left` asc) in /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Database/Connection.php:760\nStack trace:\n#0 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Database/Connection.php(720): Illuminate\\Database\\Connection->runQueryCallback(''update `cadon_s...'', Array, Object(Closure))\n#1 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Database/Connection.php(558): Illuminate\\Database\\Connection->run(''update `cadon_s...'', Array, Object(Closure))\n#2 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Database/Connection.php(510): Illuminate\\Database\\Connection->affectingStatement(''update `cadon_s...'', Array)\n#3 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(3356): Illuminate\\Database\\Connection->update(''update `cadon_s...'', Array)\n#4 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Builder.php(1011): Illuminate\\Database\\Query\\Builder->update(Array)\n#5 /Users/joe/Documents/www/admin/vendor/october/rain/src/Database/Traits/NestedTree.php(929): Illuminate\\Database\\Eloquent\\Builder->update(Array)\n#6 /Users/joe/Documents/www/admin/vendor/october/rain/src/Database/Traits/NestedTree.php(860): Cadon\\Stunring\\Models\\Category->performMove(Object(Cadon\\Stunring\\Models\\Category), Object(Cadon\\Stunring\\Models\\Category), ''child'')\n#7 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Database/Concerns/ManagesTransactions.php(30): Cadon\\Stunring\\Models\\Category->October\\Rain\\Database\\Traits\\{closure}(Object(October\\Rain\\Database\\Connections\\MySqlConnection))\n#8 /Users/joe/Documents/www/admin/vendor/october/rain/src/Database/Traits/NestedTree.php(859): Illuminate\\Database\\Connection->transaction(Object(Closure))\n#9 /Users/joe/Documents/www/admin/vendor/october/rain/src/Database/Traits/NestedTree.php(303): Cadon\\Stunring\\Models\\Category->moveTo(Object(Cadon\\Stunring\\Models\\Category), ''child'')\n#10 /Users/joe/Documents/www/admin/vendor/october/rain/src/Database/Traits/NestedTree.php(182): Cadon\\Stunring\\Models\\Category->makeChildOf(Object(Cadon\\Stunring\\Models\\Category))\n#11 /Users/joe/Documents/www/admin/vendor/october/rain/src/Database/Traits/NestedTree.php(116): Cadon\\Stunring\\Models\\Category->moveToNewParent()\n#12 /Users/joe/Documents/www/admin/vendor/october/rain/src/Support/Traits/Emitter.php(98): Cadon\\Stunring\\Models\\Category->October\\Rain\\Database\\Traits\\{closure}()\n#13 /Users/joe/Documents/www/admin/vendor/october/rain/src/Database/Concerns/HasEvents.php(43): October\\Rain\\Database\\Model->fireEvent(''model.afterSave'')\n#14 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Events/Dispatcher.php(421): October\\Rain\\Database\\Model->October\\Rain\\Database\\Concerns\\{closure}(Object(Cadon\\Stunring\\Models\\Category))\n#15 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Events/Dispatcher.php(249): Illuminate\\Events\\Dispatcher->Illuminate\\Events\\{closure}(''eloquent.saved:...'', Array)\n#16 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Concerns/HasEvents.php(188): Illuminate\\Events\\Dispatcher->dispatch(''eloquent.saved:...'', Array)\n#17 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Model.php(1177): Illuminate\\Database\\Eloquent\\Model->fireModelEvent(''saved'', false)\n#18 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Model.php(1150): Illuminate\\Database\\Eloquent\\Model->finishSave(Array)\n#19 /Users/joe/Documents/www/admin/vendor/october/rain/src/Database/Model.php(405): Illuminate\\Database\\Eloquent\\Model->save(Array)\n#20 /Users/joe/Documents/www/admin/vendor/october/rain/src/Database/Model.php(444): October\\Rain\\Database\\Model->saveInternal(Array)\n#21 /Users/joe/Documents/www/admin/modules/backend/traits/FormModelSaver.php(38): October\\Rain\\Database\\Model->save(Array)\n#22 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Database/Concerns/ManagesTransactions.php(30): Backend\\Behaviors\\FormController->Backend\\Traits\\{closure}(Object(October\\Rain\\Database\\Connections\\MySqlConnection))\n#23 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Database/DatabaseManager.php(469): Illuminate\\Database\\Connection->transaction(Object(Closure))\n#24 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php(338): Illuminate\\Database\\DatabaseManager->__call(''transaction'', Array)\n#25 /Users/joe/Documents/www/admin/modules/backend/traits/FormModelSaver.php(35): Illuminate\\Support\\Facades\\Facade::__callStatic(''transaction'', Array)\n#26 /Users/joe/Documents/www/admin/modules/backend/behaviors/FormController.php(244): Backend\\Behaviors\\FormController->performSaveOnModel(Object(Cadon\\Stunring\\Models\\Category), Array, Array)\n#27 [internal function]: Backend\\Behaviors\\FormController->create_onSave(NULL)\n#28 /Users/joe/Documents/www/admin/vendor/october/rain/src/Extension/ExtendableTrait.php(506): call_user_func_array(Array, Array)\n#29 /Users/joe/Documents/www/admin/vendor/october/rain/src/Extension/Extendable.php(46): October\\Rain\\Extension\\Extendable->extendableCall(''create_onSave'', Array)\n#30 /Users/joe/Documents/www/admin/modules/system/traits/DependencyMaker.php(29): October\\Rain\\Extension\\Extendable->__call(''create_onSave'', Array)\n#31 /Users/joe/Documents/www/admin/modules/backend/classes/Controller.php(598): Backend\\Classes\\Controller->makeCallMethod(Object(Cadon\\Stunring\\Controllers\\Category), ''create_onSave'', Array)\n#32 /Users/joe/Documents/www/admin/modules/backend/classes/Controller.php(448): Backend\\Classes\\Controller->runAjaxHandler(''onSave'')\n#33 /Users/joe/Documents/www/admin/modules/backend/classes/Controller.php(256): Backend\\Classes\\Controller->execAjaxHandlers()\n#34 /Users/joe/Documents/www/admin/modules/backend/classes/BackendController.php(118): Backend\\Classes\\Controller->run(''create'', Array)\n#35 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/Controller.php(54): Backend\\Classes\\BackendController->run(''cadon/stunring/...'')\n#36 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/ControllerDispatcher.php(43): Illuminate\\Routing\\Controller->callAction(''run'', Array)\n#37 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/Route.php(259): Illuminate\\Routing\\ControllerDispatcher->dispatch(Object(Illuminate\\Routing\\Route), Object(Backend\\Classes\\BackendController), ''run'')\n#38 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/Route.php(205): Illuminate\\Routing\\Route->runController()\n#39 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/Router.php(798): Illuminate\\Routing\\Route->run()\n#40 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(141): Illuminate\\Routing\\Router->Illuminate\\Routing\\{closure}(Object(Illuminate\\Http\\Request))\n#41 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/Middleware/SubstituteBindings.php(50): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))\n#42 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Routing\\Middleware\\SubstituteBindings->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#43 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/View/Middleware/ShareErrorsFromSession.php(49): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))\n#44 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\View\\Middleware\\ShareErrorsFromSession->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#45 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Session/Middleware/StartSession.php(121): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))\n#46 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Session/Middleware/StartSession.php(64): Illuminate\\Session\\Middleware\\StartSession->handleStatefulRequest(Object(Illuminate\\Http\\Request), Object(Illuminate\\Session\\Store), Object(Closure))\n#47 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Session\\Middleware\\StartSession->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#48 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Cookie/Middleware/AddQueuedCookiesToResponse.php(37): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))\n#49 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Cookie\\Middleware\\AddQueuedCookiesToResponse->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#50 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Cookie/Middleware/EncryptCookies.php(67): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))\n#51 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Cookie\\Middleware\\EncryptCookies->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#52 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(116): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))\n#53 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/Router.php(797): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))\n#54 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/Router.php(776): Illuminate\\Routing\\Router->runRouteWithinStack(Object(Illuminate\\Routing\\Route), Object(Illuminate\\Http\\Request))\n#55 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/Router.php(740): Illuminate\\Routing\\Router->runRoute(Object(Illuminate\\Http\\Request), Object(Illuminate\\Routing\\Route))\n#56 /Users/joe/Documents/www/admin/vendor/october/rain/src/Router/CoreRouter.php(32): Illuminate\\Routing\\Router->dispatchToRoute(Object(Illuminate\\Http\\Request))\n#57 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(190): October\\Rain\\Router\\CoreRouter->dispatch(Object(Illuminate\\Http\\Request))\n#58 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(141): Illuminate\\Foundation\\Http\\Kernel->Illuminate\\Foundation\\Http\\{closure}(Object(Illuminate\\Http\\Request))\n#59 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/PreventRequestsDuringMaintenance.php(86): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))\n#60 /Users/joe/Documents/www/admin/vendor/october/rain/src/Foundation/Http/Middleware/CheckForMaintenanceMode.php(23): Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#61 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): October\\Rain\\Foundation\\Http\\Middleware\\CheckForMaintenanceMode->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#62 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(116): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))\n#63 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(165): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))\n#64 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(134): Illuminate\\Foundation\\Http\\Kernel->sendRequestThroughRouter(Object(Illuminate\\Http\\Request))\n#65 /Users/joe/Documents/www/admin/index.php(42): Illuminate\\Foundation\\Http\\Kernel->handle(Object(Illuminate\\Http\\Request))\n#66 /Users/joe/Documents/www/admin/vendor/october/rain/src/Foundation/resources/server.php(18): require_once(''/Users/joe/Docu...'')\n#67 {main}', '[]', '2023-06-29 16:07:55', '2023-06-29 16:07:55'),
+(9, 'error', 'Exception: A node cannot be moved to a descendant of itself. in /Users/joe/Documents/www/admin/vendor/october/rain/src/Database/Traits/NestedTree.php:990\nStack trace:\n#0 /Users/joe/Documents/www/admin/vendor/october/rain/src/Database/Traits/NestedTree.php(854): Cadon\\Stunring\\Models\\Category->validateMove(Object(Cadon\\Stunring\\Models\\Category), Object(Cadon\\Stunring\\Models\\Category), ''left'')\n#1 /Users/joe/Documents/www/admin/vendor/october/rain/src/Database/Traits/NestedTree.php(330): Cadon\\Stunring\\Models\\Category->moveTo(Object(Cadon\\Stunring\\Models\\Category), ''left'')\n#2 /Users/joe/Documents/www/admin/modules/backend/widgets/ListStructure.php(378): Cadon\\Stunring\\Models\\Category->moveBefore(''23'')\n#3 /Users/joe/Documents/www/admin/modules/backend/widgets/ListStructure.php(335): Backend\\Widgets\\ListStructure->reorderForNestedTree(Object(Cadon\\Stunring\\Models\\Category))\n#4 /Users/joe/Documents/www/admin/modules/system/traits/DependencyMaker.php(29): Backend\\Widgets\\ListStructure->onReorder()\n#5 /Users/joe/Documents/www/admin/modules/backend/classes/Controller.php(637): Backend\\Classes\\Controller->makeCallMethod(Object(Backend\\Widgets\\ListStructure), ''onReorder'', Array)\n#6 /Users/joe/Documents/www/admin/modules/backend/classes/Controller.php(589): Backend\\Classes\\Controller->runAjaxHandlerForWidget(Object(Backend\\Widgets\\ListStructure), ''onReorder'')\n#7 /Users/joe/Documents/www/admin/modules/backend/classes/Controller.php(448): Backend\\Classes\\Controller->runAjaxHandler(''list::onReorder'')\n#8 /Users/joe/Documents/www/admin/modules/backend/classes/Controller.php(256): Backend\\Classes\\Controller->execAjaxHandlers()\n#9 /Users/joe/Documents/www/admin/modules/backend/classes/BackendController.php(118): Backend\\Classes\\Controller->run(''index'', Array)\n#10 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/Controller.php(54): Backend\\Classes\\BackendController->run(''cadon/stunring/...'')\n#11 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/ControllerDispatcher.php(43): Illuminate\\Routing\\Controller->callAction(''run'', Array)\n#12 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/Route.php(259): Illuminate\\Routing\\ControllerDispatcher->dispatch(Object(Illuminate\\Routing\\Route), Object(Backend\\Classes\\BackendController), ''run'')\n#13 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/Route.php(205): Illuminate\\Routing\\Route->runController()\n#14 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/Router.php(798): Illuminate\\Routing\\Route->run()\n#15 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(141): Illuminate\\Routing\\Router->Illuminate\\Routing\\{closure}(Object(Illuminate\\Http\\Request))\n#16 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/Middleware/SubstituteBindings.php(50): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))\n#17 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Routing\\Middleware\\SubstituteBindings->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#18 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/View/Middleware/ShareErrorsFromSession.php(49): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))\n#19 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\View\\Middleware\\ShareErrorsFromSession->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#20 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Session/Middleware/StartSession.php(121): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))\n#21 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Session/Middleware/StartSession.php(64): Illuminate\\Session\\Middleware\\StartSession->handleStatefulRequest(Object(Illuminate\\Http\\Request), Object(Illuminate\\Session\\Store), Object(Closure))\n#22 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Session\\Middleware\\StartSession->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#23 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Cookie/Middleware/AddQueuedCookiesToResponse.php(37): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))\n#24 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Cookie\\Middleware\\AddQueuedCookiesToResponse->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#25 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Cookie/Middleware/EncryptCookies.php(67): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))\n#26 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Cookie\\Middleware\\EncryptCookies->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#27 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(116): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))\n#28 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/Router.php(797): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))\n#29 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/Router.php(776): Illuminate\\Routing\\Router->runRouteWithinStack(Object(Illuminate\\Routing\\Route), Object(Illuminate\\Http\\Request))\n#30 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Routing/Router.php(740): Illuminate\\Routing\\Router->runRoute(Object(Illuminate\\Http\\Request), Object(Illuminate\\Routing\\Route))\n#31 /Users/joe/Documents/www/admin/vendor/october/rain/src/Router/CoreRouter.php(32): Illuminate\\Routing\\Router->dispatchToRoute(Object(Illuminate\\Http\\Request))\n#32 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(190): October\\Rain\\Router\\CoreRouter->dispatch(Object(Illuminate\\Http\\Request))\n#33 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(141): Illuminate\\Foundation\\Http\\Kernel->Illuminate\\Foundation\\Http\\{closure}(Object(Illuminate\\Http\\Request))\n#34 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/PreventRequestsDuringMaintenance.php(86): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))\n#35 /Users/joe/Documents/www/admin/vendor/october/rain/src/Foundation/Http/Middleware/CheckForMaintenanceMode.php(23): Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#36 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): October\\Rain\\Foundation\\Http\\Middleware\\CheckForMaintenanceMode->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#37 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(116): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))\n#38 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(165): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))\n#39 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(134): Illuminate\\Foundation\\Http\\Kernel->sendRequestThroughRouter(Object(Illuminate\\Http\\Request))\n#40 /Users/joe/Documents/www/admin/index.php(42): Illuminate\\Foundation\\Http\\Kernel->handle(Object(Illuminate\\Http\\Request))\n#41 /Users/joe/Documents/www/admin/vendor/october/rain/src/Foundation/resources/server.php(18): require_once(''/Users/joe/Docu...'')\n#42 {main}', '[]', '2023-06-29 16:27:51', '2023-06-29 16:27:51'),
+(10, 'error', 'ReflectionException: Class "DatabaseSeeder" does not exist in /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/Container.php:889\nStack trace:\n#0 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/Container.php(889): ReflectionClass->__construct(''DatabaseSeeder'')\n#1 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/Container.php(770): Illuminate\\Container\\Container->build(''DatabaseSeeder'')\n#2 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(856): Illuminate\\Container\\Container->resolve(''DatabaseSeeder'', Array, true)\n#3 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/Container.php(706): Illuminate\\Foundation\\Application->resolve(''DatabaseSeeder'', Array)\n#4 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(841): Illuminate\\Container\\Container->make(''DatabaseSeeder'', Array)\n#5 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Database/Console/Seeds/SeedCommand.php(109): Illuminate\\Foundation\\Application->make(''DatabaseSeeder'')\n#6 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Database/Console/Seeds/SeedCommand.php(81): Illuminate\\Database\\Console\\Seeds\\SeedCommand->getSeeder()\n#7 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Concerns/GuardsAttributes.php(155): Illuminate\\Database\\Console\\Seeds\\SeedCommand->Illuminate\\Database\\Console\\Seeds\\{closure}()\n#8 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Database/Console/Seeds/SeedCommand.php(80): Illuminate\\Database\\Eloquent\\Model::unguarded(Object(Closure))\n#9 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Illuminate\\Database\\Console\\Seeds\\SeedCommand->handle()\n#10 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/Util.php(41): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()\n#11 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(93): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))\n#12 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(October\\Rain\\Foundation\\Application), Array, Object(Closure))\n#13 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/Container.php(661): Illuminate\\Container\\BoundMethod::call(Object(October\\Rain\\Foundation\\Application), Array, Array, NULL)\n#14 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Console/Command.php(183): Illuminate\\Container\\Container->call(Array)\n#15 /Users/joe/Documents/www/admin/vendor/symfony/console/Command/Command.php(326): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))\n#16 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Console/Command.php(152): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))\n#17 /Users/joe/Documents/www/admin/vendor/symfony/console/Application.php(1063): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#18 /Users/joe/Documents/www/admin/vendor/symfony/console/Application.php(320): Symfony\\Component\\Console\\Application->doRunCommand(Object(Illuminate\\Database\\Console\\Seeds\\SeedCommand), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#19 /Users/joe/Documents/www/admin/vendor/symfony/console/Application.php(174): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#20 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Console/Application.php(102): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#21 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(155): Illuminate\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#22 /Users/joe/Documents/www/admin/artisan(33): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#23 {main}\n\nNext Illuminate\\Contracts\\Container\\BindingResolutionException: Target class [DatabaseSeeder] does not exist. in /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/Container.php:891\nStack trace:\n#0 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/Container.php(770): Illuminate\\Container\\Container->build(''DatabaseSeeder'')\n#1 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(856): Illuminate\\Container\\Container->resolve(''DatabaseSeeder'', Array, true)\n#2 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/Container.php(706): Illuminate\\Foundation\\Application->resolve(''DatabaseSeeder'', Array)\n#3 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(841): Illuminate\\Container\\Container->make(''DatabaseSeeder'', Array)\n#4 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Database/Console/Seeds/SeedCommand.php(109): Illuminate\\Foundation\\Application->make(''DatabaseSeeder'')\n#5 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Database/Console/Seeds/SeedCommand.php(81): Illuminate\\Database\\Console\\Seeds\\SeedCommand->getSeeder()\n#6 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Concerns/GuardsAttributes.php(155): Illuminate\\Database\\Console\\Seeds\\SeedCommand->Illuminate\\Database\\Console\\Seeds\\{closure}()\n#7 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Database/Console/Seeds/SeedCommand.php(80): Illuminate\\Database\\Eloquent\\Model::unguarded(Object(Closure))\n#8 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Illuminate\\Database\\Console\\Seeds\\SeedCommand->handle()\n#9 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/Util.php(41): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()\n#10 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(93): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))\n#11 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(October\\Rain\\Foundation\\Application), Array, Object(Closure))\n#12 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/Container.php(661): Illuminate\\Container\\BoundMethod::call(Object(October\\Rain\\Foundation\\Application), Array, Array, NULL)\n#13 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Console/Command.php(183): Illuminate\\Container\\Container->call(Array)\n#14 /Users/joe/Documents/www/admin/vendor/symfony/console/Command/Command.php(326): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))\n#15 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Console/Command.php(152): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))\n#16 /Users/joe/Documents/www/admin/vendor/symfony/console/Application.php(1063): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#17 /Users/joe/Documents/www/admin/vendor/symfony/console/Application.php(320): Symfony\\Component\\Console\\Application->doRunCommand(Object(Illuminate\\Database\\Console\\Seeds\\SeedCommand), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#18 /Users/joe/Documents/www/admin/vendor/symfony/console/Application.php(174): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#19 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Console/Application.php(102): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#20 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(155): Illuminate\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#21 /Users/joe/Documents/www/admin/artisan(33): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#22 {main}', '[]', '2023-06-29 17:09:48', '2023-06-29 17:09:48'),
+(11, 'error', 'ReflectionException: Class "Database\\Seeders\\CategorySeeder" does not exist in /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/Container.php:889\nStack trace:\n#0 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/Container.php(889): ReflectionClass->__construct(''Database\\\\Seeder...'')\n#1 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/Container.php(770): Illuminate\\Container\\Container->build(''Database\\\\Seeder...'')\n#2 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(856): Illuminate\\Container\\Container->resolve(''Database\\\\Seeder...'', Array, true)\n#3 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/Container.php(706): Illuminate\\Foundation\\Application->resolve(''Database\\\\Seeder...'', Array)\n#4 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(841): Illuminate\\Container\\Container->make(''Database\\\\Seeder...'', Array)\n#5 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Database/Console/Seeds/SeedCommand.php(109): Illuminate\\Foundation\\Application->make(''Database\\\\Seeder...'')\n#6 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Database/Console/Seeds/SeedCommand.php(81): Illuminate\\Database\\Console\\Seeds\\SeedCommand->getSeeder()\n#7 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Concerns/GuardsAttributes.php(155): Illuminate\\Database\\Console\\Seeds\\SeedCommand->Illuminate\\Database\\Console\\Seeds\\{closure}()\n#8 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Database/Console/Seeds/SeedCommand.php(80): Illuminate\\Database\\Eloquent\\Model::unguarded(Object(Closure))\n#9 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Illuminate\\Database\\Console\\Seeds\\SeedCommand->handle()\n#10 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/Util.php(41): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()\n#11 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(93): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))\n#12 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(October\\Rain\\Foundation\\Application), Array, Object(Closure))\n#13 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/Container.php(661): Illuminate\\Container\\BoundMethod::call(Object(October\\Rain\\Foundation\\Application), Array, Array, NULL)\n#14 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Console/Command.php(183): Illuminate\\Container\\Container->call(Array)\n#15 /Users/joe/Documents/www/admin/vendor/symfony/console/Command/Command.php(326): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))\n#16 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Console/Command.php(152): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))\n#17 /Users/joe/Documents/www/admin/vendor/symfony/console/Application.php(1063): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#18 /Users/joe/Documents/www/admin/vendor/symfony/console/Application.php(320): Symfony\\Component\\Console\\Application->doRunCommand(Object(Illuminate\\Database\\Console\\Seeds\\SeedCommand), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#19 /Users/joe/Documents/www/admin/vendor/symfony/console/Application.php(174): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#20 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Console/Application.php(102): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#21 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(155): Illuminate\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#22 /Users/joe/Documents/www/admin/artisan(33): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#23 {main}\n\nNext Illuminate\\Contracts\\Container\\BindingResolutionException: Target class [Database\\Seeders\\CategorySeeder] does not exist. in /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/Container.php:891\nStack trace:\n#0 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/Container.php(770): Illuminate\\Container\\Container->build(''Database\\\\Seeder...'')\n#1 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(856): Illuminate\\Container\\Container->resolve(''Database\\\\Seeder...'', Array, true)\n#2 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/Container.php(706): Illuminate\\Foundation\\Application->resolve(''Database\\\\Seeder...'', Array)\n#3 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(841): Illuminate\\Container\\Container->make(''Database\\\\Seeder...'', Array)\n#4 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Database/Console/Seeds/SeedCommand.php(109): Illuminate\\Foundation\\Application->make(''Database\\\\Seeder...'')\n#5 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Database/Console/Seeds/SeedCommand.php(81): Illuminate\\Database\\Console\\Seeds\\SeedCommand->getSeeder()\n#6 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Concerns/GuardsAttributes.php(155): Illuminate\\Database\\Console\\Seeds\\SeedCommand->Illuminate\\Database\\Console\\Seeds\\{closure}()\n#7 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Database/Console/Seeds/SeedCommand.php(80): Illuminate\\Database\\Eloquent\\Model::unguarded(Object(Closure))\n#8 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Illuminate\\Database\\Console\\Seeds\\SeedCommand->handle()\n#9 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/Util.php(41): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()\n#10 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(93): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))\n#11 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(October\\Rain\\Foundation\\Application), Array, Object(Closure))\n#12 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/Container.php(661): Illuminate\\Container\\BoundMethod::call(Object(October\\Rain\\Foundation\\Application), Array, Array, NULL)\n#13 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Console/Command.php(183): Illuminate\\Container\\Container->call(Array)\n#14 /Users/joe/Documents/www/admin/vendor/symfony/console/Command/Command.php(326): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))\n#15 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Console/Command.php(152): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))\n#16 /Users/joe/Documents/www/admin/vendor/symfony/console/Application.php(1063): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#17 /Users/joe/Documents/www/admin/vendor/symfony/console/Application.php(320): Symfony\\Component\\Console\\Application->doRunCommand(Object(Illuminate\\Database\\Console\\Seeds\\SeedCommand), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#18 /Users/joe/Documents/www/admin/vendor/symfony/console/Application.php(174): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#19 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Console/Application.php(102): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#20 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(155): Illuminate\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#21 /Users/joe/Documents/www/admin/artisan(33): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#22 {main}', '[]', '2023-06-29 17:11:24', '2023-06-29 17:11:24'),
+(12, 'error', 'ReflectionException: Class "Database\\Seeders\\CategorySeeder" does not exist in /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/Container.php:889\nStack trace:\n#0 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/Container.php(889): ReflectionClass->__construct(''Database\\\\Seeder...'')\n#1 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/Container.php(770): Illuminate\\Container\\Container->build(''Database\\\\Seeder...'')\n#2 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(856): Illuminate\\Container\\Container->resolve(''Database\\\\Seeder...'', Array, true)\n#3 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/Container.php(706): Illuminate\\Foundation\\Application->resolve(''Database\\\\Seeder...'', Array)\n#4 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(841): Illuminate\\Container\\Container->make(''Database\\\\Seeder...'', Array)\n#5 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Database/Console/Seeds/SeedCommand.php(109): Illuminate\\Foundation\\Application->make(''Database\\\\Seeder...'')\n#6 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Database/Console/Seeds/SeedCommand.php(81): Illuminate\\Database\\Console\\Seeds\\SeedCommand->getSeeder()\n#7 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Concerns/GuardsAttributes.php(155): Illuminate\\Database\\Console\\Seeds\\SeedCommand->Illuminate\\Database\\Console\\Seeds\\{closure}()\n#8 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Database/Console/Seeds/SeedCommand.php(80): Illuminate\\Database\\Eloquent\\Model::unguarded(Object(Closure))\n#9 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Illuminate\\Database\\Console\\Seeds\\SeedCommand->handle()\n#10 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/Util.php(41): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()\n#11 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(93): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))\n#12 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(October\\Rain\\Foundation\\Application), Array, Object(Closure))\n#13 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/Container.php(661): Illuminate\\Container\\BoundMethod::call(Object(October\\Rain\\Foundation\\Application), Array, Array, NULL)\n#14 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Console/Command.php(183): Illuminate\\Container\\Container->call(Array)\n#15 /Users/joe/Documents/www/admin/vendor/symfony/console/Command/Command.php(326): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))\n#16 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Console/Command.php(152): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))\n#17 /Users/joe/Documents/www/admin/vendor/symfony/console/Application.php(1063): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#18 /Users/joe/Documents/www/admin/vendor/symfony/console/Application.php(320): Symfony\\Component\\Console\\Application->doRunCommand(Object(Illuminate\\Database\\Console\\Seeds\\SeedCommand), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#19 /Users/joe/Documents/www/admin/vendor/symfony/console/Application.php(174): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#20 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Console/Application.php(102): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#21 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(155): Illuminate\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#22 /Users/joe/Documents/www/admin/artisan(33): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#23 {main}\n\nNext Illuminate\\Contracts\\Container\\BindingResolutionException: Target class [Database\\Seeders\\CategorySeeder] does not exist. in /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/Container.php:891\nStack trace:\n#0 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/Container.php(770): Illuminate\\Container\\Container->build(''Database\\\\Seeder...'')\n#1 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(856): Illuminate\\Container\\Container->resolve(''Database\\\\Seeder...'', Array, true)\n#2 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/Container.php(706): Illuminate\\Foundation\\Application->resolve(''Database\\\\Seeder...'', Array)\n#3 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(841): Illuminate\\Container\\Container->make(''Database\\\\Seeder...'', Array)\n#4 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Database/Console/Seeds/SeedCommand.php(109): Illuminate\\Foundation\\Application->make(''Database\\\\Seeder...'')\n#5 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Database/Console/Seeds/SeedCommand.php(81): Illuminate\\Database\\Console\\Seeds\\SeedCommand->getSeeder()\n#6 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Concerns/GuardsAttributes.php(155): Illuminate\\Database\\Console\\Seeds\\SeedCommand->Illuminate\\Database\\Console\\Seeds\\{closure}()\n#7 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Database/Console/Seeds/SeedCommand.php(80): Illuminate\\Database\\Eloquent\\Model::unguarded(Object(Closure))\n#8 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Illuminate\\Database\\Console\\Seeds\\SeedCommand->handle()\n#9 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/Util.php(41): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()\n#10 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(93): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))\n#11 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(October\\Rain\\Foundation\\Application), Array, Object(Closure))\n#12 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/Container.php(661): Illuminate\\Container\\BoundMethod::call(Object(October\\Rain\\Foundation\\Application), Array, Array, NULL)\n#13 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Console/Command.php(183): Illuminate\\Container\\Container->call(Array)\n#14 /Users/joe/Documents/www/admin/vendor/symfony/console/Command/Command.php(326): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))\n#15 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Console/Command.php(152): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))\n#16 /Users/joe/Documents/www/admin/vendor/symfony/console/Application.php(1063): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#17 /Users/joe/Documents/www/admin/vendor/symfony/console/Application.php(320): Symfony\\Component\\Console\\Application->doRunCommand(Object(Illuminate\\Database\\Console\\Seeds\\SeedCommand), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#18 /Users/joe/Documents/www/admin/vendor/symfony/console/Application.php(174): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#19 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Console/Application.php(102): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#20 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(155): Illuminate\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#21 /Users/joe/Documents/www/admin/artisan(33): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#22 {main}', '[]', '2023-06-29 17:12:19', '2023-06-29 17:12:19'),
+(13, 'error', 'ReflectionException: Class "Database\\Seeders\\CategorySeeder" does not exist in /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/Container.php:889\nStack trace:\n#0 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/Container.php(889): ReflectionClass->__construct(''Database\\\\Seeder...'')\n#1 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/Container.php(770): Illuminate\\Container\\Container->build(''Database\\\\Seeder...'')\n#2 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(856): Illuminate\\Container\\Container->resolve(''Database\\\\Seeder...'', Array, true)\n#3 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/Container.php(706): Illuminate\\Foundation\\Application->resolve(''Database\\\\Seeder...'', Array)\n#4 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(841): Illuminate\\Container\\Container->make(''Database\\\\Seeder...'', Array)\n#5 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Database/Console/Seeds/SeedCommand.php(109): Illuminate\\Foundation\\Application->make(''Database\\\\Seeder...'')\n#6 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Database/Console/Seeds/SeedCommand.php(81): Illuminate\\Database\\Console\\Seeds\\SeedCommand->getSeeder()\n#7 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Concerns/GuardsAttributes.php(155): Illuminate\\Database\\Console\\Seeds\\SeedCommand->Illuminate\\Database\\Console\\Seeds\\{closure}()\n#8 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Database/Console/Seeds/SeedCommand.php(80): Illuminate\\Database\\Eloquent\\Model::unguarded(Object(Closure))\n#9 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Illuminate\\Database\\Console\\Seeds\\SeedCommand->handle()\n#10 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/Util.php(41): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()\n#11 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(93): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))\n#12 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(October\\Rain\\Foundation\\Application), Array, Object(Closure))\n#13 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/Container.php(661): Illuminate\\Container\\BoundMethod::call(Object(October\\Rain\\Foundation\\Application), Array, Array, NULL)\n#14 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Console/Command.php(183): Illuminate\\Container\\Container->call(Array)\n#15 /Users/joe/Documents/www/admin/vendor/symfony/console/Command/Command.php(326): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))\n#16 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Console/Command.php(152): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))\n#17 /Users/joe/Documents/www/admin/vendor/symfony/console/Application.php(1063): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#18 /Users/joe/Documents/www/admin/vendor/symfony/console/Application.php(320): Symfony\\Component\\Console\\Application->doRunCommand(Object(Illuminate\\Database\\Console\\Seeds\\SeedCommand), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#19 /Users/joe/Documents/www/admin/vendor/symfony/console/Application.php(174): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#20 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Console/Application.php(102): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#21 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(155): Illuminate\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#22 /Users/joe/Documents/www/admin/artisan(33): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#23 {main}\n\nNext Illuminate\\Contracts\\Container\\BindingResolutionException: Target class [Database\\Seeders\\CategorySeeder] does not exist. in /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/Container.php:891\nStack trace:\n#0 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/Container.php(770): Illuminate\\Container\\Container->build(''Database\\\\Seeder...'')\n#1 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(856): Illuminate\\Container\\Container->resolve(''Database\\\\Seeder...'', Array, true)\n#2 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/Container.php(706): Illuminate\\Foundation\\Application->resolve(''Database\\\\Seeder...'', Array)\n#3 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(841): Illuminate\\Container\\Container->make(''Database\\\\Seeder...'', Array)\n#4 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Database/Console/Seeds/SeedCommand.php(109): Illuminate\\Foundation\\Application->make(''Database\\\\Seeder...'')\n#5 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Database/Console/Seeds/SeedCommand.php(81): Illuminate\\Database\\Console\\Seeds\\SeedCommand->getSeeder()\n#6 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Concerns/GuardsAttributes.php(155): Illuminate\\Database\\Console\\Seeds\\SeedCommand->Illuminate\\Database\\Console\\Seeds\\{closure}()\n#7 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Database/Console/Seeds/SeedCommand.php(80): Illuminate\\Database\\Eloquent\\Model::unguarded(Object(Closure))\n#8 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Illuminate\\Database\\Console\\Seeds\\SeedCommand->handle()\n#9 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/Util.php(41): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()\n#10 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(93): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))\n#11 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(October\\Rain\\Foundation\\Application), Array, Object(Closure))\n#12 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/Container.php(661): Illuminate\\Container\\BoundMethod::call(Object(October\\Rain\\Foundation\\Application), Array, Array, NULL)\n#13 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Console/Command.php(183): Illuminate\\Container\\Container->call(Array)\n#14 /Users/joe/Documents/www/admin/vendor/symfony/console/Command/Command.php(326): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))\n#15 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Console/Command.php(152): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))\n#16 /Users/joe/Documents/www/admin/vendor/symfony/console/Application.php(1063): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#17 /Users/joe/Documents/www/admin/vendor/symfony/console/Application.php(320): Symfony\\Component\\Console\\Application->doRunCommand(Object(Illuminate\\Database\\Console\\Seeds\\SeedCommand), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#18 /Users/joe/Documents/www/admin/vendor/symfony/console/Application.php(174): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#19 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Console/Application.php(102): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#20 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(155): Illuminate\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#21 /Users/joe/Documents/www/admin/artisan(33): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#22 {main}', '[]', '2023-06-29 17:13:08', '2023-06-29 17:13:08'),
+(14, 'error', 'ReflectionException: Class "DatabaseSeeder" does not exist in /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/Container.php:889\nStack trace:\n#0 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/Container.php(889): ReflectionClass->__construct(''DatabaseSeeder'')\n#1 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/Container.php(770): Illuminate\\Container\\Container->build(''DatabaseSeeder'')\n#2 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(856): Illuminate\\Container\\Container->resolve(''DatabaseSeeder'', Array, true)\n#3 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/Container.php(706): Illuminate\\Foundation\\Application->resolve(''DatabaseSeeder'', Array)\n#4 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(841): Illuminate\\Container\\Container->make(''DatabaseSeeder'', Array)\n#5 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Database/Console/Seeds/SeedCommand.php(109): Illuminate\\Foundation\\Application->make(''DatabaseSeeder'')\n#6 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Database/Console/Seeds/SeedCommand.php(81): Illuminate\\Database\\Console\\Seeds\\SeedCommand->getSeeder()\n#7 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Concerns/GuardsAttributes.php(155): Illuminate\\Database\\Console\\Seeds\\SeedCommand->Illuminate\\Database\\Console\\Seeds\\{closure}()\n#8 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Database/Console/Seeds/SeedCommand.php(80): Illuminate\\Database\\Eloquent\\Model::unguarded(Object(Closure))\n#9 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Illuminate\\Database\\Console\\Seeds\\SeedCommand->handle()\n#10 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/Util.php(41): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()\n#11 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(93): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))\n#12 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(October\\Rain\\Foundation\\Application), Array, Object(Closure))\n#13 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/Container.php(661): Illuminate\\Container\\BoundMethod::call(Object(October\\Rain\\Foundation\\Application), Array, Array, NULL)\n#14 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Console/Command.php(183): Illuminate\\Container\\Container->call(Array)\n#15 /Users/joe/Documents/www/admin/vendor/symfony/console/Command/Command.php(326): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))\n#16 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Console/Command.php(152): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))\n#17 /Users/joe/Documents/www/admin/vendor/symfony/console/Application.php(1063): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#18 /Users/joe/Documents/www/admin/vendor/symfony/console/Application.php(320): Symfony\\Component\\Console\\Application->doRunCommand(Object(Illuminate\\Database\\Console\\Seeds\\SeedCommand), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#19 /Users/joe/Documents/www/admin/vendor/symfony/console/Application.php(174): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#20 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Console/Application.php(102): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#21 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(155): Illuminate\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#22 /Users/joe/Documents/www/admin/artisan(33): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#23 {main}\n\nNext Illuminate\\Contracts\\Container\\BindingResolutionException: Target class [DatabaseSeeder] does not exist. in /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/Container.php:891\nStack trace:\n#0 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/Container.php(770): Illuminate\\Container\\Container->build(''DatabaseSeeder'')\n#1 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(856): Illuminate\\Container\\Container->resolve(''DatabaseSeeder'', Array, true)\n#2 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/Container.php(706): Illuminate\\Foundation\\Application->resolve(''DatabaseSeeder'', Array)\n#3 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(841): Illuminate\\Container\\Container->make(''DatabaseSeeder'', Array)\n#4 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Database/Console/Seeds/SeedCommand.php(109): Illuminate\\Foundation\\Application->make(''DatabaseSeeder'')\n#5 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Database/Console/Seeds/SeedCommand.php(81): Illuminate\\Database\\Console\\Seeds\\SeedCommand->getSeeder()\n#6 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Concerns/GuardsAttributes.php(155): Illuminate\\Database\\Console\\Seeds\\SeedCommand->Illuminate\\Database\\Console\\Seeds\\{closure}()\n#7 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Database/Console/Seeds/SeedCommand.php(80): Illuminate\\Database\\Eloquent\\Model::unguarded(Object(Closure))\n#8 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Illuminate\\Database\\Console\\Seeds\\SeedCommand->handle()\n#9 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/Util.php(41): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()\n#10 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(93): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))\n#11 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(October\\Rain\\Foundation\\Application), Array, Object(Closure))\n#12 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Container/Container.php(661): Illuminate\\Container\\BoundMethod::call(Object(October\\Rain\\Foundation\\Application), Array, Array, NULL)\n#13 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Console/Command.php(183): Illuminate\\Container\\Container->call(Array)\n#14 /Users/joe/Documents/www/admin/vendor/symfony/console/Command/Command.php(326): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))\n#15 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Console/Command.php(152): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))\n#16 /Users/joe/Documents/www/admin/vendor/symfony/console/Application.php(1063): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#17 /Users/joe/Documents/www/admin/vendor/symfony/console/Application.php(320): Symfony\\Component\\Console\\Application->doRunCommand(Object(Illuminate\\Database\\Console\\Seeds\\SeedCommand), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#18 /Users/joe/Documents/www/admin/vendor/symfony/console/Application.php(174): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#19 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Console/Application.php(102): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#20 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(155): Illuminate\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#21 /Users/joe/Documents/www/admin/artisan(33): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#22 {main}', '[]', '2023-06-29 17:16:29', '2023-06-29 17:16:29'),
+(15, 'error', 'Symfony\\Component\\Console\\Exception\\RuntimeException: Not enough arguments (missing: "namespace, name"). in /Users/joe/Documents/www/admin/vendor/symfony/console/Input/Input.php:76\nStack trace:\n#0 /Users/joe/Documents/www/admin/vendor/symfony/console/Command/Command.php(321): Symfony\\Component\\Console\\Input\\Input->validate()\n#1 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Console/Command.php(152): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))\n#2 /Users/joe/Documents/www/admin/vendor/symfony/console/Application.php(1063): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#3 /Users/joe/Documents/www/admin/vendor/symfony/console/Application.php(320): Symfony\\Component\\Console\\Application->doRunCommand(Object(October\\Rain\\Scaffold\\Console\\CreateSeeder), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#4 /Users/joe/Documents/www/admin/vendor/symfony/console/Application.php(174): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#5 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Console/Application.php(102): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#6 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(155): Illuminate\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#7 /Users/joe/Documents/www/admin/artisan(33): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#8 {main}', '[]', '2023-06-29 17:16:50', '2023-06-29 17:16:50'),
+(16, 'error', 'Symfony\\Component\\Console\\Exception\\RuntimeException: Not enough arguments (missing: "namespace, name"). in /Users/joe/Documents/www/admin/vendor/symfony/console/Input/Input.php:76\nStack trace:\n#0 /Users/joe/Documents/www/admin/vendor/symfony/console/Command/Command.php(321): Symfony\\Component\\Console\\Input\\Input->validate()\n#1 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Console/Command.php(152): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))\n#2 /Users/joe/Documents/www/admin/vendor/symfony/console/Application.php(1063): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#3 /Users/joe/Documents/www/admin/vendor/symfony/console/Application.php(320): Symfony\\Component\\Console\\Application->doRunCommand(Object(October\\Rain\\Scaffold\\Console\\CreateSeeder), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#4 /Users/joe/Documents/www/admin/vendor/symfony/console/Application.php(174): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#5 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Console/Application.php(102): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#6 /Users/joe/Documents/www/admin/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(155): Illuminate\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#7 /Users/joe/Documents/www/admin/artisan(33): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#8 {main}', '[]', '2023-06-29 17:17:26', '2023-06-29 17:17:26');
+
+-- END TABLE system_event_logs
+
+-- BEGIN TABLE system_files
+DROP TABLE IF EXISTS system_files;
+CREATE TABLE `system_files` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `disk_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `file_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `file_size` int NOT NULL,
+  `content_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `title` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `description` text COLLATE utf8mb4_unicode_ci,
+  `field` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `attachment_id` int DEFAULT NULL,
+  `attachment_type` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `is_public` tinyint(1) NOT NULL DEFAULT '1',
+  `sort_order` int DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `system_files_master_index` (`attachment_id`,`attachment_type`),
+  KEY `system_files_field_index` (`field`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Table system_files contains no data. No inserts have been genrated.
+-- Inserting 0 rows into system_files
+
+
+-- END TABLE system_files
+
+-- BEGIN TABLE system_mail_layouts
+DROP TABLE IF EXISTS system_mail_layouts;
+CREATE TABLE `system_mail_layouts` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `content_html` text COLLATE utf8mb4_unicode_ci,
+  `content_text` text COLLATE utf8mb4_unicode_ci,
+  `content_css` text COLLATE utf8mb4_unicode_ci,
+  `is_locked` tinyint(1) NOT NULL DEFAULT '0',
+  `options` text COLLATE utf8mb4_unicode_ci,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Inserting 2 rows into system_mail_layouts
+-- Insert batch #1
+INSERT INTO system_mail_layouts (id, name, code, content_html, content_text, content_css, is_locked, `options`, created_at, updated_at) VALUES
+(1, 'Default layout', 'default', '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">\n<html xmlns="http://www.w3.org/1999/xhtml">\n<head>\n    <meta name="viewport" content="width=device-width, initial-scale=1.0" />\n    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />\n</head>\n<body>\n    <style type="text/css" media="screen">\n        {{ brandCss|raw }}\n        {{ css|raw }}\n    </style>\n\n    <table class="wrapper layout-default" width="100%" cellpadding="0" cellspacing="0">\n\n        <!-- Header -->\n        {% partial ''header'' body %}\n            {{ subject|raw }}\n        {% endpartial %}\n\n        <tr>\n            <td align="center">\n                <table class="content" width="100%" cellpadding="0" cellspacing="0">\n                    <!-- Email Body -->\n                    <tr>\n                        <td class="body" width="100%" cellpadding="0" cellspacing="0">\n                            <table class="inner-body" align="center" width="570" cellpadding="0" cellspacing="0">\n                                <!-- Body content -->\n                                <tr>\n                                    <td class="content-cell">\n                                        {{ content|raw }}\n                                    </td>\n                                </tr>\n                            </table>\n                        </td>\n                    </tr>\n                </table>\n            </td>\n        </tr>\n\n        <!-- Footer -->\n        {% partial ''footer'' body %}\n            &copy; {{ "now"|date("Y") }} {{ appName }}. All rights reserved.\n        {% endpartial %}\n\n    </table>\n\n</body>\n</html>', '{{ content|raw }}', '@media only screen and (max-width: 600px) {\n    .inner-body {\n        width: 100% !important;\n    }\n\n    .footer {\n        width: 100% !important;\n    }\n}\n\n@media only screen and (max-width: 500px) {\n    .button {\n        width: 100% !important;\n    }\n}', 1, NULL, '2023-06-29 12:52:10', '2023-06-29 12:52:10'),
+(2, 'System layout', 'system', '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">\n<html xmlns="http://www.w3.org/1999/xhtml">\n<head>\n    <meta name="viewport" content="width=device-width, initial-scale=1.0" />\n    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />\n</head>\n<body>\n    <style type="text/css" media="screen">\n        {{ brandCss|raw }}\n        {{ css|raw }}\n    </style>\n\n    <table class="wrapper layout-system" width="100%" cellpadding="0" cellspacing="0">\n        <tr>\n            <td align="center">\n                <table class="content" width="100%" cellpadding="0" cellspacing="0">\n                    <!-- Email Body -->\n                    <tr>\n                        <td class="body" width="100%" cellpadding="0" cellspacing="0">\n                            <table class="inner-body" align="center" width="570" cellpadding="0" cellspacing="0">\n                                <!-- Body content -->\n                                <tr>\n                                    <td class="content-cell">\n                                        {{ content|raw }}\n\n                                        <!-- Subcopy -->\n                                        {% partial ''subcopy'' body %}\n                                            **This is an automatic message. Please do not reply to it.**\n                                        {% endpartial %}\n                                    </td>\n                                </tr>\n                            </table>\n                        </td>\n                    </tr>\n                </table>\n            </td>\n        </tr>\n    </table>\n\n</body>\n</html>', '{{ content|raw }}\n\n\n---\nThis is an automatic message. Please do not reply to it.', '@media only screen and (max-width: 600px) {\n    .inner-body {\n        width: 100% !important;\n    }\n\n    .footer {\n        width: 100% !important;\n    }\n}\n\n@media only screen and (max-width: 500px) {\n    .button {\n        width: 100% !important;\n    }\n}', 1, NULL, '2023-06-29 12:52:10', '2023-06-29 12:52:10');
+
+-- END TABLE system_mail_layouts
+
+-- BEGIN TABLE system_mail_partials
+DROP TABLE IF EXISTS system_mail_partials;
+CREATE TABLE `system_mail_partials` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `content_html` text COLLATE utf8mb4_unicode_ci,
+  `content_text` text COLLATE utf8mb4_unicode_ci,
+  `is_custom` tinyint(1) NOT NULL DEFAULT '0',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Table system_mail_partials contains no data. No inserts have been genrated.
+-- Inserting 0 rows into system_mail_partials
+
+
+-- END TABLE system_mail_partials
+
+-- BEGIN TABLE system_mail_templates
+DROP TABLE IF EXISTS system_mail_templates;
+CREATE TABLE `system_mail_templates` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `subject` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `description` text COLLATE utf8mb4_unicode_ci,
+  `content_html` text COLLATE utf8mb4_unicode_ci,
+  `content_text` text COLLATE utf8mb4_unicode_ci,
+  `layout_id` int DEFAULT NULL,
+  `is_custom` tinyint(1) NOT NULL DEFAULT '0',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `system_mail_templates_layout_id_index` (`layout_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Table system_mail_templates contains no data. No inserts have been genrated.
+-- Inserting 0 rows into system_mail_templates
+
+
+-- END TABLE system_mail_templates
+
+-- BEGIN TABLE system_parameters
+DROP TABLE IF EXISTS system_parameters;
+CREATE TABLE `system_parameters` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `namespace` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `group` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `item` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `value` mediumtext COLLATE utf8mb4_unicode_ci,
+  PRIMARY KEY (`id`),
+  KEY `item_index` (`namespace`,`group`,`item`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Inserting 9 rows into system_parameters
+-- Insert batch #1
+INSERT INTO system_parameters (id, namespace, `group`, item, `value`) VALUES
+(1, 'system', 'update', 'count', '0'),
+(2, 'system', 'core', 'build', '"20"'),
+(3, 'system', 'update', 'retry', '1688139396'),
+(4, 'system', 'project', 'id', '277094'),
+(5, 'system', 'project', 'key', '"0ZwHkZmLgZwp3ZQx0YGWwLzL1MQAyA2H0BGt3LmZ5BGN3MwZmBJZ2ZJH2AQZ3"'),
+(6, 'system', 'project', 'name', '"admin_stu"'),
+(7, 'system', 'project', 'owner', '"cadon"'),
+(8, 'system', 'project', 'is_active', 'true'),
+(9, 'system', 'update', 'versions', '{"count":0,"core":null,"plugins":[]}');
+
+-- END TABLE system_parameters
+
+-- BEGIN TABLE system_plugin_history
+DROP TABLE IF EXISTS system_plugin_history;
+CREATE TABLE `system_plugin_history` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `code` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `type` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `version` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `detail` mediumtext COLLATE utf8mb4_unicode_ci,
+  `created_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `system_plugin_history_code_index` (`code`),
+  KEY `system_plugin_history_type_index` (`type`)
+) ENGINE=InnoDB AUTO_INCREMENT=59 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Inserting 48 rows into system_plugin_history
+-- Insert batch #1
+INSERT INTO system_plugin_history (id, code, type, version, detail, created_at) VALUES
+(2, 'RainLab.Builder', 'comment', '1.0.1', 'Initialize plugin.', '2023-06-29 12:52:10'),
+(3, 'RainLab.Builder', 'comment', '1.0.2', 'Fixes the problem with selecting a plugin. Minor localization corrections. Configuration files in the list and form behaviors are now autocomplete.', '2023-06-29 12:52:10'),
+(4, 'RainLab.Builder', 'comment', '1.0.3', 'Improved handling of the enum data type.', '2023-06-29 12:52:10'),
+(5, 'RainLab.Builder', 'comment', '1.0.4', 'Added user permissions to work with the Builder.', '2023-06-29 12:52:10'),
+(6, 'RainLab.Builder', 'comment', '1.0.5', 'Fixed permissions registration.', '2023-06-29 12:52:10'),
+(7, 'RainLab.Builder', 'comment', '1.0.6', 'Fixed front-end record ordering in the Record List component.', '2023-06-29 12:52:10'),
+(8, 'RainLab.Builder', 'comment', '1.0.7', 'Builder settings are now protected with user permissions. The database table column list is scrollable now. Minor code cleanup.', '2023-06-29 12:52:10'),
+(9, 'RainLab.Builder', 'comment', '1.0.8', 'Added the Reorder Controller behavior.', '2023-06-29 12:52:10'),
+(10, 'RainLab.Builder', 'comment', '1.0.9', 'Minor API and UI updates.', '2023-06-29 12:52:10'),
+(11, 'RainLab.Builder', 'comment', '1.0.10', 'Minor styling update.', '2023-06-29 12:52:10'),
+(12, 'RainLab.Builder', 'comment', '1.0.11', 'Fixed a bug where clicking placeholder in a repeater would open Inspector. Fixed a problem with saving forms with repeaters in tabs. Minor style fix.', '2023-06-29 12:52:10'),
+(13, 'RainLab.Builder', 'comment', '1.0.12', 'Added support for the Trigger property to the Media Finder widget configuration. Names of form fields and list columns definition files can now contain underscores.', '2023-06-29 12:52:10'),
+(14, 'RainLab.Builder', 'comment', '1.0.13', 'Minor styling fix on the database editor.', '2023-06-29 12:52:10'),
+(15, 'RainLab.Builder', 'comment', '1.0.14', 'Added support for published_at timestamp field', '2023-06-29 12:52:10'),
+(16, 'RainLab.Builder', 'comment', '1.0.15', 'Fixed a bug where saving a localization string in Inspector could cause a JavaScript error. Added support for Timestamps and Soft Deleting for new models.', '2023-06-29 12:52:10'),
+(17, 'RainLab.Builder', 'comment', '1.0.16', 'Fixed a bug when saving a form with the Repeater widget in a tab could create invalid fields in the form''s outside area. Added a check that prevents creating localization strings inside other existing strings.', '2023-06-29 12:52:10'),
+(18, 'RainLab.Builder', 'comment', '1.0.17', 'Added support Trigger attribute support for RecordFinder and Repeater form widgets.', '2023-06-29 12:52:10'),
+(19, 'RainLab.Builder', 'comment', '1.0.18', 'Fixes a bug where ''::class'' notations in a model class definition could prevent the model from appearing in the Builder model list. Added emptyOption property support to the dropdown form control.', '2023-06-29 12:52:10'),
+(20, 'RainLab.Builder', 'comment', '1.0.19', 'Added a feature allowing to add all database columns to a list definition. Added max length validation for database table and column names.', '2023-06-29 12:52:10'),
+(21, 'RainLab.Builder', 'comment', '1.0.20', 'Fixes a bug where form the builder could trigger the "current.hasAttribute is not a function" error.', '2023-06-29 12:52:10'),
+(22, 'RainLab.Builder', 'comment', '1.0.21', 'Back-end navigation sort order updated.', '2023-06-29 12:52:10'),
+(23, 'RainLab.Builder', 'comment', '1.0.22', 'Added scopeValue property to the RecordList component.', '2023-06-29 12:52:10'),
+(24, 'RainLab.Builder', 'comment', '1.0.23', 'Added support for balloon-selector field type, added Brazilian Portuguese translation, fixed some bugs', '2023-06-29 12:52:10'),
+(25, 'RainLab.Builder', 'comment', '1.0.24', 'Added support for tag list field type, added read only toggle for fields. Prevent plugins from using reserved PHP keywords for class names and namespaces', '2023-06-29 12:52:10'),
+(26, 'RainLab.Builder', 'comment', '1.0.25', 'Allow editing of migration code in the "Migration" popup when saving changes in the database editor.', '2023-06-29 12:52:10'),
+(27, 'RainLab.Builder', 'comment', '1.0.26', 'Allow special default values for columns and added new "Add ID column" button to database editor.', '2023-06-29 12:52:10'),
+(28, 'RainLab.Builder', 'comment', '1.0.27', 'Added ability to use ''scope'' in a form relation field, added ability to change the sort order of versions and added additional properties for repeater widget in form builder. Added Polish translation.', '2023-06-29 12:52:10'),
+(29, 'RainLab.Builder', 'comment', '1.0.28', 'Fixes support for PHP 8', '2023-06-29 12:52:10'),
+(30, 'RainLab.Builder', 'comment', '1.0.29', 'Disable touch device detection', '2023-06-29 12:52:10'),
+(31, 'RainLab.Builder', 'comment', '1.0.30', 'Minor styling improvements', '2023-06-29 12:52:10'),
+(32, 'RainLab.Builder', 'comment', '1.0.31', 'Added support for more rich editor and file upload properties', '2023-06-29 12:52:10'),
+(33, 'RainLab.Builder', 'comment', '1.0.32', 'Minor styling improvements', '2023-06-29 12:52:10'),
+(34, 'RainLab.Builder', 'comment', '1.1.0', 'Adds feature for adding database fields to a form definition.', '2023-06-29 12:52:10'),
+(35, 'RainLab.Builder', 'comment', '1.1.1', 'Adds DBAL timestamp column type. Adds database prefix support. Fixes various bugs.', '2023-06-29 12:52:10'),
+(36, 'RainLab.Builder', 'comment', '1.1.2', 'Compatibility with October CMS v2.2', '2023-06-29 12:52:10'),
+(37, 'RainLab.Builder', 'comment', '1.1.3', 'Adds comment support to database tables.', '2023-06-29 12:52:10'),
+(38, 'RainLab.Builder', 'comment', '1.1.4', 'Fixes duplication bug saving backend menu permissions.', '2023-06-29 12:52:10'),
+(39, 'RainLab.Builder', 'comment', '1.2.0', 'Improve support with October v3.0', '2023-06-29 12:52:10'),
+(40, 'RainLab.Builder', 'comment', '1.2.2', 'Compatibility updates.', '2023-06-29 12:52:10'),
+(41, 'RainLab.Builder', 'comment', '1.2.3', 'Fixes issue when removing items from permissions and menus.', '2023-06-29 12:52:10'),
+(42, 'RainLab.Builder', 'comment', '1.2.5', 'Fixes validator conflict with other plugins.', '2023-06-29 12:52:10'),
+(43, 'RainLab.Builder', 'comment', '1.2.6', 'Compatibility with October v3.1', '2023-06-29 12:52:10'),
+(44, 'RainLab.Builder', 'comment', '2.0.1', 'Adds Tailor blueprint importer and code editor.', '2023-06-29 12:52:10'),
+(45, 'RainLab.Builder', 'comment', '2.0.2', 'Fixes visual bug when tab fields overflow.', '2023-06-29 12:52:10'),
+(46, 'RainLab.Builder', 'comment', '2.0.3', 'Fixes missing import in CMS components.', '2023-06-29 12:52:10'),
+(47, 'RainLab.Builder', 'comment', '2.0.4', 'Fixes bad method name in controller model.', '2023-06-29 12:52:10'),
+(48, 'RainLab.Builder', 'comment', '2.0.5', 'Fixes bug adding data table controls.', '2023-06-29 12:52:10'),
+(58, 'Cadon.Stunring', 'comment', '1.0.1', 'Initialize plugin', '2023-06-29 17:19:30');
+
+-- END TABLE system_plugin_history
+
+-- BEGIN TABLE system_plugin_versions
+DROP TABLE IF EXISTS system_plugin_versions;
+CREATE TABLE `system_plugin_versions` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `code` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `version` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `is_frozen` tinyint(1) NOT NULL DEFAULT '0',
+  `is_disabled` tinyint(1) NOT NULL DEFAULT '0',
+  `created_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `system_plugin_versions_code_index` (`code`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Inserting 2 rows into system_plugin_versions
+-- Insert batch #1
+INSERT INTO system_plugin_versions (id, code, version, is_frozen, is_disabled, created_at) VALUES
+(2, 'RainLab.Builder', '2.0.5', 0, 0, '2023-06-29 12:52:10'),
+(5, 'Cadon.Stunring', '1.0.1', 0, 0, '2023-06-29 17:19:30');
+
+-- END TABLE system_plugin_versions
+
+-- BEGIN TABLE system_request_logs
+DROP TABLE IF EXISTS system_request_logs;
+CREATE TABLE `system_request_logs` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `status_code` int DEFAULT NULL,
+  `url` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `referer` text COLLATE utf8mb4_unicode_ci,
+  `count` int NOT NULL DEFAULT '0',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Table system_request_logs contains no data. No inserts have been genrated.
+-- Inserting 0 rows into system_request_logs
+
+
+-- END TABLE system_request_logs
+
+-- BEGIN TABLE system_revisions
+DROP TABLE IF EXISTS system_revisions;
+CREATE TABLE `system_revisions` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `revisionable_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `revisionable_id` int NOT NULL,
+  `user_id` int unsigned DEFAULT NULL,
+  `field` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `cast` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `old_value` text COLLATE utf8mb4_unicode_ci,
+  `new_value` text COLLATE utf8mb4_unicode_ci,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `system_revisions_revisionable_id_revisionable_type_index` (`revisionable_id`,`revisionable_type`),
+  KEY `system_revisions_user_id_index` (`user_id`),
+  KEY `system_revisions_field_index` (`field`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Table system_revisions contains no data. No inserts have been genrated.
+-- Inserting 0 rows into system_revisions
+
+
+-- END TABLE system_revisions
+
+-- BEGIN TABLE system_settings
+DROP TABLE IF EXISTS system_settings;
+CREATE TABLE `system_settings` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `item` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `value` mediumtext COLLATE utf8mb4_unicode_ci,
+  `site_id` int unsigned DEFAULT NULL,
+  `site_root_id` int unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `system_settings_item_index` (`item`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Table system_settings contains no data. No inserts have been genrated.
+-- Inserting 0 rows into system_settings
+
+
+-- END TABLE system_settings
+
+-- BEGIN TABLE system_site_definitions
+DROP TABLE IF EXISTS system_site_definitions;
+CREATE TABLE `system_site_definitions` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `sort_order` int DEFAULT NULL,
+  `is_custom_url` tinyint(1) NOT NULL DEFAULT '0',
+  `app_url` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `theme` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `locale` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `timezone` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `is_restricted` tinyint(1) NOT NULL DEFAULT '0',
+  `allow_hosts` mediumtext COLLATE utf8mb4_unicode_ci,
+  `is_prefixed` tinyint(1) NOT NULL DEFAULT '0',
+  `route_prefix` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `is_styled` tinyint(1) NOT NULL DEFAULT '0',
+  `color_foreground` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `color_background` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `is_primary` tinyint(1) NOT NULL DEFAULT '0',
+  `is_enabled` tinyint(1) NOT NULL DEFAULT '0',
+  `is_enabled_edit` tinyint(1) NOT NULL DEFAULT '0',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `system_site_definitions_code_index` (`code`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Inserting 1 row into system_site_definitions
+-- Insert batch #1
+INSERT INTO system_site_definitions (id, name, code, sort_order, is_custom_url, app_url, theme, locale, timezone, is_restricted, allow_hosts, is_prefixed, route_prefix, is_styled, color_foreground, color_background, is_primary, is_enabled, is_enabled_edit, created_at, updated_at) VALUES
+(1, 'Primary Site', 'primary', 1, 0, NULL, NULL, NULL, NULL, 0, NULL, 0, NULL, 0, NULL, NULL, 1, 1, 1, '2023-06-29 12:52:09', '2023-06-29 12:52:09');
+
+-- END TABLE system_site_definitions
+
+-- BEGIN TABLE tailor_content_joins
+DROP TABLE IF EXISTS tailor_content_joins;
+CREATE TABLE `tailor_content_joins` (
+  `parent_id` int DEFAULT NULL,
+  `parent_type` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `relation_id` int DEFAULT NULL,
+  `relation_type` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `field_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `site_id` int DEFAULT NULL,
+  KEY `tailor_content_joins_pidx` (`parent_id`,`parent_type`),
+  KEY `tailor_content_joins_ridx` (`relation_id`,`relation_type`),
+  KEY `tailor_content_joins_field_name_index` (`field_name`),
+  KEY `tailor_content_joins_site_id_index` (`site_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Table tailor_content_joins contains no data. No inserts have been genrated.
+-- Inserting 0 rows into tailor_content_joins
+
+
+-- END TABLE tailor_content_joins
+
+-- BEGIN TABLE tailor_content_schema
+DROP TABLE IF EXISTS tailor_content_schema;
+CREATE TABLE `tailor_content_schema` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `table_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `meta` mediumtext COLLATE utf8mb4_unicode_ci,
+  `fields` mediumtext COLLATE utf8mb4_unicode_ci,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `tailor_content_schema_table_name_index` (`table_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Table tailor_content_schema contains no data. No inserts have been genrated.
+-- Inserting 0 rows into tailor_content_schema
+
+
+-- END TABLE tailor_content_schema
+
+-- BEGIN TABLE tailor_global_joins
+DROP TABLE IF EXISTS tailor_global_joins;
+CREATE TABLE `tailor_global_joins` (
+  `parent_id` int DEFAULT NULL,
+  `relation_id` int DEFAULT NULL,
+  `relation_type` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `field_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `site_id` int DEFAULT NULL,
+  KEY `tailor_global_joins_idx` (`relation_id`,`relation_type`),
+  KEY `tailor_global_joins_field_name_index` (`field_name`),
+  KEY `tailor_global_joins_site_id_index` (`site_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Table tailor_global_joins contains no data. No inserts have been genrated.
+-- Inserting 0 rows into tailor_global_joins
+
+
+-- END TABLE tailor_global_joins
+
+-- BEGIN TABLE tailor_global_repeaters
+DROP TABLE IF EXISTS tailor_global_repeaters;
+CREATE TABLE `tailor_global_repeaters` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `host_id` int DEFAULT NULL,
+  `host_field` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `site_id` int DEFAULT NULL,
+  `content_group` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `content_value` mediumtext COLLATE utf8mb4_unicode_ci,
+  `content_spawn_path` text COLLATE utf8mb4_unicode_ci,
+  `sort_order` int DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `tailor_global_repeaters_idx` (`host_id`,`host_field`),
+  KEY `tailor_global_repeaters_site_id_index` (`site_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Table tailor_global_repeaters contains no data. No inserts have been genrated.
+-- Inserting 0 rows into tailor_global_repeaters
+
+
+-- END TABLE tailor_global_repeaters
+
+-- BEGIN TABLE tailor_globals
+DROP TABLE IF EXISTS tailor_globals;
+CREATE TABLE `tailor_globals` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `site_id` int DEFAULT NULL,
+  `site_root_id` int DEFAULT NULL,
+  `blueprint_uuid` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `content` longtext COLLATE utf8mb4_unicode_ci,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `tailor_globals_site_id_index` (`site_id`),
+  KEY `tailor_globals_site_root_id_index` (`site_root_id`),
+  KEY `tailor_globals_blueprint_uuid_index` (`blueprint_uuid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Table tailor_globals contains no data. No inserts have been genrated.
+-- Inserting 0 rows into tailor_globals
+
+
+-- END TABLE tailor_globals
+
+-- BEGIN TABLE tailor_preview_tokens
+DROP TABLE IF EXISTS tailor_preview_tokens;
+CREATE TABLE `tailor_preview_tokens` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `site_id` int DEFAULT NULL,
+  `route` mediumtext COLLATE utf8mb4_unicode_ci,
+  `token` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `count_use` int NOT NULL DEFAULT '0',
+  `count_limit` int NOT NULL DEFAULT '0',
+  `created_user_id` int unsigned DEFAULT NULL,
+  `expired_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `tailor_preview_tokens_site_id_index` (`site_id`),
+  KEY `tailor_preview_tokens_token_index` (`token`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Table tailor_preview_tokens contains no data. No inserts have been genrated.
+-- Inserting 0 rows into tailor_preview_tokens
+
+
+-- END TABLE tailor_preview_tokens

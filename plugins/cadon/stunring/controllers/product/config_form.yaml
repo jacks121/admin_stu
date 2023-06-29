@@ -1,0 +1,10 @@
+name: Product
+modelClass: Cadon\Stunring\Models\Product
+form: $/cadon/stunring/models/product/fields.yaml
+defaultRedirect: cadon/stunring/product
+create:
+    redirect: 'cadon/stunring/product/update/:id'
+    redirectClose: cadon/stunring/product
+update:
+    redirect: cadon/stunring/product
+    redirectClose: cadon/stunring/product

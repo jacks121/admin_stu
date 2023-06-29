@@ -1,0 +1,39 @@
+columns:
+    id:
+        label: id
+        type: number
+    product_name:
+        label: product_name
+        type: text
+    sku:
+        label: sku
+        type: text
+    original_price:
+        label: original_price
+        type: text
+    current_price:
+        label: current_price
+        type: text
+    on_sale:
+        label: on_sale
+        type: text
+    description:
+        label: description
+        type: text
+    video_url:
+        label: video_url
+        type: text
+    sales:
+        label: sales
+        type: number
+    created_at:
+        label: created_at
+        type: datetime
+    updated_at:
+        label: updated_at
+        type: datetime
+    image_url:
+        label: image
+        type: image
+        width: 100
+        mode: image

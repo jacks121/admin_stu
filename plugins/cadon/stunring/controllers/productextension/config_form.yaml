@@ -1,0 +1,10 @@
+name: ProductExtension
+form: $/cadon/stunring/models/productextension/fields.yaml
+modelClass: Cadon\Stunring\Models\ProductExtension
+defaultRedirect: cadon/stunring/productextension
+create:
+    redirect: 'cadon/stunring/productextension/update/:id'
+    redirectClose: cadon/stunring/productextension
+update:
+    redirect: cadon/stunring/productextension
+    redirectClose: cadon/stunring/productextension

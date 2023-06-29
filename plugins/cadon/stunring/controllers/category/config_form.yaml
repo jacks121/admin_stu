@@ -1,0 +1,11 @@
+name: Category
+modelClass: Cadon\Stunring\Models\Category
+form: $/cadon/stunring/models/category/fields.yaml
+defaultRedirect: cadon/stunring/category
+create:
+    redirect: 'cadon/stunring/category/update/:id'
+    redirectClose: cadon/stunring/category
+update:
+    redirect: cadon/stunring/category
+    redirectClose: cadon/stunring/category
+preview: {  }

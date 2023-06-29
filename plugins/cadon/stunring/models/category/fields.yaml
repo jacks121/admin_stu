@@ -1,0 +1,13 @@
+fields:
+    id:
+        label: ID
+        type: number
+        readOnly: true
+    category_name:
+        label: Category Name
+        type: text
+    parent:
+        label: Parent Category
+        type: relation
+        nameFrom: category_name
+        emptyOption: -- select parent category --

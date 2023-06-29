@@ -1,0 +1,35 @@
+fields:
+  stone_cut:
+    label: Stone Cut
+    span: auto
+    type: text
+
+  stone_color:
+    label: Stone Color
+    span: auto
+    type: text
+
+  carat:
+    label: Carat
+    span: auto
+    type: number
+
+  plating_color:
+    label: Plating Color
+    span: auto
+    type: text
+
+  style:
+    label: Style
+    span: auto
+    type: text
+
+  occasion:
+    label: Occasion
+    span: auto
+    type: text
+
+  recipient:
+    label: Recipient
+    span: auto
+    type: text
