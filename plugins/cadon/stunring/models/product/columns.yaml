@@ -5,6 +5,15 @@ columns:
     product_name:
         label: product_name
         type: text
+    image_url:
+        label: image
+        type: image
+        width: 100
+        mode: image
+    category_name:
+        label: category
+        tyep: text
+        mode: category
     sku:
         label: sku
         type: text
@@ -32,8 +41,3 @@ columns:
     updated_at:
         label: updated_at
         type: datetime
-    image_url:
-        label: image
-        type: image
-        width: 100
-        mode: image

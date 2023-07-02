@@ -1,9 +1,29 @@
 fields:
+    id:
+        label: ID
+        span: auto
+        type: number
+        readOnly: true
+
     code:
         label: Code
+        span: auto
         type: text
-        required: true
+
     exchange:
         label: Exchange
+        span: auto
         type: number
-        required: true
+        step: 0.01
+
+    created_at:
+        label: Created At
+        span: auto
+        type: datepicker
+        readOnly: true
+
+    updated_at:
+        label: Updated At
+        span: auto
+        type: datepicker
+        readOnly: true

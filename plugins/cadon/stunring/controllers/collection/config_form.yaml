@@ -1,0 +1,11 @@
+name: Collection
+modelClass: Cadon\Stunring\Models\Collection
+form: $/cadon/stunring/models/collection/fields.yaml
+defaultRedirect: cadon/stunring/collection
+create:
+    redirect: 'cadon/stunring/collection/update/:id'
+    redirectClose: cadon/stunring/collection
+update:
+    redirect: cadon/stunring/collection
+    redirectClose: cadon/stunring/collection
+preview: {  }

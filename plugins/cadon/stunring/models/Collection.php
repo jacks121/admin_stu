@@ -26,4 +26,8 @@ class Collection extends Model
     public $rules = [
     ];
 
+    public $casts = [
+        'rule' => 'array'
+    ];
+
 }

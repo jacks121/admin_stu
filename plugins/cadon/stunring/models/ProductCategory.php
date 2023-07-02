@@ -5,7 +5,7 @@ use Model;
 /**
  * Model
  */
-class AttributesValue extends Model
+class ProductCategory extends Model
 {
     use \October\Rain\Database\Traits\Validation;
 
@@ -18,7 +18,7 @@ class AttributesValue extends Model
     /**
      * @var string table in the database used by the model.
      */
-    public $table = 'cadon_stunring_attribute_values';
+    public $table = 'cadon_stunring_product_categories';
 
     /**
      * @var array rules for validation.

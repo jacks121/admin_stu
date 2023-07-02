@@ -21,4 +21,21 @@ class ProductAttribute extends Model
     public $rules = [
     ];
 
+    public $hasMany = [
+        'values' => ['Cadon\Stunring\Models\AttributeValue', 'key' => 'attribute_id']
+    ];
+
+    public function getAttributeIdOptions()
+    {
+        return Attribute::all()->pluck('attribute_name', 'id')->toArray();
+    }
+
+    public function getValueIdOptions()
+    {
+        return AttributeValue::all()->pluck('value', 'id')->toArray();
+    }
+
+    public function beforeCreate () {
+        $this->product_id = request()->input('Product.id');
+    }
 }

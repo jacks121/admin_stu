@@ -7,3 +7,8 @@ extension: # 这是你的关联模型的名称，要和你的model里面定义�
   manage: # 这是你的关联模型的管理选项
     form: $/cadon/stunring/models/productextension/fields.yaml # 这是你的关联模型的表单字段定义文件
     recordsPerPage: 10 # 这是你的关联模型每页显示的记录数
+categories:
+    label: Categories
+    view:
+        list: $/cadon/stunring/models/category/columns.yaml
+        toolbarButtons: add|remove

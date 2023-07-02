@@ -28,7 +28,7 @@ fields:
   on_sale:
     label: 'On Sale'
     span: auto
-    type: checkbox
+    type: switch
 
   description:
     label: Description
@@ -51,6 +51,31 @@ fields:
       mode: image
       maxItems: 5
       span: auto
+
+  categories:
+    label: Category
+    type: relation
+    nameFrom: category_name
+    mode: checkbox
+
+  product_attributes:
+    label: Product Attributes
+    type: repeater
+    form:
+        fields:
+            attribute_id:
+                label: Attribute
+                type: dropdown
+                span: left
+            value_id:
+                label: Value
+                type: dropdown
+                span: right
+            price_adjustment:
+                label: 'Price Adjustment'
+                type: number
+                span: full
+
 
   # 使用partial类型的字段来嵌入product extension的字段
   extension:

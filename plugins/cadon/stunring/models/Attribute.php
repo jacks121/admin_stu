@@ -26,4 +26,7 @@ class Attribute extends Model
     public $rules = [
     ];
 
+    public $hasMany = [
+        'attribute_values' => ['Cadon\Stunring\Models\AttributeValue', 'key' => 'attribute_id']
+    ];
 }

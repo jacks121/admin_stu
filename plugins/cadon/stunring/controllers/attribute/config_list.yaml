@@ -1,0 +1,12 @@
+list: $/cadon/stunring/models/attribute/columns.yaml
+modelClass: Cadon\Stunring\Models\Attribute
+title: Attribute
+noRecordsMessage: 'backend::lang.list.no_records'
+showSetup: true
+showCheckboxes: true
+recordsPerPage: 20
+toolbar:
+    buttons: list_toolbar
+    search:
+        prompt: 'backend::lang.list.search_prompt'
+recordUrl: 'cadon/stunring/attribute/update/:id'

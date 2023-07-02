@@ -1,0 +1,32 @@
+fields:
+    name:
+        label: Name
+        type: text
+    code:
+        label: Code
+        type: text
+    type:
+        label: Type
+        type: text
+    rule:
+        label: Rule
+        type: repeater
+        form:
+            fields:
+                condition:
+                    label: Condition
+                    type: dropdown
+                    options:
+                        number: 数量
+                        option2: Option 2
+                        option3: Option 3
+                operator:
+                    label: Operator
+                    type: dropdown
+                    options:
+                        gt : 大于
+                        value2: Value 2
+                        value3: Value 3
+                value:
+                    label: Value
+                    type: text

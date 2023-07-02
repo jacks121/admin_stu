@@ -1,0 +1,11 @@
+name: Attribute
+modelClass: Cadon\Stunring\Models\Attribute
+form: $/cadon/stunring/models/attribute/fields.yaml
+defaultRedirect: cadon/stunring/attribute
+create:
+    redirect: 'cadon/stunring/attribute/update/:id'
+    redirectClose: cadon/stunring/attribute
+update:
+    redirect: cadon/stunring/attribute
+    redirectClose: cadon/stunring/attribute
+preview: {  }

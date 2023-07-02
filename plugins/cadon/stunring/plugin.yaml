@@ -22,19 +22,18 @@ navigation:
                 label: 分类
                 url: cadon/stunring/category
                 icon: icon-code-fork
-    main-menu-item2:
-        label: 图片
-        url: /
-        icon: icon-image
-        sideMenu:
-            side-menu-item:
-                label: 列表
-                url: cadon/stunring/image
-                icon: icon-list
+            side-menu-item4:
+                label: 属性管理
+                url: cadon/stunring/attribute
+                icon: icon-tasks
+            side-menu-item5:
+                label: 商品集合
+                url: cadon/stunring/collection
+                icon: icon-dropbox
     main-menu-item3:
-        label: 设置
+        label: 其他
         url: /
-        icon: icon-life-ring
+        icon: icon-building
         sideMenu:
             side-menu-item:
                 label: 货币设置

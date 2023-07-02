@@ -1,0 +1,15 @@
+fields:
+    id:
+        label: ID
+        type: text
+    attribute_name:
+        label: 属性名称
+        type: text
+    attribute_values:
+        label: 属性值
+        type: repeater
+        form:
+            fields:
+                value:
+                    label: 值
+                    type: text

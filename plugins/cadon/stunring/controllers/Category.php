@@ -19,5 +19,4 @@ class Category extends Controller
         parent::__construct();
         BackendMenu::setContext('Cadon.Stunring', 'main-menu-item', 'side-menu-item3');
     }
-
 }

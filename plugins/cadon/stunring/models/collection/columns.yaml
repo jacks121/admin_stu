@@ -1,6 +1,15 @@
 columns:
     id:
         label: id
+        type: number
+    name:
+        label: name
+        type: text
+    code:
+        label: code
+        type: text
+    type:
+        label: type
         type: text
     created_at:
         label: created_at
@@ -8,9 +17,3 @@ columns:
     updated_at:
         label: updated_at
         type: datetime
-    code:
-        label: code
-        type: text
-    exchange:
-        label: exchange
-        type: text

@@ -10,6 +10,19 @@ toolbar:
     search:
         prompt: 'backend::lang.list.search_prompt'
 recordUrl: 'cadon/stunring/category/update/:id'
+columns:
+    id:
+        label: ID
+        sortable: false
+    category_name:
+        label: Name
+        type: text
+    parent_id:
+        label: Parent
+        type: text
+        relation: parent
+        select: category_name
+
 structure:
     showTree: true
     showReorder: true
