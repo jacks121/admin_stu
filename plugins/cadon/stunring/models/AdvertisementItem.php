@@ -15,10 +15,18 @@ class AdvertisementItem extends Model
      */
     public $table = 'cadon_stunring_advertisement_items';
 
+    public $casts = [
+        'advertisement_images' => 'array'
+    ];
     /**
      * @var array rules for validation.
      */
     public $rules = [
     ];
+
+    public function getAdvertisementIdOptions()
+    {
+        return \Cadon\Stunring\Models\Advertisement::pluck('code', 'id');
+    }
 
 }

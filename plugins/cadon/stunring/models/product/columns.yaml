@@ -25,13 +25,7 @@ columns:
         type: text
     on_sale:
         label: on_sale
-        type: text
-    description:
-        label: description
-        type: text
-    video_url:
-        label: video_url
-        type: text
+        type: switch
     sales:
         label: sales
         type: number

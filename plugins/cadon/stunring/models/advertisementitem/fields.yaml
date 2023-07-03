@@ -21,14 +21,22 @@ fields:
     type: number
     span: auto
 
+  advertisement_images:
+    label: Images
+    type: mediafinder
+    mode: image
+    maxItems: 5
+    span: auto
+    tab: Base
+
   created_at:
     label: Created at
-    type: datetime
+    type: datepicker
     readOnly: true
     span: left
 
   updated_at:
     label: Updated at
-    type: datetime
+    type: datepicker
     readOnly: true
     span: right
