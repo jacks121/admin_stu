@@ -36,7 +36,8 @@ class Product extends Model
     ];
 
     public $hasMany = [
-        'product_attributes' => ['Cadon\Stunring\Models\ProductAttribute', 'key' => 'product_id']
+        'product_attributes' => ['Cadon\Stunring\Models\ProductAttribute', 'key' => 'product_id'],
+        'reviews' => 'Cadon\Stunring\Models\Review'
     ];
     
     public $attachMany = [

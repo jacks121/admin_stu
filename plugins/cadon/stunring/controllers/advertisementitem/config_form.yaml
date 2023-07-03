@@ -1,0 +1,10 @@
+name: AdvertisementItem
+form: $/cadon/stunring/models/advertisementitem/fields.yaml
+modelClass: Cadon\Stunring\Models\AdvertisementItem
+defaultRedirect: cadon/stunring/advertisementitem
+create:
+    redirect: 'cadon/stunring/advertisementitem/update/:id'
+    redirectClose: cadon/stunring/advertisementitem
+update:
+    redirect: cadon/stunring/advertisementitem
+    redirectClose: cadon/stunring/advertisementitem

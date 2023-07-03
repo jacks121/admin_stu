@@ -1,0 +1,34 @@
+fields:
+  id:
+    label: ID
+    type: number
+    readOnly: true
+    span: auto
+
+  advertisement_id:
+    label: Advertisement ID
+    type: dropdown
+    span: auto
+    # 可能需要添加一些额外的配置来获取广告的列表
+
+  link:
+    label: Link
+    type: text
+    span: auto
+
+  sort:
+    label: Sort
+    type: number
+    span: auto
+
+  created_at:
+    label: Created at
+    type: datetime
+    readOnly: true
+    span: left
+
+  updated_at:
+    label: Updated at
+    type: datetime
+    readOnly: true
+    span: right

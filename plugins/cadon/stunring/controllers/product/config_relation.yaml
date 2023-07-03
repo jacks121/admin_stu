@@ -12,3 +12,10 @@ categories:
     view:
         list: $/cadon/stunring/models/category/columns.yaml
         toolbarButtons: add|remove
+reviews:
+    label: Reviews
+    view:
+        list: $/cadon/stunring/models/review/columns.yaml
+        toolbarButtons: create|delete
+    manage:
+        form: $/cadon/stunring/models/review/fields.yaml

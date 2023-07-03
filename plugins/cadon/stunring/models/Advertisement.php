@@ -26,8 +26,10 @@ class Advertisement extends Model
     public $rules = [
     ];
 
-    public $morphMany = [
-        'images' => ['App\Models\Image', 'imageable']
+    public $hasMany = [
+        'items' => [
+            'Cadon\Stunring\Models\AdvertisementItem',
+            'key' => 'advertisement_id'
+        ]
     ];
-
 }

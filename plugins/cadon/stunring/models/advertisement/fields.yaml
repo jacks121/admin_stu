@@ -3,3 +3,7 @@ fields:
         label: Code
         type: text
         required: true
+    items:
+        label: 'Advertisement Items'
+        type: partial
+        path: $/cadon/stunring/models/advertisement/_items.htm
