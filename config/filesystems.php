@@ -46,10 +46,10 @@ return [
 
         'media' => [
             "driver"            => "oss",
-            "access_key_id"     => 'LTAI5tCn4mhW47HaS3wkFUFd',           // 必填, 阿里云的AccessKeyId
-            "access_key_secret" => '2DcOosxK8o2Twq3pZt43eySFHpB9WV',       // 必填, 阿里云的AccessKeySecret
-            "bucket"            => 'stunring',                  // 必填, 对象存储的Bucket, 示例: my-bucket
-            "endpoint"          => 'oss-us-east-1.aliyuncs.com',                // 必填, 对象存储的Endpoint, 示例: oss-cn-shanghai.aliyuncs.com
+            "access_key_id"     => env('AWS_ACCESS_KEY_ID'),        // 必填, 阿里云的AccessKeyId
+            "access_key_secret" => env('ALIYUN_SECRET_ACCESS_KEY'),      // 必填, 阿里云的AccessKeySecret
+            "bucket"            => env('ALIYUN_BUCKET'),               // 必填, 对象存储的Bucket, 示例: my-bucket
+            "endpoint"          => env('ALIYUN_ENDPOINT'),        // 必填, 对象存储的Endpoint, 示例: oss-cn-shanghai.aliyuncs.com
             "internal"          => env("OSS_INTERNAL", null),          // 选填, 内网上传地址,填写即启用 示例: oss-cn-shanghai-internal.aliyuncs.com
             "domain"            => null,            // 选填, 绑定域名,填写即启用 示例: oss.my-domain.com
             "prefix"            => "storage/app/media",              // 选填, 统一存储地址前缀
@@ -82,10 +82,10 @@ return [
 
         'uploads' => [
             "driver"            => "oss",
-            "access_key_id"     => 'LTAI5tCn4mhW47HaS3wkFUFd',           // 必填, 阿里云的AccessKeyId
-            "access_key_secret" => '2DcOosxK8o2Twq3pZt43eySFHpB9WV',       // 必填, 阿里云的AccessKeySecret
-            "bucket"            => 'stunring',                  // 必填, 对象存储的Bucket, 示例: my-bucket
-            "endpoint"          => 'oss-us-east-1.aliyuncs.com',                // 必填, 对象存储的Endpoint, 示例: oss-cn-shanghai.aliyuncs.com
+            "access_key_id"     => env('AWS_ACCESS_KEY_ID'),        // 必填, 阿里云的AccessKeyId
+            "access_key_secret" => env('ALIYUN_SECRET_ACCESS_KEY'),      // 必填, 阿里云的AccessKeySecret
+            "bucket"            => env('ALIYUN_BUCKET'),               // 必填, 对象存储的Bucket, 示例: my-bucket
+            "endpoint"          => env('ALIYUN_ENDPOINT'),             // 必填, 对象存储的Endpoint, 示例: oss-cn-shanghai.aliyuncs.com
             "internal"          => env("OSS_INTERNAL", null),          // 选填, 内网上传地址,填写即启用 示例: oss-cn-shanghai-internal.aliyuncs.com
             "domain"            => null,            // 选填, 绑定域名,填写即启用 示例: oss.my-domain.com
             "prefix"            => "storage/app/uploads",              // 选填, 统一存储地址前缀
